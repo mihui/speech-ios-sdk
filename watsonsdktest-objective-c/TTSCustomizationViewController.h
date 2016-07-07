@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-#import <watsonsdk/WatsonSpeechSDK.h>
+#import <watsonsdk/TextToSpeech.h>
 #import "TTSCustomizationDetailViewController.h"
 
 @interface TTSCustomizationViewController : UIViewController<UITableViewDataSource, UITableViewDelegate>

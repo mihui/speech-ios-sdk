@@ -27,9 +27,9 @@
 		7EFE11E51B71D07D00EF10BF /* AuthConfiguration.m in Sources */ = {isa = PBXBuildFile; fileRef = 7EFE11E31B71D07D00EF10BF /* AuthConfiguration.m */; };
 		9B07C4CF1D0A85FE005F41AE /* libspeexdsp.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9B07C4CE1D0A85FE005F41AE /* libspeexdsp.a */; };
 		9B07C4D11D0A8B76005F41AE /* libspeex.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9B07C4D01D0A8B76005F41AE /* libspeex.a */; };
-		9B07C5071D0B0B25005F41AE /* config_types.h in Headers */ = {isa = PBXBuildFile; fileRef = 9B07C4F21D0B0B25005F41AE /* config_types.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		9B07C5081D0B0B25005F41AE /* ogg.h in Headers */ = {isa = PBXBuildFile; fileRef = 9B07C4F31D0B0B25005F41AE /* ogg.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		9B07C50B1D0B0B25005F41AE /* os_types.h in Headers */ = {isa = PBXBuildFile; fileRef = 9B07C4F61D0B0B25005F41AE /* os_types.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		9B07C5071D0B0B25005F41AE /* config_types.h in Headers */ = {isa = PBXBuildFile; fileRef = 9B07C4F21D0B0B25005F41AE /* config_types.h */; };
+		9B07C5081D0B0B25005F41AE /* ogg.h in Headers */ = {isa = PBXBuildFile; fileRef = 9B07C4F31D0B0B25005F41AE /* ogg.h */; };
+		9B07C50B1D0B0B25005F41AE /* os_types.h in Headers */ = {isa = PBXBuildFile; fileRef = 9B07C4F61D0B0B25005F41AE /* os_types.h */; };
 		9B07C50C1D0B0B25005F41AE /* opus.h in Headers */ = {isa = PBXBuildFile; fileRef = 9B07C4F81D0B0B25005F41AE /* opus.h */; };
 		9B07C50D1D0B0B25005F41AE /* opus_defines.h in Headers */ = {isa = PBXBuildFile; fileRef = 9B07C4F91D0B0B25005F41AE /* opus_defines.h */; };
 		9B07C50E1D0B0B25005F41AE /* opus_header.c in Sources */ = {isa = PBXBuildFile; fileRef = 9B07C4FA1D0B0B25005F41AE /* opus_header.c */; };
@@ -40,13 +40,11 @@
 		9B07C5151D0B0B25005F41AE /* speex_resampler.h in Headers */ = {isa = PBXBuildFile; fileRef = 9B07C5021D0B0B25005F41AE /* speex_resampler.h */; };
 		9B07C5161D0B0B25005F41AE /* speex_types.h in Headers */ = {isa = PBXBuildFile; fileRef = 9B07C5031D0B0B25005F41AE /* speex_types.h */; };
 		9B07C5171D0B0B25005F41AE /* speexdsp_config_types.h in Headers */ = {isa = PBXBuildFile; fileRef = 9B07C5041D0B0B25005F41AE /* speexdsp_config_types.h */; };
-		9B07C5181D0B0B25005F41AE /* speexdsp_types.h in Headers */ = {isa = PBXBuildFile; fileRef = 9B07C5051D0B0B25005F41AE /* speexdsp_types.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		9B07C5191D0B0B25005F41AE /* wav_io.h in Headers */ = {isa = PBXBuildFile; fileRef = 9B07C5061D0B0B25005F41AE /* wav_io.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		9B07C5181D0B0B25005F41AE /* speexdsp_types.h in Headers */ = {isa = PBXBuildFile; fileRef = 9B07C5051D0B0B25005F41AE /* speexdsp_types.h */; };
+		9B07C5191D0B0B25005F41AE /* wav_io.h in Headers */ = {isa = PBXBuildFile; fileRef = 9B07C5061D0B0B25005F41AE /* wav_io.h */; };
 		9B1BCEE31CF69D440076FE2D /* TTSCustomWord.h in Headers */ = {isa = PBXBuildFile; fileRef = 9B1BCEE11CF69D440076FE2D /* TTSCustomWord.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		9B1BCEE41CF69D440076FE2D /* TTSCustomWord.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B1BCEE21CF69D440076FE2D /* TTSCustomWord.m */; };
-		9B1BCEEB1CF6CAAD0076FE2D /* STTConfiguration.m in Headers */ = {isa = PBXBuildFile; fileRef = 9B3669631CF354B800806BEE /* STTConfiguration.m */; settings = {ATTRIBUTES = (Public, ); }; };
 		9B1BCEF41CF704C10076FE2D /* TTSCustomizationDetailTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B1BCEF31CF704C10076FE2D /* TTSCustomizationDetailTableViewCell.m */; };
-		9B36693F1CF21A5400806BEE /* WebSocketAudioStreamer.h in Headers */ = {isa = PBXBuildFile; fileRef = 9B36693D1CF21A5400806BEE /* WebSocketAudioStreamer.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		9B3669401CF21A5400806BEE /* WebSocketAudioStreamer.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B36693E1CF21A5400806BEE /* WebSocketAudioStreamer.m */; };
 		9B3669551CF3546C00806BEE /* TTSCustomVoice.h in Headers */ = {isa = PBXBuildFile; fileRef = 9B3669531CF3546C00806BEE /* TTSCustomVoice.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		9B3669561CF3546C00806BEE /* TTSCustomVoice.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B3669541CF3546C00806BEE /* TTSCustomVoice.m */; };
@@ -79,13 +77,12 @@
 		9BCAD83F1CE6BF1200BE3B5F /* SRHash.m in Sources */ = {isa = PBXBuildFile; fileRef = 9BCAD82E1CE6BF1200BE3B5F /* SRHash.m */; };
 		9BCAD8401CE6BF1200BE3B5F /* SRURLUtilities.h in Headers */ = {isa = PBXBuildFile; fileRef = 9BCAD82F1CE6BF1200BE3B5F /* SRURLUtilities.h */; };
 		9BCAD8411CE6BF1200BE3B5F /* SRURLUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 9BCAD8301CE6BF1200BE3B5F /* SRURLUtilities.m */; };
-		9BCAD8421CE6BF1200BE3B5F /* SocketRocket.h in Headers */ = {isa = PBXBuildFile; fileRef = 9BCAD8311CE6BF1200BE3B5F /* SocketRocket.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		9BCAD8421CE6BF1200BE3B5F /* SocketRocket.h in Headers */ = {isa = PBXBuildFile; fileRef = 9BCAD8311CE6BF1200BE3B5F /* SocketRocket.h */; };
 		9BCAD8431CE6BF1200BE3B5F /* SRWebSocket.h in Headers */ = {isa = PBXBuildFile; fileRef = 9BCAD8321CE6BF1200BE3B5F /* SRWebSocket.h */; };
 		9BCAD8441CE6BF1200BE3B5F /* SRWebSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = 9BCAD8331CE6BF1200BE3B5F /* SRWebSocket.m */; };
 		9BE583901D0FEDE20021DC88 /* lpc.c in Sources */ = {isa = PBXBuildFile; fileRef = 9BE5838E1D0FEDE20021DC88 /* lpc.c */; };
 		9BE583911D0FEDE20021DC88 /* lpc.h in Headers */ = {isa = PBXBuildFile; fileRef = 9BE5838F1D0FEDE20021DC88 /* lpc.h */; };
 		9BE583931D0FEE2A0021DC88 /* stack_alloc.h in Headers */ = {isa = PBXBuildFile; fileRef = 9BE583921D0FEE2A0021DC88 /* stack_alloc.h */; };
-		9BE583951D11220F0021DC88 /* CodecHeader.h in Headers */ = {isa = PBXBuildFile; fileRef = 9BE583941D11220F0021DC88 /* CodecHeader.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		9BE583981D1130320021DC88 /* libwatsonsdk.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C11A645B1754D0E600385896 /* libwatsonsdk.a */; };
 		9BE5839C1D11C6AA0021DC88 /* OpusHelper.h in Headers */ = {isa = PBXBuildFile; fileRef = 9BE5839A1D11C6AA0021DC88 /* OpusHelper.h */; };
 		9BE5839D1D11C6AA0021DC88 /* OpusHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 9BE5839B1D11C6AA0021DC88 /* OpusHelper.m */; };
@@ -199,6 +196,7 @@
 		9B47E7471CEF5B77003E0860 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		9B47E7561CF21645003E0860 /* SpeechUtility.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SpeechUtility.h; sourceTree = "<group>"; };
 		9B47E7571CF21645003E0860 /* SpeechUtility.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SpeechUtility.m; sourceTree = "<group>"; };
+		9B71950C1D2EAE550046245A /* CodecHeader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CodecHeader.h; sourceTree = "<group>"; };
 		9BA060401CE6D9320018CA5B /* libicucore.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libicucore.tbd; path = usr/lib/libicucore.tbd; sourceTree = SDKROOT; };
 		9BCAD8201CE6BF1200BE3B5F /* SRDelegateController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SRDelegateController.h; sourceTree = "<group>"; };
 		9BCAD8211CE6BF1200BE3B5F /* SRDelegateController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SRDelegateController.m; sourceTree = "<group>"; };
@@ -220,7 +218,6 @@
 		9BE5838E1D0FEDE20021DC88 /* lpc.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = lpc.c; sourceTree = "<group>"; };
 		9BE5838F1D0FEDE20021DC88 /* lpc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = lpc.h; sourceTree = "<group>"; };
 		9BE583921D0FEE2A0021DC88 /* stack_alloc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = stack_alloc.h; sourceTree = "<group>"; };
-		9BE583941D11220F0021DC88 /* CodecHeader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CodecHeader.h; sourceTree = "<group>"; };
 		9BE5839A1D11C6AA0021DC88 /* OpusHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OpusHelper.h; sourceTree = "<group>"; };
 		9BE5839B1D11C6AA0021DC88 /* OpusHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OpusHelper.m; sourceTree = "<group>"; };
 		9BF00C951CF5A10100624702 /* TTSCustomizationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TTSCustomizationViewController.h; sourceTree = "<group>"; };
@@ -327,7 +324,7 @@
 				9BE5838E1D0FEDE20021DC88 /* lpc.c */,
 				9BE5838F1D0FEDE20021DC88 /* lpc.h */,
 				9BE583921D0FEE2A0021DC88 /* stack_alloc.h */,
-				9BE583941D11220F0021DC88 /* CodecHeader.h */,
+				9B71950C1D2EAE550046245A /* CodecHeader.h */,
 			);
 			path = codec;
 			sourceTree = "<group>";
@@ -614,24 +611,23 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9B47E7581CF21645003E0860 /* SpeechUtility.h in Headers */,
+				7EFE11E41B71D07D00EF10BF /* AuthConfiguration.h in Headers */,
+				9B3669661CF354B800806BEE /* STTConfiguration.h in Headers */,
+				9B36695D1CF3549400806BEE /* TTSConfiguration.h in Headers */,
+				9B36695B1CF3549400806BEE /* TextToSpeech.h in Headers */,
+				9B3669641CF354B800806BEE /* SpeechToText.h in Headers */,
+				9B1BCEE31CF69D440076FE2D /* TTSCustomWord.h in Headers */,
+				9B3669551CF3546C00806BEE /* TTSCustomVoice.h in Headers */,
+				9BE5839C1D11C6AA0021DC88 /* OpusHelper.h in Headers */,
+				9BCAD8421CE6BF1200BE3B5F /* SocketRocket.h in Headers */,
+				9BCAD8431CE6BF1200BE3B5F /* SRWebSocket.h in Headers */,
+				9BCAD8361CE6BF1200BE3B5F /* SRIOConsumer.h in Headers */,
 				9B07C5181D0B0B25005F41AE /* speexdsp_types.h in Headers */,
 				9B07C5071D0B0B25005F41AE /* config_types.h in Headers */,
 				9B07C50B1D0B0B25005F41AE /* os_types.h in Headers */,
 				9B07C5081D0B0B25005F41AE /* ogg.h in Headers */,
-				7EFE11E41B71D07D00EF10BF /* AuthConfiguration.h in Headers */,
-				9B36695D1CF3549400806BEE /* TTSConfiguration.h in Headers */,
-				9B1BCEEB1CF6CAAD0076FE2D /* STTConfiguration.m in Headers */,
-				9BCAD8361CE6BF1200BE3B5F /* SRIOConsumer.h in Headers */,
-				9BCAD8421CE6BF1200BE3B5F /* SocketRocket.h in Headers */,
-				9B47E7581CF21645003E0860 /* SpeechUtility.h in Headers */,
-				9B36695B1CF3549400806BEE /* TextToSpeech.h in Headers */,
-				9BE583951D11220F0021DC88 /* CodecHeader.h in Headers */,
-				9B3669641CF354B800806BEE /* SpeechToText.h in Headers */,
-				9B3669661CF354B800806BEE /* STTConfiguration.h in Headers */,
-				9B1BCEE31CF69D440076FE2D /* TTSCustomWord.h in Headers */,
-				9B3669551CF3546C00806BEE /* TTSCustomVoice.h in Headers */,
 				9B07C5191D0B0B25005F41AE /* wav_io.h in Headers */,
-				9BE5839C1D11C6AA0021DC88 /* OpusHelper.h in Headers */,
 				9B07C50D1D0B0B25005F41AE /* opus_defines.h in Headers */,
 				9B07C5151D0B0B25005F41AE /* speex_resampler.h in Headers */,
 				9B07C50C1D0B0B25005F41AE /* opus.h in Headers */,
@@ -643,10 +639,8 @@
 				9BE583931D0FEE2A0021DC88 /* stack_alloc.h in Headers */,
 				9B07C5111D0B0B25005F41AE /* opus_types.h in Headers */,
 				9B07C5101D0B0B25005F41AE /* opus_multistream.h in Headers */,
-				9B36693F1CF21A5400806BEE /* WebSocketAudioStreamer.h in Headers */,
 				9BCAD83C1CE6BF1200BE3B5F /* SRError.h in Headers */,
 				9BCAD8381CE6BF1200BE3B5F /* SRIOConsumerPool.h in Headers */,
-				9BCAD8431CE6BF1200BE3B5F /* SRWebSocket.h in Headers */,
 				9BCAD8341CE6BF1200BE3B5F /* SRDelegateController.h in Headers */,
 				9BCAD83A1CE6BF1200BE3B5F /* SRRunLoopThread.h in Headers */,
 				9BCAD8401CE6BF1200BE3B5F /* SRURLUtilities.h in Headers */,
@@ -1095,13 +1089,7 @@
 				DSTROOT = /tmp/watsonsdk.dst;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "watsonsdk/watsonsdk-Prefix.pch";
-				"HEADER_SEARCH_PATHS[arch=*]" = (
-					"$(SRCROOT)",
-					"$(PROJECT_DIR)/watsonsdk/codec/**",
-					"$(PROJECT_DIR)/watsonsdk/codec/ogg/**",
-					"$(PROJECT_DIR)/watsonsdk/codec/opus/**",
-					"$(PROJECT_DIR)/watsonsdk/codec/speex/**",
-				);
+				HEADER_SEARCH_PATHS = "$(PROJECT_DIR)/watsonsdk";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)",
@@ -1112,7 +1100,7 @@
 					"$(PROJECT_DIR)/watsonsdk/codec/opus/**",
 				);
 				ONLY_ACTIVE_ARCH = NO;
-				OTHER_LDFLAGS = "-ObjC";
+				OTHER_LDFLAGS = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				VALID_ARCHS = "arm64 armv7 armv7s i386 x86_64";
@@ -1128,13 +1116,7 @@
 				DSTROOT = /tmp/watsonsdk.dst;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "watsonsdk/watsonsdk-Prefix.pch";
-				"HEADER_SEARCH_PATHS[arch=*]" = (
-					"$(SRCROOT)",
-					"$(PROJECT_DIR)/watsonsdk/codec/**",
-					"$(PROJECT_DIR)/watsonsdk/codec/ogg/**",
-					"$(PROJECT_DIR)/watsonsdk/codec/speex/**",
-					"$(PROJECT_DIR)/watsonsdk/codec/opus/**",
-				);
+				HEADER_SEARCH_PATHS = "$(PROJECT_DIR)/watsonsdk";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)",
@@ -1145,7 +1127,7 @@
 					"$(PROJECT_DIR)/watsonsdk/codec/opus",
 				);
 				ONLY_ACTIVE_ARCH = YES;
-				OTHER_LDFLAGS = "-ObjC";
+				OTHER_LDFLAGS = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				VALID_ARCHS = "arm64 armv7 armv7s i386 x86_64";
