@@ -15,6 +15,7 @@
  **/
 
 #import "TextToSpeech.h"
+#import "OpusHelper.h"
 
 typedef void (^PlayAudioCallbackBlockType)(NSError*);
 

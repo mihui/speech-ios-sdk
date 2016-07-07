@@ -15,7 +15,8 @@
  **/
 
 #import <SpeechToText.h>
-
+#import "WebSocketAudioStreamer.h"
+#import "OpusHelper.h"
 // type defs for block callbacks
 #define NUM_BUFFERS 3
 typedef void (^RecognizeCallbackBlockType)(NSDictionary*, NSError*);

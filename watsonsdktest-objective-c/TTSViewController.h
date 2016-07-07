@@ -15,7 +15,7 @@
  **/
 
 #import <UIKit/UIKit.h>
-#import <watsonsdk/TextToSpeech.h>
+#import <watsonsdk/WatsonSpeechSDK.h>
 
 @interface TTSViewController : UIViewController<UITextFieldDelegate, UIPickerViewDataSource, UIPickerViewDelegate>
 
