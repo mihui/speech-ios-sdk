@@ -11,13 +11,12 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-// The origin isn't really applicable for a native application.
-// So instead, just map ws -> http and wss -> https.
-extern NSString *SRURLOrigin(NSURL *url);
+typedef __attribute__((capability("mutex"))) pthread_mutex_t *SRMutex;
 
-extern BOOL SRURLRequiresSSL(NSURL *url);
+extern SRMutex SRMutexInitRecursive(void);
+extern void SRMutexDestroy(SRMutex mutex);
 
-// Extracts `user` and `password` from url (if available) into `Basic base64(user:password)`.
-extern NSString *_Nullable SRBasicAuthorizationHeaderFromURL(NSURL *url);
+extern void SRMutexLock(SRMutex mutex) __attribute__((acquire_capability(mutex)));
+extern void SRMutexUnlock(SRMutex mutex) __attribute__((release_capability(mutex)));
 
 NS_ASSUME_NONNULL_END

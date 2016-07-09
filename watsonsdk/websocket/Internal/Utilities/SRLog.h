@@ -11,13 +11,10 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-// The origin isn't really applicable for a native application.
-// So instead, just map ws -> http and wss -> https.
-extern NSString *SRURLOrigin(NSURL *url);
+// Uncomment this line to enable debug logging
+//#define SR_DEBUG_LOG_ENABLED
 
-extern BOOL SRURLRequiresSSL(NSURL *url);
-
-// Extracts `user` and `password` from url (if available) into `Basic base64(user:password)`.
-extern NSString *_Nullable SRBasicAuthorizationHeaderFromURL(NSURL *url);
+extern void SRErrorLog(NSString *format, ...);
+extern void SRDebugLog(NSString *format, ...);
 
 NS_ASSUME_NONNULL_END

@@ -11,13 +11,16 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-// The origin isn't really applicable for a native application.
-// So instead, just map ws -> http and wss -> https.
-extern NSString *SRURLOrigin(NSURL *url);
+typedef void(^SRProxyConnectCompletion)(NSError *_Nullable error,
+                                        NSInputStream *_Nullable readStream,
+                                        NSOutputStream *_Nullable writeStream);
 
-extern BOOL SRURLRequiresSSL(NSURL *url);
+@interface SRProxyConnect : NSObject
 
-// Extracts `user` and `password` from url (if available) into `Basic base64(user:password)`.
-extern NSString *_Nullable SRBasicAuthorizationHeaderFromURL(NSURL *url);
+- (instancetype)initWithURL:(NSURL *)url;
+
+- (void)openNetworkStreamWithCompletion:(SRProxyConnectCompletion)completion;
+
+@end
 
 NS_ASSUME_NONNULL_END

@@ -143,7 +143,7 @@ dispatch_once_t predicate_connect;
         // if we had previously buffered audio because we were not connected, send it now
         if([self.audioBuffer length] > 0) {
             NSLog(@"Sending buffered audio %lu bytes", (unsigned long) [self.audioBuffer length]);
-            [self.webSocket sendData:self.audioBuffer];
+            [self.webSocket sendData:self.audioBuffer error:nil];
             // reset buffer
             [self.audioBuffer setData:[NSData dataWithBytes:NULL length:0]];
         }
@@ -154,7 +154,7 @@ dispatch_once_t predicate_connect;
         if(self.isReadyForClosure) {
             return;
         }
-        [self.webSocket sendData:data];
+        [self.webSocket sendData:data error:nil];
 
         self.hasDataBeenSent = YES;
     }
@@ -193,7 +193,7 @@ dispatch_once_t predicate_connect;
     NSLog(@"Websocket Connected");
     self.isConnected = YES;
     self.hasDataBeenSent = NO;
-    [self.webSocket sendString: [self.sConfig getStartMessage]];
+    [self.webSocket sendString: [self.sConfig getStartMessage] error:nil];
 }
 
 - (void)webSocket:(SRWebSocket *)webSocket didFailWithError:(NSError *)error;
