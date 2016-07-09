@@ -23,7 +23,7 @@ typedef void (^ClosureCallbackBlockType)(NSInteger, NSString*);
 @interface WebSocketAudioStreamer () <SRWebSocketDelegate>
 
 @property NSDictionary *headers;
-@property (strong, atomic) NSMutableData *audioBuffer;
+@property (strong, atomic) NSMutableArray<NSData *> *audioBuffer;
 @property (strong, atomic) NSNumber *reconnectAttempts;
 @property (nonatomic, copy) RecognizeCallbackBlockType recognizeCallback;
 @property (nonatomic, copy) AudioDataCallbackBlockType audioDataCallback;
@@ -71,7 +71,7 @@ typedef void (^ClosureCallbackBlockType)(NSInteger, NSString*);
     self.webSocket.delegate = self;
     self.closureCallback = closureCallback;
     [self.webSocket open];
-    self.audioBuffer = [[NSMutableData alloc] initWithCapacity:0];
+    self.audioBuffer = [NSMutableArray arrayWithCapacity:0];
 }
 
 /**
@@ -103,7 +103,8 @@ typedef void (^ClosureCallbackBlockType)(NSInteger, NSString*);
 //    if(self.sConfig.continuous == NO){
 //        return;
 //    }
-    [self _writeData:[self.sConfig getStopMessage] isFooter:YES];
+
+    [self writeData:[self.sConfig getStopMessage] marker:WATSONSDK_STREAM_MARKER_END];
 
 //    NSError *error = [SpeechUtility raiseErrorWithCode:1011];
 //    [self webSocket:[self webSocket] didFailWithError:error];
@@ -131,58 +132,74 @@ dispatch_once_t predicate_connect;
  *  @param data the data will be sent out
  */
 - (void)writeData:(NSData*) data {
-    [self _writeData:data isFooter:NO];
+    [self writeData:data marker:WATSONSDK_STREAM_MARKER_DATA];
 }
+
 /**
  *  Send out data, buffer as needed
  *
  *  @param data the data will be sent out
+ *  @param marker int
  */
-- (void)_writeData:(NSData*) data isFooter:(BOOL) isFooter{
+- (void)writeData:(NSData*) data marker:(int) marker {
+    [data setMarker:[NSNumber numberWithInt:marker]];
+
     if(self.isConnected && self.isReadyForAudio) {
         // if we had previously buffered audio because we were not connected, send it now
-        if([self.audioBuffer length] > 0) {
-            NSLog(@"Sending buffered audio %lu bytes", (unsigned long) [self.audioBuffer length]);
-            [self.webSocket sendData:self.audioBuffer error:nil];
+        if([self.audioBuffer count] > 0) {
+            for (NSData *buffer in self.audioBuffer) {
+                if(self.isReadyForClosure) {
+                    NSLog(@"Waiting for connection closure (buffer)...");
+                    break;
+                }
+                [self.webSocket sendData:buffer error:nil];
+                if ([[buffer marker] intValue] == WATSONSDK_STREAM_MARKER_END) {
+                    self.isReadyForClosure = YES;
+                }
+                self.hasDataBeenSent = YES;
+            }
+
+            NSLog(@"Sending buffered audio %lu pieces", (unsigned long)[self.audioBuffer count]);
             // reset buffer
-            [self.audioBuffer setData:[NSData dataWithBytes:NULL length:0]];
+            [self.audioBuffer removeAllObjects];
         }
         else{
             predicate_wait = 0;
 //            NSLog(@"sending realtime audio %lu bytes", (unsigned long)[data length]);
         }
+
         if(self.isReadyForClosure) {
             return;
         }
+
         [self.webSocket sendData:data error:nil];
+        if([[data marker] intValue] == WATSONSDK_STREAM_MARKER_END) {
+            NSLog(@"Ending with data %lu bytes: %@", (unsigned long)[data length], [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding]);
+            self.isReadyForClosure = YES;
+        }
 
         self.hasDataBeenSent = YES;
     }
     else {
+        if(self.isReadyForClosure) {
+            return;
+        }
         // we need to buffer this data and send it when we connect
         if(self.isConnected){
             predicate_connect = 0;
             dispatch_once(&predicate_wait, ^{
-                NSLog(@"Buffering data and wait for 1st response (%u)", isFooter);
+                NSLog(@"Buffering data and wait for 1st response (%d)", marker);
             });
         }
         else{
             dispatch_once(&predicate_connect, ^{
-                NSLog(@"Buffering data and establishing connection (%u)", isFooter);
+                NSLog(@"Buffering data and establishing connection (%d)", marker);
             });
         }
-        
-        if(self.isReadyForClosure) {
-            
-        }
-        else {
-            [self.audioBuffer appendData:data];
-        }
+        [self.audioBuffer addObject:data];
     }
-    if(isFooter) {
-        self.isReadyForClosure = YES;
-    }
-    if(self.audioDataCallback != nil && isFooter == NO)
+
+    if(self.audioDataCallback != nil && marker == WATSONSDK_STREAM_MARKER_DATA)
         self.audioDataCallback(data);
 }
 
@@ -221,7 +238,7 @@ dispatch_once_t predicate_connect;
 {
     NSData *data = [json dataUsingEncoding:NSUTF8StringEncoding];
     // this should be JSON parse it but check for errors
-    
+
     NSError *error = nil;
     id object = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:&error];
 
@@ -286,9 +303,8 @@ dispatch_once_t predicate_connect;
 
     NSString *errorMessage = [SpeechUtility findUnexpectedErrorWithCode: code];
 
-    if(errorMessage != nil){
+    if(errorMessage != nil && code != SRStatusCodeNormal) {
         NSError *error = [SpeechUtility raiseErrorWithCode:code message:errorMessage reason:reason suggestion:@"Try reconnecting"];
-
         [self webSocket:webSocket didFailWithError:error];
         return;
     }

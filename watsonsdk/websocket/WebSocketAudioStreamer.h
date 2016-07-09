@@ -15,6 +15,8 @@
  **/
 
 #import <Foundation/Foundation.h>
+#import <objc/runtime.h>
+
 #import "STTConfiguration.h"
 #import "SocketRocket.h"
 #import "SpeechUtility.h"
@@ -26,10 +28,49 @@
 - (void) reconnect;
 - (void) disconnect: (NSString*) reason;
 - (void) writeData:(NSData*) data;
+- (void) writeData:(NSData*) data marker:(int)marker;
 - (void) setRecognizeHandler:(void (^)(NSDictionary*, NSError*))handler;
 - (void) setAudioDataHandler:(void (^)(NSData*))handler;
 - (void) sendEndOfStreamMarker;
 
+@end
+
+@interface NSData (SpeechToText)
+
+@property NSNumber *marker;
 
 @end
 
+@implementation NSData (SpeechToText)
+
+static char key;
+
+- (void)setMarker:(NSNumber*)marker {
+    objc_setAssociatedObject(self, &key, marker, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+}
+
+- (NSNumber*)marker {
+    return objc_getAssociatedObject(self, &key);
+}
+
+@end
+
+@interface NSMutableData (SpeechToText)
+
+@property NSNumber *marker;
+
+@end
+
+@implementation NSMutableData (SpeechToText)
+
+static char key;
+
+- (void)setMark:(NSNumber*)marker {
+    objc_setAssociatedObject(self, &key, marker, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+}
+
+- (NSNumber*)marker {
+    return objc_getAssociatedObject(self, &key);
+}
+
+@end

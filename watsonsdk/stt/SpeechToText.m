@@ -34,7 +34,6 @@ typedef struct
     int                          slot;
 } RecordingState;
 
-
 @interface SpeechToText()
 
 @property NSString* pathPCM;
@@ -202,7 +201,7 @@ id opusRef;
  *
  *  @return void
  */
--(void) endRecognize{
+-(void) endRecognize {
     [self stopRecordingAudio];
     [self endTransmission];
 }
@@ -451,10 +450,10 @@ id opusRef;
     }
 
     // Adding Ogg Header
-    if(isCompressedOpus){
-        [self.audioStreamer writeData:[[self opus] getOggOpusHeader:_config.audioSampleRate]];
+    if(isCompressedOpus) {
+        [self.audioStreamer writeData:[[self opus] getOggOpusHeader:_config.audioSampleRate] marker:WATSONSDK_STREAM_MARKER_DATA];
     }
-    
+
     // set a pointer to the wsuploader class so it is accessible in the c callback
     audioStreamerRef = self.audioStreamer;
 }

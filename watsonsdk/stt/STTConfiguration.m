@@ -125,7 +125,7 @@
 - (NSData *)getStopMessage {
     NSData *data = nil;
     data = [NSMutableData dataWithLength:0];
-    // JSON format somehow does not work in this case
+    // JSON format does not work because we're sending out the binary
 //    NSMutableDictionary *inputParameters = [[NSMutableDictionary alloc] init];
 //    [inputParameters setValue:@"stop" forKey:@"action"];
 //
@@ -133,7 +133,7 @@
 //        NSError *error = nil;
 //        data = [NSJSONSerialization dataWithJSONObject:inputParameters options:NSJSONWritingPrettyPrinted error:&error];
 //    }
-
+//
 //    if(data == nil) {
 //        data = [NSMutableData dataWithLength:0];
 //    }
