@@ -94,7 +94,9 @@
  *  @param sender id
  */
 -(IBAction) releaseStartRecord:(id)sender {
-//    [stt endTransmission];
+    if([self.stt.config continuous]) {
+        [stt endTransmission];
+    }
 }
 
 /**

@@ -80,7 +80,7 @@
     // play audio and log when playgin has finished
     [self.tts synthesize:^(NSData *data, NSError *reqErr) {
         if(reqErr){
-            NSLog(@"Error requesting data: %@", [reqErr description]);
+            NSLog(@"Error requesting data: %@", reqErr);
             return;
         }
         // play audio and log when playgin has finished
