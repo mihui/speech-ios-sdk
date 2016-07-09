@@ -99,20 +99,6 @@
 		9B7195621D30DD560046245A /* SRSecurityPolicy.h in Headers */ = {isa = PBXBuildFile; fileRef = 9B71953E1D30DD560046245A /* SRSecurityPolicy.h */; };
 		9B7195631D30DD560046245A /* SRSecurityPolicy.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B71953F1D30DD560046245A /* SRSecurityPolicy.m */; };
 		9BA060411CE6D9320018CA5B /* libicucore.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 9BA060401CE6D9320018CA5B /* libicucore.tbd */; };
-		9BCAD8341CE6BF1200BE3B5F /* SRDelegateController.h in Headers */ = {isa = PBXBuildFile; fileRef = 9BCAD8201CE6BF1200BE3B5F /* SRDelegateController.h */; };
-		9BCAD8351CE6BF1200BE3B5F /* SRDelegateController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9BCAD8211CE6BF1200BE3B5F /* SRDelegateController.m */; };
-		9BCAD8361CE6BF1200BE3B5F /* SRIOConsumer.h in Headers */ = {isa = PBXBuildFile; fileRef = 9BCAD8231CE6BF1200BE3B5F /* SRIOConsumer.h */; };
-		9BCAD8371CE6BF1200BE3B5F /* SRIOConsumer.m in Sources */ = {isa = PBXBuildFile; fileRef = 9BCAD8241CE6BF1200BE3B5F /* SRIOConsumer.m */; };
-		9BCAD8381CE6BF1200BE3B5F /* SRIOConsumerPool.h in Headers */ = {isa = PBXBuildFile; fileRef = 9BCAD8251CE6BF1200BE3B5F /* SRIOConsumerPool.h */; };
-		9BCAD8391CE6BF1200BE3B5F /* SRIOConsumerPool.m in Sources */ = {isa = PBXBuildFile; fileRef = 9BCAD8261CE6BF1200BE3B5F /* SRIOConsumerPool.m */; };
-		9BCAD83A1CE6BF1200BE3B5F /* SRRunLoopThread.h in Headers */ = {isa = PBXBuildFile; fileRef = 9BCAD8281CE6BF1200BE3B5F /* SRRunLoopThread.h */; };
-		9BCAD83B1CE6BF1200BE3B5F /* SRRunLoopThread.m in Sources */ = {isa = PBXBuildFile; fileRef = 9BCAD8291CE6BF1200BE3B5F /* SRRunLoopThread.m */; };
-		9BCAD83C1CE6BF1200BE3B5F /* SRError.h in Headers */ = {isa = PBXBuildFile; fileRef = 9BCAD82B1CE6BF1200BE3B5F /* SRError.h */; };
-		9BCAD83D1CE6BF1200BE3B5F /* SRError.m in Sources */ = {isa = PBXBuildFile; fileRef = 9BCAD82C1CE6BF1200BE3B5F /* SRError.m */; };
-		9BCAD83E1CE6BF1200BE3B5F /* SRHash.h in Headers */ = {isa = PBXBuildFile; fileRef = 9BCAD82D1CE6BF1200BE3B5F /* SRHash.h */; };
-		9BCAD83F1CE6BF1200BE3B5F /* SRHash.m in Sources */ = {isa = PBXBuildFile; fileRef = 9BCAD82E1CE6BF1200BE3B5F /* SRHash.m */; };
-		9BCAD8401CE6BF1200BE3B5F /* SRURLUtilities.h in Headers */ = {isa = PBXBuildFile; fileRef = 9BCAD82F1CE6BF1200BE3B5F /* SRURLUtilities.h */; };
-		9BCAD8411CE6BF1200BE3B5F /* SRURLUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 9BCAD8301CE6BF1200BE3B5F /* SRURLUtilities.m */; };
 		9BCAD8421CE6BF1200BE3B5F /* SocketRocket.h in Headers */ = {isa = PBXBuildFile; fileRef = 9BCAD8311CE6BF1200BE3B5F /* SocketRocket.h */; };
 		9BCAD8431CE6BF1200BE3B5F /* SRWebSocket.h in Headers */ = {isa = PBXBuildFile; fileRef = 9BCAD8321CE6BF1200BE3B5F /* SRWebSocket.h */; };
 		9BCAD8441CE6BF1200BE3B5F /* SRWebSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = 9BCAD8331CE6BF1200BE3B5F /* SRWebSocket.m */; };
@@ -270,20 +256,6 @@
 		9B71953E1D30DD560046245A /* SRSecurityPolicy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SRSecurityPolicy.h; sourceTree = "<group>"; };
 		9B71953F1D30DD560046245A /* SRSecurityPolicy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SRSecurityPolicy.m; sourceTree = "<group>"; };
 		9BA060401CE6D9320018CA5B /* libicucore.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libicucore.tbd; path = usr/lib/libicucore.tbd; sourceTree = SDKROOT; };
-		9BCAD8201CE6BF1200BE3B5F /* SRDelegateController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SRDelegateController.h; sourceTree = "<group>"; };
-		9BCAD8211CE6BF1200BE3B5F /* SRDelegateController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SRDelegateController.m; sourceTree = "<group>"; };
-		9BCAD8231CE6BF1200BE3B5F /* SRIOConsumer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SRIOConsumer.h; sourceTree = "<group>"; };
-		9BCAD8241CE6BF1200BE3B5F /* SRIOConsumer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SRIOConsumer.m; sourceTree = "<group>"; };
-		9BCAD8251CE6BF1200BE3B5F /* SRIOConsumerPool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SRIOConsumerPool.h; sourceTree = "<group>"; };
-		9BCAD8261CE6BF1200BE3B5F /* SRIOConsumerPool.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SRIOConsumerPool.m; sourceTree = "<group>"; };
-		9BCAD8281CE6BF1200BE3B5F /* SRRunLoopThread.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SRRunLoopThread.h; sourceTree = "<group>"; };
-		9BCAD8291CE6BF1200BE3B5F /* SRRunLoopThread.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SRRunLoopThread.m; sourceTree = "<group>"; };
-		9BCAD82B1CE6BF1200BE3B5F /* SRError.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SRError.h; sourceTree = "<group>"; };
-		9BCAD82C1CE6BF1200BE3B5F /* SRError.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SRError.m; sourceTree = "<group>"; };
-		9BCAD82D1CE6BF1200BE3B5F /* SRHash.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SRHash.h; sourceTree = "<group>"; };
-		9BCAD82E1CE6BF1200BE3B5F /* SRHash.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SRHash.m; sourceTree = "<group>"; };
-		9BCAD82F1CE6BF1200BE3B5F /* SRURLUtilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SRURLUtilities.h; sourceTree = "<group>"; };
-		9BCAD8301CE6BF1200BE3B5F /* SRURLUtilities.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SRURLUtilities.m; sourceTree = "<group>"; };
 		9BCAD8311CE6BF1200BE3B5F /* SocketRocket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SocketRocket.h; sourceTree = "<group>"; };
 		9BCAD8321CE6BF1200BE3B5F /* SRWebSocket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SRWebSocket.h; sourceTree = "<group>"; };
 		9BCAD8331CE6BF1200BE3B5F /* SRWebSocket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SRWebSocket.m; sourceTree = "<group>"; };
@@ -557,7 +529,6 @@
 				9B71953D1D30DD560046245A /* NSURLRequest+SRWebSocket.m */,
 				9B71953E1D30DD560046245A /* SRSecurityPolicy.h */,
 				9B71953F1D30DD560046245A /* SRSecurityPolicy.m */,
-				9BCAD81E1CE6BF1200BE3B5F /* Internal */,
 				9BCAD8311CE6BF1200BE3B5F /* SocketRocket.h */,
 				9BCAD8321CE6BF1200BE3B5F /* SRWebSocket.h */,
 				9BCAD8331CE6BF1200BE3B5F /* SRWebSocket.m */,
@@ -565,59 +536,6 @@
 				9B36693E1CF21A5400806BEE /* WebSocketAudioStreamer.m */,
 			);
 			path = websocket;
-			sourceTree = "<group>";
-		};
-		9BCAD81E1CE6BF1200BE3B5F /* Internal */ = {
-			isa = PBXGroup;
-			children = (
-				9BCAD81F1CE6BF1200BE3B5F /* Delegate */,
-				9BCAD8221CE6BF1200BE3B5F /* IOConsumer */,
-				9BCAD8271CE6BF1200BE3B5F /* RunLoop */,
-				9BCAD82A1CE6BF1200BE3B5F /* Utilities */,
-			);
-			path = Internal;
-			sourceTree = "<group>";
-		};
-		9BCAD81F1CE6BF1200BE3B5F /* Delegate */ = {
-			isa = PBXGroup;
-			children = (
-				9BCAD8201CE6BF1200BE3B5F /* SRDelegateController.h */,
-				9BCAD8211CE6BF1200BE3B5F /* SRDelegateController.m */,
-			);
-			path = Delegate;
-			sourceTree = "<group>";
-		};
-		9BCAD8221CE6BF1200BE3B5F /* IOConsumer */ = {
-			isa = PBXGroup;
-			children = (
-				9BCAD8231CE6BF1200BE3B5F /* SRIOConsumer.h */,
-				9BCAD8241CE6BF1200BE3B5F /* SRIOConsumer.m */,
-				9BCAD8251CE6BF1200BE3B5F /* SRIOConsumerPool.h */,
-				9BCAD8261CE6BF1200BE3B5F /* SRIOConsumerPool.m */,
-			);
-			path = IOConsumer;
-			sourceTree = "<group>";
-		};
-		9BCAD8271CE6BF1200BE3B5F /* RunLoop */ = {
-			isa = PBXGroup;
-			children = (
-				9BCAD8281CE6BF1200BE3B5F /* SRRunLoopThread.h */,
-				9BCAD8291CE6BF1200BE3B5F /* SRRunLoopThread.m */,
-			);
-			path = RunLoop;
-			sourceTree = "<group>";
-		};
-		9BCAD82A1CE6BF1200BE3B5F /* Utilities */ = {
-			isa = PBXGroup;
-			children = (
-				9BCAD82B1CE6BF1200BE3B5F /* SRError.h */,
-				9BCAD82C1CE6BF1200BE3B5F /* SRError.m */,
-				9BCAD82D1CE6BF1200BE3B5F /* SRHash.h */,
-				9BCAD82E1CE6BF1200BE3B5F /* SRHash.m */,
-				9BCAD82F1CE6BF1200BE3B5F /* SRURLUtilities.h */,
-				9BCAD8301CE6BF1200BE3B5F /* SRURLUtilities.m */,
-			);
-			path = Utilities;
 			sourceTree = "<group>";
 		};
 		9BF43ED01CEAC81900EC0185 /* watsonsdktest-swift */ = {
@@ -789,7 +707,6 @@
 				9BE5839C1D11C6AA0021DC88 /* OpusHelper.h in Headers */,
 				9BCAD8421CE6BF1200BE3B5F /* SocketRocket.h in Headers */,
 				9BCAD8431CE6BF1200BE3B5F /* SRWebSocket.h in Headers */,
-				9BCAD8361CE6BF1200BE3B5F /* SRIOConsumer.h in Headers */,
 				9B07C5181D0B0B25005F41AE /* speexdsp_types.h in Headers */,
 				9B07C5071D0B0B25005F41AE /* config_types.h in Headers */,
 				9B07C50B1D0B0B25005F41AE /* os_types.h in Headers */,
@@ -821,12 +738,6 @@
 				9B07C5111D0B0B25005F41AE /* opus_types.h in Headers */,
 				9B07C5101D0B0B25005F41AE /* opus_multistream.h in Headers */,
 				9B71955E1D30DD560046245A /* NSRunLoop+SRWebSocket.h in Headers */,
-				9BCAD83C1CE6BF1200BE3B5F /* SRError.h in Headers */,
-				9BCAD8381CE6BF1200BE3B5F /* SRIOConsumerPool.h in Headers */,
-				9BCAD8341CE6BF1200BE3B5F /* SRDelegateController.h in Headers */,
-				9BCAD83A1CE6BF1200BE3B5F /* SRRunLoopThread.h in Headers */,
-				9BCAD8401CE6BF1200BE3B5F /* SRURLUtilities.h in Headers */,
-				9BCAD83E1CE6BF1200BE3B5F /* SRHash.h in Headers */,
 				9B7195501D30DD560046245A /* SRHash.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -990,7 +901,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "set -e\n\nmkdir -p \"${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.framework/Versions/A/Headers\"\n\n# Link the \"Current\" version to \"A\"\n/bin/ln -sfh A \"${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.framework/Versions/Current\"\n/bin/ln -sfh Versions/Current/Headers \"${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.framework/Headers\"\n/bin/ln -sfh \"Versions/Current/${PRODUCT_NAME}\" \"${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.framework/${PRODUCT_NAME}\"\n\n# The -a ensures that the headers maintain the source modification date so that we don't constantly\n# cause propagating rebuilds of files that import these headers.\n/bin/cp -a \"${TARGET_BUILD_DIR}/${PUBLIC_HEADERS_FOLDER_PATH}/\" \"${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.framework/Versions/A/Headers\"\necho \"${TARGET_BUILD_DIR}/${PUBLIC_HEADERS_FOLDER_PATH}/\" \"${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.framework/\" > ~/watsonsdklocation.txt\n\n# create a zip of the framework and add it to the project root\ncd ${BUILT_PRODUCTS_DIR}\nzip -r ${SRCROOT}/${PRODUCT_NAME}.framework.zip ${PRODUCT_NAME}.framework\n\n# [Rob] we need to copy the other headers keeping their folder structure\n#echo 'SRCROOT:'${SRCROOT}\n#cd ${SRCROOT}/watsonsdk\n\n# I have to move up a directory due to my layout.\n# echo 'Copying Headers into Framework..'\n#for H in `find ./ -name \"*.h\"`;  do\n#echo ${H}\n#ditto ${H} ${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.framework/Versions/A/Headers/${H}\n#done\n";
+			shellScript = "set -e\n\nmkdir -p \"${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.framework/Versions/A/Headers\"\n\n# Link the \"Current\" version to \"A\"\n/bin/ln -sfh A \"${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.framework/Versions/Current\"\n/bin/ln -sfh Versions/Current/Headers \"${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.framework/Headers\"\n/bin/ln -sfh \"Versions/Current/${PRODUCT_NAME}\" \"${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.framework/${PRODUCT_NAME}\"\n\n# The -a ensures that the headers maintain the source modification date so that we don't constantly\n# cause propagating rebuilds of files that import these headers.\n/bin/cp -a \"${TARGET_BUILD_DIR}/${PUBLIC_HEADERS_FOLDER_PATH}/\" \"${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.framework/Versions/A/Headers\"\necho \"${TARGET_BUILD_DIR}/${PUBLIC_HEADERS_FOLDER_PATH}/\" \"${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.framework/\" > ~/watsonsdklocation.txt\n\n# create a zip of the framework and add it to the project root\ncd ${BUILT_PRODUCTS_DIR}\nzip -r ${SRCROOT}/${PRODUCT_NAME}.framework.zip ${PRODUCT_NAME}.framework\nunzip -o ${SRCROOT}/${PRODUCT_NAME}.framework.zip -d /Users/mihui/Documents/Work/Projects/Mobile/WatsonSpeechPlugin/frameworks/\n\nunzip -o ${SRCROOT}/${PRODUCT_NAME}.framework.zip -d /Users/mihui/Documents/Work/Projects/Mobile/Dialog-Mobile/plugins/cordova-plugin-watson-speech/frameworks\nunzip -o ${SRCROOT}/${PRODUCT_NAME}.framework.zip -d /Users/mihui/Documents/Work/Projects/Mobile/Dialog-Mobile/platforms/ios/GOMWW/Plugins/cordova-plugin-watson-speech\n# [Rob] we need to copy the other headers keeping their folder structure\n#echo 'SRCROOT:'${SRCROOT}\n#cd ${SRCROOT}/watsonsdk\n\n# I have to move up a directory due to my layout.\n# echo 'Copying Headers into Framework..'\n#for H in `find ./ -name \"*.h\"`;  do\n#echo ${H}\n#ditto ${H} ${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.framework/Versions/A/Headers/${H}\n#done\n";
 		};
 		C11A648F1754D6DA00385896 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -1025,7 +936,6 @@
 				7EFE11E51B71D07D00EF10BF /* AuthConfiguration.m in Sources */,
 				9B71955B1D30DD560046245A /* SRSIMDHelpers.m in Sources */,
 				9B7195531D30DD560046245A /* SRHTTPConnectMessage.m in Sources */,
-				9BCAD8351CE6BF1200BE3B5F /* SRDelegateController.m in Sources */,
 				9BE5839D1D11C6AA0021DC88 /* OpusHelper.m in Sources */,
 				9B47E7591CF21645003E0860 /* SpeechUtility.m in Sources */,
 				9BCAD8441CE6BF1200BE3B5F /* SRWebSocket.m in Sources */,
@@ -1033,28 +943,22 @@
 				9B71954F1D30DD560046245A /* SRError.m in Sources */,
 				9B7195431D30DD560046245A /* SRIOConsumer.m in Sources */,
 				9B3669651CF354B800806BEE /* SpeechToText.m in Sources */,
-				9BCAD8391CE6BF1200BE3B5F /* SRIOConsumerPool.m in Sources */,
 				9B7195591D30DD560046245A /* SRRandom.m in Sources */,
 				9B71955F1D30DD560046245A /* NSRunLoop+SRWebSocket.m in Sources */,
 				9B7195631D30DD560046245A /* SRSecurityPolicy.m in Sources */,
 				9B07C50E1D0B0B25005F41AE /* opus_header.c in Sources */,
-				9BCAD83D1CE6BF1200BE3B5F /* SRError.m in Sources */,
 				9B36695E1CF3549400806BEE /* TTSConfiguration.m in Sources */,
 				9B7195451D30DD560046245A /* SRIOConsumerPool.m in Sources */,
 				9B7195571D30DD560046245A /* SRMutex.m in Sources */,
-				9BCAD8371CE6BF1200BE3B5F /* SRIOConsumer.m in Sources */,
 				9B1BCEE41CF69D440076FE2D /* TTSCustomWord.m in Sources */,
 				9BE583901D0FEDE20021DC88 /* lpc.c in Sources */,
-				9BCAD83B1CE6BF1200BE3B5F /* SRRunLoopThread.m in Sources */,
 				9B3669561CF3546C00806BEE /* TTSCustomVoice.m in Sources */,
 				9B71954B1D30DD560046245A /* SRRunLoopThread.m in Sources */,
 				9B7195511D30DD560046245A /* SRHash.m in Sources */,
 				9B36695C1CF3549400806BEE /* TextToSpeech.m in Sources */,
-				9BCAD83F1CE6BF1200BE3B5F /* SRHash.m in Sources */,
 				9B7195491D30DD560046245A /* SRProxyConnect.m in Sources */,
 				9B7195611D30DD560046245A /* NSURLRequest+SRWebSocket.m in Sources */,
 				9B3669401CF21A5400806BEE /* WebSocketAudioStreamer.m in Sources */,
-				9BCAD8411CE6BF1200BE3B5F /* SRURLUtilities.m in Sources */,
 				9B7195551D30DD560046245A /* SRLog.m in Sources */,
 				9B71955D1D30DD560046245A /* SRURLUtilities.m in Sources */,
 				9B71954D1D30DD560046245A /* SRPinningSecurityPolicy.m in Sources */,
