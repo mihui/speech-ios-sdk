@@ -128,9 +128,8 @@
                                NSLocalizedFailureReasonErrorKey: reasonMessage,
                                NSLocalizedRecoverySuggestionErrorKey: suggestionMessage
                                };
-    return [NSError errorWithDomain:@"WASTONSPEECHSDK"
-                                         code:code
-                                     userInfo:userInfo];
+
+    return [NSError errorWithDomain:WATSON_WEBSOCKETS_ERROR_DOMAIN code:code userInfo:userInfo];
 }
 
 /**
@@ -143,8 +142,8 @@
 + (NSError*)raiseErrorWithMessage:(NSString*) errorMessage{
     return [SpeechUtility raiseErrorWithCode:WATSON_WEBSOCKETS_ERROR_CODE
                                         message:errorMessage
-                                         reason:@"WebSockets error"
-                                     suggestion:@"Close connection"];
+                                         reason:@"Unknown"
+                                     suggestion:@"None"];
 }
 
 /**
@@ -156,8 +155,8 @@
  *  @param responseData response data
  *  @param requestError request error
  */
-+ (void) processData: (void (^)(id, NSError*))handler
-                  config: (AuthConfiguration*) authConfig
++ (void) processData: (DataHandlerWithError)handler
+                  config: (BaseConfiguration*) authConfig
                 response:(NSURLResponse*) httpResponse
                     data:(NSData*) responseData
                    error: (NSError*) requestError
@@ -209,8 +208,8 @@
  *  @param responseData response data
  *  @param requestError request error
  */
-+ (void) processJSON: (void (^)(id, NSError*))handler
-                  config: (AuthConfiguration*) authConfig
++ (void) processJSON: (JSONHandlerWithError)handler
+                  config: (BaseConfiguration*) authConfig
                 response:(NSURLResponse*) httpResponse
                     data:(NSData*) responseData
                    error: (NSError*) requestError
@@ -227,7 +226,7 @@
     if ([httpResponse isKindOfClass:[NSHTTPURLResponse class]]) {
         NSHTTPURLResponse *theResponse = (NSHTTPURLResponse*) httpResponse;
         NSLog(@"--> status code: %ld", (long)[theResponse statusCode]);
-        
+
         if([theResponse statusCode] == 201 || [theResponse statusCode] == 204) {
             NSData *noContent = [@"{}" dataUsingEncoding:NSUTF8StringEncoding];
             responseObject = [NSJSONSerialization JSONObjectWithData:noContent options:NSJSONReadingMutableContainers error:&dataError];
@@ -264,6 +263,137 @@
     
     dataError = [SpeechUtility raiseErrorWithCode:0];
     handler(nil, dataError);
+}
+
+/**
+ *  performGet - shared method for performing GET requests to a given url calling a handler parameter with the result
+ *
+ *  @param handler JSONHandlerType
+ *  @param url     url to perform GET request on
+ */
++ (void) performGet:(JSONHandlerWithError)handler
+             forURL:(NSURL*)url
+             config: (BaseConfiguration*) authConfig
+           delegate: (id<NSURLSessionDelegate>) sessionDelegate
+             header:(NSDictionary *)extraHeader
+{
+    [SpeechUtility performGet:handler forURL:url config:authConfig delegate:sessionDelegate disableCache:NO header:extraHeader];
+}
+
+/**
+ *  perform get with cache
+ *
+ *  @param handler         JSON handler
+ *  @param url             request URL
+ *  @param authConfig      configuration
+ *  @param sessionDelegate URL session delegate
+ */
++ (void) performGet:(JSONHandlerWithError)handler forURL:(NSURL*)url
+             config: (BaseConfiguration*) authConfig
+           delegate: (id<NSURLSessionDelegate>) sessionDelegate
+{
+    [SpeechUtility performGet:handler forURL:url config:authConfig delegate:sessionDelegate disableCache:NO];
+}
+
+/**
+ *  perform get
+ *
+ *  @param handler         JSON handler
+ *  @param url             request URL
+ *  @param authConfig      configuration
+ *  @param sessionDelegate URL session delegate
+ *  @param withoutCache    disable cache
+ */
++ (void) performGet:(JSONHandlerWithError)handler forURL:(NSURL*)url
+             config: (BaseConfiguration*) authConfig
+           delegate: (id<NSURLSessionDelegate>) sessionDelegate
+       disableCache:(BOOL) withoutCache
+{
+    [SpeechUtility performGet:handler forURL:url config:authConfig delegate:sessionDelegate disableCache:withoutCache header:nil];
+}
+
+/**
+ *  perform get with header
+ *
+ *  @param handler         JSON handler
+ *  @param url             request URL
+ *  @param authConfig      configuration
+ *  @param sessionDelegate URL session delegate
+ *  @param withoutCache    disable cache
+ *  @param extraHeader     extra header
+ */
++ (void) performGet:(JSONHandlerWithError)handler forURL:(NSURL*)url
+             config: (BaseConfiguration*) authConfig
+           delegate: (id<NSURLSessionDelegate>) sessionDelegate
+       disableCache:(BOOL) withoutCache
+             header:(NSDictionary *)extraHeader
+{
+    [authConfig requestToken:^(BaseConfiguration *config) {
+
+        if([SpeechUtility isOS6]) {
+            [SpeechUtility performGet:^(NSURLResponse *response, NSData *data, NSError *connectionError) {
+                [SpeechUtility processJSON:handler config:config response:response data:data error:connectionError];
+            } forURL:url disableCache:withoutCache configuration:config header:extraHeader];
+        }
+        else {
+            // Create and set authentication headers
+            NSURLSessionConfiguration *defaultConfigObject = [NSURLSessionConfiguration defaultSessionConfiguration];
+
+            if(withoutCache)
+                [defaultConfigObject setURLCache:nil];
+
+            NSDictionary* headers = [config createRequestHeaders];
+
+            [defaultConfigObject setHTTPAdditionalHeaders:headers];
+            NSURLSession *defaultSession = [NSURLSession sessionWithConfiguration: defaultConfigObject delegate: sessionDelegate delegateQueue: [NSOperationQueue mainQueue]];
+
+            NSURLSessionDataTask * dataTask = [defaultSession dataTaskWithURL:url completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+                [SpeechUtility processJSON:handler config:config response:response data:data error:error];
+            }];
+
+            [dataTask resume];
+        }
+
+    } refreshCache:NO];
+}
+
+/**
+ *  iOS 6 compatibility
+ *
+ *  @param handler      data handler
+ *  @param url          request URL
+ *  @param withoutCache disable cache
+ *  @param config       configuration
+ */
++ (void)performGet:(void (^)(NSURLResponse* response, NSData* data, NSError* connectionError))handler
+            forURL:(NSURL*)url
+      disableCache:(BOOL) withoutCache
+     configuration: (BaseConfiguration *) config
+            header:(NSDictionary *)extraHeader
+{
+    NSMutableURLRequest *urlRequest = [NSMutableURLRequest requestWithURL:url];
+    NSDictionary* httpHeaders = [config createRequestHeaders];
+
+    for (NSString* key in httpHeaders) {
+        [urlRequest addValue: [httpHeaders objectForKey:key] forHTTPHeaderField:key];
+    }
+
+    if(extraHeader) {
+        for (NSString* key in extraHeader) {
+            [urlRequest addValue:[extraHeader valueForKey:key] forHTTPHeaderField:key];
+        }
+    }
+
+    [NSURLConnection sendAsynchronousRequest:urlRequest queue:[NSOperationQueue mainQueue] completionHandler:handler];
+}
+
+/**
+ *  This is only for iOS 6 because the lowest target is iOS 6
+ *
+ *  @return BOOL
+ */
++ (BOOL)isOS6 {
+    return [[[UIDevice currentDevice] systemVersion] intValue] < 7;
 }
 
 @end

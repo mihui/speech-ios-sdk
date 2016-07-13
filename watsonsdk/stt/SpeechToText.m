@@ -13,15 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  **/
-
 #import <SpeechToText.h>
 #import "WebSocketAudioStreamer.h"
 #import "OpusHelper.h"
-// type defs for block callbacks
+
 #define NUM_BUFFERS 3
-typedef void (^RecognizeCallbackBlockType)(NSDictionary*, NSError*);
-typedef void (^PowerLevelCallbackBlockType)(float);
-typedef void (^AudioDataCallbackBlockType)(NSData*);
 
 typedef struct
 {
@@ -41,11 +37,11 @@ typedef struct
 @property OpusHelper* opus;
 @property RecordingState recordState;
 @property WebSocketAudioStreamer* audioStreamer;
-@property (nonatomic, copy) RecognizeCallbackBlockType recognizeCallback;
-@property (nonatomic, copy) PowerLevelCallbackBlockType powerLevelCallback;
+@property (nonatomic, copy) JSONHandlerWithError recognizeCallback;
+@property (nonatomic, copy) PowerLevelHandler powerLevelCallback;
 
 // For capturing data has been sent out
-@property (nonatomic, copy) AudioDataCallbackBlockType audioDataCallback;
+@property (nonatomic, copy) DataHandler audioDataCallback;
 
 @end
 
@@ -117,46 +113,46 @@ id opusRef;
 /**
  *  stream audio from the device microphone to the STT service
  *
- *  @param recognizeHandler (^)(NSDictionary*, NSError*)
+ *  @param recognizeHandler (^)(JSONHandlerType)
  */
-- (void) recognize:(void (^)(NSDictionary*, NSError*)) recognizeHandler{
+- (void) recognize:(JSONHandlerWithError) recognizeHandler{
     [self recognize:recognizeHandler dataHandler:nil powerHandler:nil];
 }
 
 /**
  *  stream audio from the device microphone to the STT service
  *
- *  @param recognizeHandler (^)(NSDictionary*, NSError*)
- *  @param powerHandler (void (^)(float))
+ *  @param recognizeHandler JSONHandlerType
+ *  @param dataHandler      data handler
  */
-- (void) recognize:(void (^)(NSDictionary*, NSError*)) recognizeHandler dataHandler: (void (^)(NSData *)) dataHandler {
+- (void) recognize:(JSONHandlerWithError) recognizeHandler dataHandler: (DataHandler) dataHandler {
     [self recognize:recognizeHandler dataHandler:dataHandler powerHandler:nil];
 }
 
 /**
  *  stream audio from the device microphone to the STT service
  *
- *  @param recognizeHandler (^)(NSDictionary*, NSError*)
- *  @param powerHandler (void (^)(float))
+ *  @param recognizeHandler JSONHandlerType
+ *  @param powerHandler PowerLevelHandler
  */
-- (void) recognize:(void (^)(NSDictionary*, NSError*)) recognizeHandler powerHandler: (void (^)(float)) powerHandler {
+- (void) recognize:(JSONHandlerWithError) recognizeHandler powerHandler: (PowerLevelHandler) powerHandler {
     [self recognize:recognizeHandler dataHandler:nil powerHandler:powerHandler];
 }
 
 /**
  *  stream audio from the device microphone to the STT service
  *
- *  @param recognizeHandler (^)(NSDictionary*, NSError*)
- *  @param dataHandler (void (^) (NSData*))
- *  @param powerHandler (void (^)(float))
+ *  @param recognizeHandler JSONHandlerType
+ *  @param dataHandler DataHandler
+ *  @param powerHandler PowerLevelHandler
  */
-- (void) recognize:(void (^)(NSDictionary*, NSError*)) recognizeHandler dataHandler: (void (^) (NSData*)) dataHandler powerHandler: (void (^)(float)) powerHandler {
+- (void) recognize:(JSONHandlerWithError) recognizeHandler dataHandler: (DataHandler) dataHandler powerHandler: (PowerLevelHandler) powerHandler {
 
     self.recognizeCallback = recognizeHandler;
     self.audioDataCallback = dataHandler;
     self.powerLevelCallback = powerHandler;
 
-    if(isPermissionGranted) {
+    if(isPermissionGranted || [SpeechUtility isOS6]) {
         [self startRecognizing];
         return;
     }
@@ -209,23 +205,21 @@ id opusRef;
 /**
  *  listModels - List speech models supported by the service
  *
- *  @param handler(NSDictionary*, NSError*) block to be called when response has been received from the service
+ *  @param handler(JSONHandlerType) block to be called when response has been received from the service
  */
-- (void) listModels:(void (^)(NSDictionary*, NSError*))handler {
-    
-    [self performGet:handler forURL:[self.config getModelsServiceURL]];
-    
+- (void) listModels:(JSONHandlerWithError)handler {
+    [SpeechUtility performGet:handler forURL:[self.config getModelsServiceURL] config:[self config] delegate:self];
 }
 
 /**
  *  listModel details with a given model ID
  *
- *  @param handler handler(NSDictionary*, NSError*) block to be called when response has been received from the service
+ *  @param handler handler(JSONHandlerType) block to be called when response has been received from the service
  *  @param modelName the name of the model e.g. WatsonModel
  */
-- (void) listModel:(void (^)(NSDictionary*, NSError*))handler withName:(NSString*) modelName {
+- (void) listModel:(JSONHandlerWithError)handler withName:(NSString*) modelName {
     
-    [self performGet:handler forURL:[self.config getModelServiceURL:modelName]];
+    [SpeechUtility performGet:handler forURL:[self.config getModelServiceURL:modelName] config:[self config] delegate:self];
     
 }
 
@@ -275,49 +269,11 @@ id opusRef;
  *
  *  @param powerHandler - callback block
  */
-- (void) getPowerLevel:(void (^)(float)) powerHandler {
+- (void) getPowerLevel:(PowerLevelHandler) powerHandler {
     self.powerLevelCallback = powerHandler;
 }
 
 #pragma mark private methods
-
-/**
- *  performGet - shared method for performing GET requests to a given url calling a handler parameter with the result
- *
- *  @param handler (^)(NSDictionary*, NSError*))
- *  @param url     url to perform GET request on
- */
-- (void) performGet:(void (^)(NSDictionary*, NSError*))handler forURL:(NSURL*)url {
-    [self performGet:handler forURL:url disableCache:NO];
-}
-
-/**
- *  performGet
- *
- *  @param handler      callback of data / error
- *  @param url          URL
- *  @param withoutCache disable cache
- */
-- (void) performGet:(void (^)(NSDictionary*, NSError*))handler forURL:(NSURL*)url disableCache:(BOOL) withoutCache {
-    // Create and set authentication headers
-    NSURLSessionConfiguration *defaultConfigObject = [NSURLSessionConfiguration defaultSessionConfiguration];
-    
-    if(withoutCache)
-        [defaultConfigObject setURLCache:nil];
-    
-    [self.config requestToken:^(AuthConfiguration *config) {
-        NSDictionary* headers = [config createRequestHeaders];
-        [defaultConfigObject setHTTPAdditionalHeaders:headers];
-        NSURLSession *defaultSession = [NSURLSession sessionWithConfiguration: defaultConfigObject delegate: self delegateQueue: [NSOperationQueue mainQueue]];
-        
-        NSURLSessionDataTask * dataTask = [defaultSession dataTaskWithURL:url completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
-            [SpeechUtility processJSON:handler config:config response:response data:data error:error];
-        }];
-        
-        [dataTask resume];
-    } refreshCache:NO];
-}
-
 
 /**
  *  Start recording audio
@@ -419,7 +375,7 @@ id opusRef;
 
     // connect if we are not connected
     if(![self.audioStreamer isWebSocketConnected]) {
-        [self.config requestToken:^(AuthConfiguration *config) {
+        [self.config requestToken:^(BaseConfiguration *config) {
             [self.audioStreamer connect:(STTConfiguration*)config
                                 headers:[config createRequestHeaders]
                      completionCallback:^(NSInteger code, NSString* reason)

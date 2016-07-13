@@ -64,77 +64,88 @@ typedef void (^PlayAudioCallbackBlockType)(NSError*);
 }
 
 
-- (void)synthesize:(void (^)(NSData*, NSError*)) synthesizeHandler theText:(NSString*) text {
-    [self performDataGet:synthesizeHandler forURL:[self.config getSynthesizeURL:text]];
+- (void)synthesize:(DataHandlerWithError) synthesizeHandler theText:(NSString*) text {
+    NSMutableDictionary* optHeader = nil;
+    if([self.config xWatsonLearningOptOut]) {
+        optHeader = [[NSMutableDictionary alloc] init];
+        [optHeader setObject:@"true" forKey:@"X-Watson-Learning-Opt-Out"];
+    }
+
+    [self performDataGet:synthesizeHandler forURL:[self.config getSynthesizeURL:text] disableCache:NO header:optHeader];
 }
 
-- (void)synthesize:(void (^)(NSData*, NSError*)) synthesizeHandler theText:(NSString*) text customizationId:(NSString*) customizationId {
-    [self performDataGet:synthesizeHandler forURL:[self.config getSynthesizeURL:text customizationId:customizationId]];
+- (void)synthesize:(DataHandlerWithError) synthesizeHandler theText:(NSString*) text customizationId:(NSString*) customizationId {
+    NSMutableDictionary* optHeader = nil;
+    if([self.config xWatsonLearningOptOut]) {
+        optHeader = [[NSMutableDictionary alloc] init];
+        [optHeader setObject:@"true" forKey:@"X-Watson-Learning-Opt-Out"];
+    }
+    [self performDataGet:synthesizeHandler forURL:[self.config getSynthesizeURL:text customizationId:customizationId] disableCache:NO header:optHeader];
 }
 
 /**
  *  listVoices - List voices supported by the service
  *
- *  @param handler(NSDictionary*, NSError*) block to be called when response has been received from the service
+ *  @param handler(JSONHandlerType) block to be called when response has been received from the service
  */
-- (void)listVoices:(void (^)(NSDictionary*, NSError*))handler {
-    [self performGet:handler forURL:[self.config getVoicesServiceURL]];
+- (void)listVoices:(JSONHandlerWithError)handler {
+    [SpeechUtility performGet:handler forURL:[self.config getVoicesServiceURL] config:[self config] delegate:self];
 }
 
 /**
  *  createVoiceModelWithCustomVoice - Creates a new empty custom voice model that is owned by the requesting user
  *
  *  @param customVoice          TTSCustomVoice*
- *  @param customizationHandler (^)(NSDictionary*, NSError*))
+ *  @param customizationHandler JSONHandlerType
  */
-- (void)createVoiceModelWithCustomVoice: (TTSCustomVoice*) customVoice handler: (void (^)(NSDictionary*, NSError*)) customizationHandler {
+- (void)createVoiceModelWithCustomVoice: (TTSCustomVoice*) customVoice handler: (JSONHandlerWithError) customizationHandler {
     NSData* postData = [customVoice producePostData];
     [self performRequest:HTTP_METHOD_POST handler:customizationHandler forURL:[self.config getCustomizationURL] data:postData];
 }
 
-- (void)listCustomizedVoiceModels: (void (^)(NSDictionary*, NSError*)) handler {
-    [self performGet:handler forURL:[self.config getCustomizationURL]];
+- (void)listCustomizedVoiceModels: (JSONHandlerWithError) handler {
+    [SpeechUtility performGet:handler forURL:[self.config getCustomizationURL] config:[self config] delegate:self];
 }
 
-- (void)queryPronunciation: (void (^)(NSDictionary*, NSError*)) handler text:(NSString*) theText {
-    [self performGet:handler forURL:[self.config getPronunciationURL: theText]];
+- (void)queryPronunciation: (JSONHandlerWithError) handler text:(NSString*) theText {
+    [SpeechUtility performGet:handler forURL:[self.config getPronunciationURL: theText] config:[self config] delegate:self];
 }
 
-- (void)queryPronunciation: (void (^)(NSDictionary*, NSError*)) handler text:(NSString*) theText voice: (NSString*) theVoice format: (NSString*) theFormat {
-    [self performGet:handler forURL:[self.config getPronunciationURL: theText voice:theVoice format:theFormat]];
+- (void)queryPronunciation: (JSONHandlerWithError) handler text:(NSString*) theText voice: (NSString*) theVoice format: (NSString*) theFormat {
+    [SpeechUtility performGet:handler forURL:[self.config getPronunciationURL: theText voice:theVoice format:theFormat] config:[self config] delegate:self];
 }
 
-- (void)addWord:(NSString *)customizationId word:(TTSCustomWord *)customWord handler:(void (^)(NSDictionary *, NSError *))customizationHandler {
+- (void)addWord:(NSString *)customizationId word:(TTSCustomWord *)customWord handler:(JSONHandlerWithError)customizationHandler {
     NSData* postData = [customWord producePostData];
     NSURL *url = [self.config getCustomizationURL: [NSString stringWithFormat:@"%@/words/%@", customizationId, [[customWord word] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]]];
     [self performRequest:HTTP_METHOD_PUT handler:customizationHandler forURL: url data:postData];
 }
 
-- (void)addWords:(NSString *)customizationId voice:(TTSCustomVoice *)customVoice handler:(void (^)(NSDictionary *, NSError *))customizationHandler {
+- (void)addWords:(NSString *)customizationId voice:(TTSCustomVoice *)customVoice handler:(JSONHandlerWithError)customizationHandler {
     NSData* postData = [customVoice producePostData];
     [self performRequest:HTTP_METHOD_POST handler:customizationHandler forURL:[self.config getCustomizationURL: [NSString stringWithFormat:@"%@/words", customizationId]] data:postData];
 }
 
-- (void)deleteWord:(NSString *)customizationId word:(NSString *) wordString handler:(void (^)(NSDictionary *, NSError *))customizationHandler {
+- (void)deleteWord:(NSString *)customizationId word:(NSString *) wordString handler:(JSONHandlerWithError)customizationHandler {
     NSURL *url = [self.config getCustomizationURL: [NSString stringWithFormat:@"%@/words/%@", customizationId, [wordString stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]]];
     [self performRequest:HTTP_METHOD_DELETE handler:customizationHandler forURL: url data:nil];
 }
 
-- (void)listWords:(NSString *)customizationId handler:(void (^)(NSDictionary *, NSError *))customizationHandler {
-    [self performGet:customizationHandler forURL:[self.config getCustomizationURL: [NSString stringWithFormat:@"%@/words", customizationId]] disableCache:YES];
+- (void)listWords:(NSString *)customizationId handler:(JSONHandlerWithError)customizationHandler {
+    [SpeechUtility performGet:customizationHandler forURL:[self.config getCustomizationURL: [NSString stringWithFormat:@"%@/words", customizationId]] config:[self config] delegate:self disableCache:YES header:nil];
 }
 
-- (void)listWord:(NSString *)customizationId word:(NSString *) wordString handler:(void (^)(NSDictionary *, NSError *))customizationHandler {
+- (void)listWord:(NSString *)customizationId word:(NSString *) wordString handler:(JSONHandlerWithError)customizationHandler {
     NSURL *url = [self.config getCustomizationURL: [NSString stringWithFormat:@"%@/words/%@", customizationId, [wordString stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]]];
     [self performRequest:HTTP_METHOD_GET handler:customizationHandler forURL: url data:nil];
 }
 
-- (void)updateVoiceModelWithCustomVoice:(NSString *)customizationId voice:(TTSCustomVoice *)customVoice handler:(void (^)(NSDictionary *, NSError *))customizationHandler {
+- (void)updateVoiceModelWithCustomVoice:(NSString *)customizationId voice:(TTSCustomVoice *)customVoice handler:(JSONHandlerWithError)customizationHandler {
     NSData* postData = [customVoice producePostData];
     [self performRequest:HTTP_METHOD_POST handler: customizationHandler forURL:[self.config getCustomizationURL: customizationId] data:postData];
 }
 
-- (void)deleteVoiceModel:(NSString *)customizationId handler:(void (^)(NSDictionary *, NSError *))customizationHandler {
+- (void)deleteVoiceModel:(NSString *)customizationId handler:(JSONHandlerWithError)customizationHandler {
     [self performRequest:HTTP_METHOD_DELETE handler: customizationHandler forURL:[self.config getCustomizationURL: customizationId] data:nil];
 }
 
@@ -164,13 +175,13 @@ typedef void (^PlayAudioCallbackBlockType)(NSError*);
             [self.audioPlayer play];
         
     } else if ([self.config.audioCodec isEqualToString:WATSONSDK_TTS_AUDIO_CODEC_TYPE_OPUS]) {
-        NSError * err;
+        NSError * err = nil;
 
         // convert audio to PCM and add wav header
         audio = [self.opus opusToPCM:audio sampleRate:self.sampleRate];
         audio = [self addWavHeader:audio];
-        
-        self.audioPlayer = [[AVAudioPlayer alloc] initWithData:audio fileTypeHint:AVFileTypeWAVE error:&err];
+
+        self.audioPlayer = [[AVAudioPlayer alloc] initWithData:audio error:&err];
         [self.audioPlayer setDelegate:self];
         if (!self.audioPlayer)
             self.playAudioCallback(err);
@@ -301,90 +312,63 @@ typedef void (^PlayAudioCallbackBlockType)(NSError*);
 
 -(void) saveAudio:(NSData*) audio toFile:(NSString*) path {
     
-    [ audio writeToFile:path atomically:true];
+    [audio writeToFile:path atomically:true];
 }
 
 /**
  *  performGet - shared method for performing GET requests to a given url calling a handler parameter with the result
  *
- *  @param handler (^)(NSDictionary*, NSError*))
+ *  @param handler DataHandlerType
  *  @param url     url to perform GET request on
  */
-- (void) performGet:(void (^)(NSDictionary*, NSError*))handler forURL:(NSURL*)url {
-    [self performGet:handler forURL:url disableCache:NO];
-}
-- (void) performGet:(void (^)(NSDictionary*, NSError*))handler forURL:(NSURL*)url disableCache:(BOOL) withoutCache {
-    // Create and set authentication headers
-    NSURLSessionConfiguration *defaultConfigObject = [NSURLSessionConfiguration defaultSessionConfiguration];
-
-    if(withoutCache)
-        [defaultConfigObject setURLCache:nil];
-
-    [self.config requestToken:^(AuthConfiguration *config) {
-        NSDictionary* headers = [config createRequestHeaders];
-        [defaultConfigObject setHTTPAdditionalHeaders:headers];
-        NSURLSession *defaultSession = [NSURLSession sessionWithConfiguration: defaultConfigObject delegate: self delegateQueue: [NSOperationQueue mainQueue]];
-        
-        NSURLSessionDataTask * dataTask = [defaultSession dataTaskWithURL:url completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
-            [SpeechUtility processJSON:handler config:config response:response data:data error:error];
-        }];
-
-        [dataTask resume];
-    } refreshCache:NO];
-}
-
-
-/**
- *  performGet - shared method for performing GET requests to a given url calling a handler parameter with the result
- *
- *  @param handler (^)(NSDictionary*, NSError*))
- *  @param url     url to perform GET request on
- */
-- (void) performDataGet:(void (^)(NSData*, NSError*))handler forURL:(NSURL*)url {
-    [self performDataGet:handler forURL:url disableCache:NO];
-}
-
-- (void) performDataGet:(void (^)(NSData*, NSError*))handler forURL:(NSURL*)url disableCache:(BOOL) withoutCache {
-    
-    // Create and set authentication headers
-    NSURLSessionConfiguration *defaultConfigObject = [NSURLSessionConfiguration defaultSessionConfiguration];
-    
-    if(withoutCache)
-        [defaultConfigObject setURLCache:nil];
-    
-    [self.config requestToken:^(AuthConfiguration *config) {
-        NSMutableDictionary* headers = [config createRequestHeaders];
-        if(config.xWatsonLearningOptOut) {
-            [headers setObject:@"true" forKey:@"X-Watson-Learning-Opt-Out"];
+- (void) performDataGet:(DataHandlerWithError)handler forURL:(NSURL*)url disableCache:(BOOL) withoutCache header:(NSDictionary*) extraHeader {
+    [self.config requestToken:^(BaseConfiguration *config) {
+        if([SpeechUtility isOS6]) {
+            [SpeechUtility performGet:^(NSURLResponse *response, NSData *data, NSError *connectionError) {
+                [SpeechUtility processData:handler config:config response:response data:data error:connectionError];
+            } forURL:url disableCache:withoutCache configuration:config header:extraHeader];
         }
-        [defaultConfigObject setHTTPAdditionalHeaders:headers];
-        NSURLSession *defaultSession = [NSURLSession sessionWithConfiguration: defaultConfigObject delegate: self delegateQueue: [NSOperationQueue mainQueue]];
-        NSURLSessionDataTask * dataTask = [defaultSession dataTaskWithURL:url completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
-            [SpeechUtility processData:handler config:config response:response data:data error:error];
-        }];
+        else {
+            // Create and set authentication headers
+            NSURLSessionConfiguration *defaultConfigObject = [NSURLSessionConfiguration defaultSessionConfiguration];
 
-        [dataTask resume];
+            if(withoutCache)
+                [defaultConfigObject setURLCache:nil];
+            NSMutableDictionary* headers = [config createRequestHeaders];
+            if(config.xWatsonLearningOptOut) {
+                [headers setObject:@"true" forKey:@"X-Watson-Learning-Opt-Out"];
+            }
+            [defaultConfigObject setHTTPAdditionalHeaders:headers];
+            NSURLSession *defaultSession = [NSURLSession sessionWithConfiguration: defaultConfigObject delegate: self delegateQueue: [NSOperationQueue mainQueue]];
+            NSURLSessionDataTask * dataTask = [defaultSession dataTaskWithURL:url completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+                [SpeechUtility processData:handler config:config response:response data:data error:error];
+            }];
+            
+            [dataTask resume];
+        }
     } refreshCache:NO];
 }
 
 /**
- *  performPost - shared method for performing POST requests to a given url calling a handler parameter with the result
+ *  performRequest - shared method for performing RESTful requests to a given url calling a handler parameter with the result
  *
- *  @param handler (^)(NSDictionary*, NSError*))
- *  @param url     url to perform GET request on
+ *  @param method               restful method
+ *  @param customizationHandler data handler
+ *  @param url                  URL
+ *  @param httpBody             content
  */
-- (void) performRequest: (NSString*) method handler: (void (^)(NSDictionary*, NSError*))customizationHandler forURL:(NSURL*)url data: (NSData*) postData {
+- (void) performRequest: (NSString*) method handler: (JSONHandlerWithError)customizationHandler forURL:(NSURL*)url data: (NSData*) httpBody {
     // Create and set authentication headers
     NSURLSessionConfiguration *defaultConfigObject = [NSURLSessionConfiguration defaultSessionConfiguration];
 
-    [self.config requestToken:^(AuthConfiguration *config) {
+    [self.config requestToken:^(BaseConfiguration *config) {
         NSDictionary* headers = [config createRequestHeaders];
         [defaultConfigObject setHTTPAdditionalHeaders:headers];
         NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
         [request setHTTPMethod: method];
 
         [request setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
-        [request setHTTPBody:postData];
+        [request setHTTPBody:httpBody];
 
         NSURLSession *defaultSession = [NSURLSession sessionWithConfiguration: defaultConfigObject delegate: self delegateQueue: [NSOperationQueue mainQueue]];
         NSURLSessionDataTask * dataTask = [defaultSession dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {

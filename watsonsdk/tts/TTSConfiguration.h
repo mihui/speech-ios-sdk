@@ -15,7 +15,7 @@
  **/
 
 #import <Foundation/Foundation.h>
-#import "AuthConfiguration.h"
+#import "BaseConfiguration.h"
 
 // URLS
 #define WATSONSDK_DEFAULT_TTS_API_ENDPOINT @"https://stream.watsonplatform.net/text-to-speech/api/"
@@ -33,7 +33,7 @@
 // voices
 #define WATSONSDK_DEFAULT_TTS_VOICE @"en-US_MichaelVoice"
 
-@interface TTSConfiguration : AuthConfiguration
+@interface TTSConfiguration : BaseConfiguration
 
 @property NSString* voiceName;
 @property NSString* audioCodec;

@@ -15,7 +15,7 @@
  **/
 
 #import <Foundation/Foundation.h>
-#import "AuthConfiguration.h"
+#import "BaseConfiguration.h"
 
 // URLS
 #define WATSONSDK_DEFAULT_STT_API_ENDPOINT @"https://stream.watsonplatform.net/speech-to-text/api/"
@@ -38,7 +38,7 @@
 #define WATSONSDK_STREAM_MARKER_DATA 1
 #define WATSONSDK_STREAM_MARKER_END 2
 
-@interface STTConfiguration : AuthConfiguration
+@interface STTConfiguration : BaseConfiguration
 
 @property NSString *modelName;
 @property NSString *audioCodec;
@@ -58,7 +58,7 @@
 - (NSURL*)getModelsServiceURL;
 - (NSURL*)getModelServiceURL:(NSString*) modelName;
 - (NSURL*)getWebSocketRecognizeURL;
-- (NSString *)getStartMessage;
-- (NSData *)getStopMessage;
+- (NSString*)getStartMessage;
+- (NSData*)getStopMessage;
 
 @end

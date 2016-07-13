@@ -16,18 +16,14 @@
 
 #import "WebSocketAudioStreamer.h"
 
-typedef void (^RecognizeCallbackBlockType)(NSDictionary*, NSError*);
-typedef void (^AudioDataCallbackBlockType)(NSData*);
-typedef void (^ClosureCallbackBlockType)(NSInteger, NSString*);
-
 @interface WebSocketAudioStreamer () <SRWebSocketDelegate>
 
 @property NSDictionary *headers;
 @property (strong, atomic) NSMutableArray<NSData *> *audioBuffer;
 @property (strong, atomic) NSNumber *reconnectAttempts;
-@property (nonatomic, copy) RecognizeCallbackBlockType recognizeCallback;
-@property (nonatomic, copy) AudioDataCallbackBlockType audioDataCallback;
-@property (nonatomic, copy) ClosureCallbackBlockType closureCallback;
+@property (nonatomic, copy) JSONHandlerWithError recognizeCallback;
+@property (nonatomic, copy) DataHandler audioDataCallback;
+@property (nonatomic, copy) ClosureHandler closureCallback;
 
 @property STTConfiguration *sConfig;
 @property SRWebSocket *webSocket;
@@ -45,7 +41,7 @@ typedef void (^ClosureCallbackBlockType)(NSInteger, NSString*);
  *  @param speechServer   NSUrl containing the ws or wss format websocket service URI
  *  @param cookie pass a full cookie string that may have been returned in a separate authentication step
  */
-- (void) connect:(STTConfiguration*)config headers:(NSDictionary*)headers completionCallback:(void (^)(NSInteger, NSString*)) closureCallback {
+- (void) connect:(STTConfiguration*)config headers:(NSDictionary*)headers completionCallback:(ClosureHandler)closureCallback {
     self.sConfig = config;
     self.headers = headers;
     
@@ -326,18 +322,18 @@ dispatch_once_t predicate_connect;
 /**
  *  setRecognizeHandler - store the handler from the client so we can pass back results and errors
  *
- *  @param handler (void (^)(NSDictionary*, NSError*))
+ *  @param handler (JSONHandlerType)
  */
-- (void) setRecognizeHandler:(void (^)(NSDictionary*, NSError*))handler {
+- (void) setRecognizeHandler:(JSONHandlerWithError)handler {
     self.recognizeCallback = handler;
 }
 
 /**
  *  setAudioDataHandler - store the handler from the client so we can pass back results and errors
  *
- *  @param handler (void (^)(NSDictionary*, NSError*))
+ *  @param handler data handler
  */
-- (void) setAudioDataHandler:(void (^)(NSData*))handler {
+- (void) setAudioDataHandler:(DataHandler)handler {
     self.audioDataCallback = handler;
 }
 

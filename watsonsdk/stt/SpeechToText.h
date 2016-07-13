@@ -38,31 +38,31 @@
 /**
  *  stream audio from the device microphone to the STT service
  *
- *  @param recognizeHandler (^)(NSDictionary*, NSError*)
- *  @param dataHandler      (^) (NSData*)
- *  @param powerHandler     (^)(float)
+ *  @param recognizeHandler JSONHandlerWithError
+ *  @param dataHandler      DataHandler
+ *  @param powerHandler     PowerLevelHandler
  */
-//- (void) recognize:(void (^)(NSDictionary*, NSError*)) recognizeHandler dataHandler: (void (^) (NSData*)) dataHandler powerHandler: (void (^)(float)) powerHandler;
+//- (void) recognize:(JSONHandlerWithError) recognizeHandler dataHandler: (DataHandler) dataHandler powerHandler: PowerLevelHandler powerHandler;
 /**
  *  stream audio from the device microphone to the STT service
  *
- *  @param recognizeHandler (^)(NSDictionary*, NSError*)
- *  @param dataHandler      (^) (NSData*)
+ *  @param recognizeHandler JSONHandlerWithError
+ *  @param dataHandler      DataHandler
  */
-//- (void) recognize:(void (^)(NSDictionary*, NSError*)) recognizeHandler dataHandler: (void (^) (NSData*)) dataHandler;
+//- (void) recognize:(JSONHandlerWithError) recognizeHandler dataHandler: (DataHandler) dataHandler;
 /**
  *  stream audio from the device microphone to the STT service
  *
- *  @param recognizeHandler (^)(NSDictionary*, NSError*)
- *  @param powerHandler     (^)(float)
+ *  @param recognizeHandler JSONHandlerWithError
+ *  @param powerHandler     PowerLevelHandler
  */
-- (void) recognize:(void (^)(NSDictionary*, NSError*)) recognizeHandler powerHandler: (void (^)(float)) powerHandler;
+- (void) recognize:(JSONHandlerWithError) recognizeHandler powerHandler: (PowerLevelHandler) powerHandler;
 /**
  *  stream audio from the device microphone to the STT service
  *
- *  @param recognizeHandler (^)(NSDictionary*, NSError*)
+ *  @param recognizeHandler JSONHandlerType
  */
-- (void) recognize:(void (^)(NSDictionary*, NSError*)) recognizeHandler;
+- (void) recognize:(JSONHandlerWithError) recognizeHandler;
 
 /**
  *  stopRecording and streaming audio from the device microphone
@@ -91,17 +91,17 @@
 /**
  *  listModels - List speech models supported by the service
  *
- *  @param handler(NSDictionary*, NSError*) block to be called when response has been received from the service
+ *  @param handler(JSONHandlerType) block to be called when response has been received from the service
  */
-- (void) listModels:(void (^)(NSDictionary*, NSError*))handler;
+- (void) listModels:(JSONHandlerWithError)handler;
 
 /**
  *  listModel details with a given model ID
  *
- *  @param handler handler(NSDictionary*, NSError*) block to be called when response has been received from the service
+ *  @param handler handler(JSONHandlerType) block to be called when response has been received from the service
  *  @param modelName the name of the model e.g. WatsonModel
  */
-- (void) listModel:(void (^)(NSDictionary*, NSError*))handler withName:(NSString*) modelName;
+- (void) listModel:(JSONHandlerWithError)handler withName:(NSString*) modelName;
 
 /**
  *  setIsVADenabled
@@ -126,6 +126,6 @@
  *
  *  @param powerHandler - callback block
  */
-- (void) getPowerLevel:(void (^)(float)) powerHandler;
+- (void) getPowerLevel:(PowerLevelHandler) powerHandler;
 
 @end

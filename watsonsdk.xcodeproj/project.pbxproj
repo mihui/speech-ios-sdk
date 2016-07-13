@@ -23,8 +23,8 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
-		7EFE11E41B71D07D00EF10BF /* AuthConfiguration.h in Headers */ = {isa = PBXBuildFile; fileRef = 7EFE11E21B71D07D00EF10BF /* AuthConfiguration.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		7EFE11E51B71D07D00EF10BF /* AuthConfiguration.m in Sources */ = {isa = PBXBuildFile; fileRef = 7EFE11E31B71D07D00EF10BF /* AuthConfiguration.m */; };
+		7EFE11E41B71D07D00EF10BF /* BaseConfiguration.h in Headers */ = {isa = PBXBuildFile; fileRef = 7EFE11E21B71D07D00EF10BF /* BaseConfiguration.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		7EFE11E51B71D07D00EF10BF /* BaseConfiguration.m in Sources */ = {isa = PBXBuildFile; fileRef = 7EFE11E31B71D07D00EF10BF /* BaseConfiguration.m */; };
 		9B07C4CF1D0A85FE005F41AE /* libspeexdsp.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9B07C4CE1D0A85FE005F41AE /* libspeexdsp.a */; };
 		9B07C4D11D0A8B76005F41AE /* libspeex.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9B07C4D01D0A8B76005F41AE /* libspeex.a */; };
 		9B07C5071D0B0B25005F41AE /* config_types.h in Headers */ = {isa = PBXBuildFile; fileRef = 9B07C4F21D0B0B25005F41AE /* config_types.h */; };
@@ -177,8 +177,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		7EFE11E21B71D07D00EF10BF /* AuthConfiguration.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AuthConfiguration.h; sourceTree = "<group>"; };
-		7EFE11E31B71D07D00EF10BF /* AuthConfiguration.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AuthConfiguration.m; sourceTree = "<group>"; };
+		7EFE11E21B71D07D00EF10BF /* BaseConfiguration.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BaseConfiguration.h; sourceTree = "<group>"; };
+		7EFE11E31B71D07D00EF10BF /* BaseConfiguration.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BaseConfiguration.m; sourceTree = "<group>"; };
 		9B07C4CE1D0A85FE005F41AE /* libspeexdsp.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libspeexdsp.a; sourceTree = "<group>"; };
 		9B07C4D01D0A8B76005F41AE /* libspeex.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libspeex.a; sourceTree = "<group>"; };
 		9B07C4F21D0B0B25005F41AE /* config_types.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = config_types.h; sourceTree = "<group>"; };
@@ -601,8 +601,8 @@
 				9B3669521CF3546C00806BEE /* tts */,
 				C1416C33194B49520009C49A /* libs */,
 				9BCAD7C51CE5BC8B00BE3B5F /* websocket */,
-				7EFE11E21B71D07D00EF10BF /* AuthConfiguration.h */,
-				7EFE11E31B71D07D00EF10BF /* AuthConfiguration.m */,
+				7EFE11E21B71D07D00EF10BF /* BaseConfiguration.h */,
+				7EFE11E31B71D07D00EF10BF /* BaseConfiguration.m */,
 				9B47E7561CF21645003E0860 /* SpeechUtility.h */,
 				9B47E7571CF21645003E0860 /* SpeechUtility.m */,
 				9BE5839A1D11C6AA0021DC88 /* OpusHelper.h */,
@@ -694,7 +694,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				9B47E7581CF21645003E0860 /* SpeechUtility.h in Headers */,
-				7EFE11E41B71D07D00EF10BF /* AuthConfiguration.h in Headers */,
+				7EFE11E41B71D07D00EF10BF /* BaseConfiguration.h in Headers */,
 				9B7195621D30DD560046245A /* SRSecurityPolicy.h in Headers */,
 				9B3669661CF354B800806BEE /* STTConfiguration.h in Headers */,
 				9B36695D1CF3549400806BEE /* TTSConfiguration.h in Headers */,
@@ -933,7 +933,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				7EFE11E51B71D07D00EF10BF /* AuthConfiguration.m in Sources */,
+				7EFE11E51B71D07D00EF10BF /* BaseConfiguration.m in Sources */,
 				9B71955B1D30DD560046245A /* SRSIMDHelpers.m in Sources */,
 				9B7195531D30DD560046245A /* SRHTTPConnectMessage.m in Sources */,
 				9BE5839D1D11C6AA0021DC88 /* OpusHelper.m in Sources */,
@@ -1145,7 +1145,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = "";
 				"PUBLIC_HEADERS_FOLDER_PATH[sdk=*]" = "$(PROJECT_NAME)Headers";
@@ -1173,7 +1173,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				ONLY_ACTIVE_ARCH = NO;
 				OTHER_LDFLAGS = "";
 				"PUBLIC_HEADERS_FOLDER_PATH[sdk=*]" = "$(PROJECT_NAME)Headers";
@@ -1327,7 +1327,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				INFOPLIST_FILE = "watsonsdktest-objective-c/watsonsdktest-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				ONLY_ACTIVE_ARCH = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = com.ibm.cio.watsonsdk.objectivec;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1361,7 +1361,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				INFOPLIST_FILE = "watsonsdktest-objective-c/watsonsdktest-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				ONLY_ACTIVE_ARCH = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = com.ibm.cio.watsonsdk.objectivec;
 				PRODUCT_NAME = "$(TARGET_NAME)";

@@ -23,15 +23,15 @@
 
 @interface WebSocketAudioStreamer : NSObject
 
-- (BOOL) isWebSocketConnected;
-- (void) connect:(STTConfiguration*)config headers:(NSDictionary*)headers completionCallback:(void (^)(NSInteger, NSString*)) closureCallback;
-- (void) reconnect;
-- (void) disconnect: (NSString*) reason;
-- (void) writeData:(NSData*) data;
-- (void) writeData:(NSData*) data marker:(int)marker;
-- (void) setRecognizeHandler:(void (^)(NSDictionary*, NSError*))handler;
-- (void) setAudioDataHandler:(void (^)(NSData*))handler;
-- (void) sendEndOfStreamMarker;
+- (BOOL)isWebSocketConnected;
+- (void)connect:(STTConfiguration*)config headers:(NSDictionary*)headers completionCallback:(ClosureHandler)closureCallback;
+- (void)reconnect;
+- (void)disconnect:(NSString*) reason;
+- (void)writeData:(NSData*) data;
+- (void)writeData:(NSData*) data marker:(int)marker;
+- (void)setRecognizeHandler:(JSONHandlerWithError)handler;
+- (void)setAudioDataHandler:(DataHandler)handler;
+- (void)sendEndOfStreamMarker;
 
 @end
 
