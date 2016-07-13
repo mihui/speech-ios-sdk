@@ -14,9 +14,9 @@
  * limitations under the License.
  **/
 
-#import "AuthConfiguration.h"
+#import "BaseConfiguration.h"
 
-@implementation AuthConfiguration
+@implementation BaseConfiguration
 
 @synthesize basicAuthUsername = _basicAuthUsername;
 @synthesize basicAuthPassword = _basicAuthPassword;
@@ -33,7 +33,7 @@
     _token = nil;
 }
 
-- (void)requestToken:(void (^)(AuthConfiguration *))completionHandler refreshCache:(BOOL) refreshCachedToken {
+- (void)requestToken:(void (^)(BaseConfiguration *))completionHandler refreshCache:(BOOL) refreshCachedToken {
     if (self.tokenGenerator) {
         if (!_token || refreshCachedToken) {
             self.tokenGenerator(^(NSString *token) {

@@ -16,12 +16,27 @@
 
 #import <Foundation/Foundation.h>
 
-@interface AuthConfiguration : NSObject
+#define WATSON_WEBSOCKETS_ERROR_CODE 506
+#define WATSON_WEBSOCKETS_ERROR_DOMAIN @"Watons Speech SDK"
+
+#define HTTP_METHOD_GET @"GET"
+#define HTTP_METHOD_POST @"POST"
+#define HTTP_METHOD_PUT @"PUT"
+#define HTTP_METHOD_DELETE @"DELETE"
+
+typedef void (^DataHandlerWithError) (NSData* data, NSError* error);
+typedef void (^JSONHandlerWithError) (NSDictionary* dict, NSError* error);
+
+typedef void (^DataHandler)(NSData* data);
+typedef void (^ClosureHandler)(NSInteger code, NSString* reason);
+typedef void (^PowerLevelHandler)(float powerLevel);
+
+@interface BaseConfiguration : NSObject
 
 @property NSString* basicAuthUsername;
 @property NSString* basicAuthPassword;
 
-@property (readonly) NSString *token;
+@property (nonatomic, retain) NSString *token;
 @property (copy, nonatomic) void (^tokenGenerator) (void (^tokenHandler)(NSString *token));
 
 @property (readonly) NSString* apiURL;
@@ -30,7 +45,7 @@
 @property BOOL xWatsonLearningOptOut;
 
 - (void) invalidateToken;
-- (void)requestToken:(void (^)(AuthConfiguration *config))completionHandler refreshCache:(BOOL) refreshCachedToken;
+- (void)requestToken:(void (^)(BaseConfiguration *config))completionHandler refreshCache:(BOOL) refreshCachedToken;
 - (NSMutableDictionary*) createRequestHeaders;
 
 - (void)setApiURL:(NSString *)apiURLStr;
