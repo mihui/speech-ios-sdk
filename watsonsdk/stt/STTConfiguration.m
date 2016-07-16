@@ -33,8 +33,8 @@
     [self setApiEndpoint:[NSURL URLWithString:WATSONSDK_DEFAULT_STT_API_ENDPOINT]];
     [self setModelName:WATSONSDK_DEFAULT_STT_MODEL];
     [self setAudioCodec:WATSONSDK_AUDIO_CODEC_TYPE_PCM];
-    [self setAudioSampleRate:WATSONSDK_AUDIO_SAMPLE_RATE];
-    [self setAudioFrameSize:WATSONSDK_AUDIO_FRAME_SIZE];
+    [self setAudioSampleRate:WATSONSDK_AUDIO_SAMPLE_RATE_PCM];
+    [self setAudioFrameSize:WATSONSDK_AUDIO_FRAME_SIZE_PCM];
 
     [self setInterimResults: NO];
     [self setContinuous: NO];

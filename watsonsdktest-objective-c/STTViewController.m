@@ -30,7 +30,6 @@
 @synthesize stt;
 @synthesize result;
 
-
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -41,10 +40,14 @@
     // STT setup
     STTConfiguration *confSTT = [[STTConfiguration alloc] init];
 
-    // Use opus compression, better for mobile devices.
     [confSTT setBasicAuthUsername:credentials[@"STTUsername"]];
     [confSTT setBasicAuthPassword:credentials[@"STTPassword"]];
+
+    // Use opus compression, better for mobile devices.
     [confSTT setAudioCodec:WATSONSDK_AUDIO_CODEC_TYPE_OPUS];
+    [confSTT setAudioSampleRate:WATSONSDK_AUDIO_SAMPLE_RATE_OPUS];
+    [confSTT setAudioFrameSize:WATSONSDK_AUDIO_FRAME_SIZE_OPUS];
+
     [confSTT setModelName:WATSONSDK_DEFAULT_STT_MODEL];
     [confSTT setInterimResults:YES];
     [confSTT setContinuous:NO];

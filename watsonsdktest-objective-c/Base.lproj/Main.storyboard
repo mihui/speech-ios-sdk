@@ -101,7 +101,7 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Uys-DN-pJf" userLabel="View - Result">
                                 <rect key="frame" x="9" y="257" width="582" height="227"/>
                                 <subviews>
-                                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" text="Results here..." textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="Wk7-7P-zkz">
+                                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" text="Results will show here" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="Wk7-7P-zkz">
                                         <rect key="frame" x="1" y="1" width="580" height="225"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
