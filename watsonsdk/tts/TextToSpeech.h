@@ -48,5 +48,5 @@
 - (void)listCustomizedVoiceModels: (JSONHandlerWithError) handler;
 
 - (void)queryPronunciation: (JSONHandlerWithError) handler text:(NSString*) theText;
-- (void)queryPronunciation: (JSONHandlerWithError) handler text:(NSString*) theText voice: (NSString*) theVoice format: (NSString*) theFormat;
+- (void)queryPronunciation: (JSONHandlerWithError) handler text:(NSString*) theText parameters:(NSDictionary*) theParameters;
 @end

@@ -26,7 +26,6 @@ typedef void (^PlayAudioCallbackBlockType)(NSError*);
 @property (assign, nonatomic) long sampleRate;
 @end
 
-
 @implementation TextToSpeech
 @synthesize audioPlayer;
 @synthesize playAudioCallback;
@@ -93,7 +92,7 @@ typedef void (^PlayAudioCallbackBlockType)(NSError*);
 }
 
 /**
- *  createVoiceModelWithCustomVoice - Creates a new empty custom voice model that is owned by the requesting user
+ *  Creates a new empty custom voice model that is owned by the requesting user
  *
  *  @param customVoice          TTSCustomVoice*
  *  @param customizationHandler JSONHandlerType
@@ -103,16 +102,47 @@ typedef void (^PlayAudioCallbackBlockType)(NSError*);
     [self performRequest:HTTP_METHOD_POST handler:customizationHandler forURL:[self.config getCustomizationURL] data:postData];
 }
 
+/**
+ *  Query customized voice models
+ *
+ *  @param handler JSONHandlerType
+ */
 - (void)listCustomizedVoiceModels: (JSONHandlerWithError) handler {
     [SpeechUtility performGet:handler forURL:[self.config getCustomizationURL] config:[self config] delegate:self];
 }
 
+/**
+ *  Simple pronunciation query
+ *
+ *  @param handler JSONHandlerWithError
+ *  @param theText NSString*
+ */
 - (void)queryPronunciation: (JSONHandlerWithError) handler text:(NSString*) theText {
     [SpeechUtility performGet:handler forURL:[self.config getPronunciationURL: theText] config:[self config] delegate:self];
 }
 
-- (void)queryPronunciation: (JSONHandlerWithError) handler text:(NSString*) theText voice: (NSString*) theVoice format: (NSString*) theFormat {
-    [SpeechUtility performGet:handler forURL:[self.config getPronunciationURL: theText voice:theVoice format:theFormat] config:[self config] delegate:self];
+/**
+ *  Pronunciation query with parameters
+ *
+ *  @param handler    JSONHandlerWithError
+ *  @param theText    NSString*
+ *  @param parameters NSDictionary*
+ */
+- (void)queryPronunciation: (JSONHandlerWithError) handler text:(NSString*) theText parameters:(NSDictionary*) theParameters {
+    [SpeechUtility performGet:handler forURL:[self.config getPronunciationURL: theText parameters:theParameters] config:[self config] delegate:self];
+}
+
+/**
+ *  Pronunciation query with parameters
+ *
+ *  @param handler         JSONHandlerWithError
+ *  @param theText         NSString*
+ *  @param theVoice        NSString*
+ *  @param theFormat       NSString*
+ *  @param customizationId NSString*
+ */
+- (void)queryPronunciation: (JSONHandlerWithError) handler text:(NSString*) theText voice: (NSString*) theVoice format: (NSString*) theFormat customizationId: (NSString*) customizationId {
+    [SpeechUtility performGet:handler forURL:[self.config getRequestURL:WATSONSDK_SERVICE_PATH_PRONUNCIATION params:@{ @"voice": theVoice, @"format": theFormat, @"customization_id": customizationId }] config:[self config] delegate:self];
 }
 
 - (void)addWord:(NSString *)customizationId word:(TTSCustomWord *)customWord handler:(JSONHandlerWithError)customizationHandler {
