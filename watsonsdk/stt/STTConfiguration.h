@@ -40,8 +40,8 @@
 
 @interface STTConfiguration : BaseConfiguration
 
-@property NSString *modelName;
-@property NSString *audioCodec;
+@property NSString *modelName; // "model" parameter defined from service
+@property NSString *audioCodec; // "Content-Type" parameter defined from service
 @property BOOL interimResults;
 @property BOOL continuous;
 @property NSNumber *inactivityTimeout;
@@ -49,7 +49,12 @@
 @property NSNumber *keywordsThreshold;
 @property NSNumber *maxAlternatives;
 @property NSNumber *wordAlternativesThreshold;
+@property BOOL wordConfidence;
+@property BOOL timestamps;
 @property NSArray *keywords;
+
+@property BOOL profanityFilter;
+@property BOOL smartFormatting;
 
 @property float audioSampleRate;
 @property int audioFrameSize;

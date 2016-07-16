@@ -23,8 +23,8 @@
 
 - (id)init {
     self = [super init];
-    
-    // set default values
+
+    // set default values according to the service
     [self setApiEndpoint:[NSURL URLWithString:WATSONSDK_DEFAULT_STT_API_ENDPOINT]];
     [self setModelName:WATSONSDK_DEFAULT_STT_MODEL];
     [self setAudioCodec:WATSONSDK_AUDIO_CODEC_TYPE_PCM];
@@ -39,6 +39,10 @@
     [self setMaxAlternatives:[NSNumber numberWithInt:1]];
     [self setWordAlternativesThreshold:[NSNumber numberWithDouble:-1]];
     [self setKeywords:nil];
+    [self setProfanityFilter:YES];
+    [self setSmartFormatting:NO];
+    [self setTimestamps:NO];
+    [self setWordConfidence:NO];
 
     return self;
 }
@@ -111,6 +115,22 @@
     
     if(self.keywords && [self.keywords count] > 0) {
         [inputParameters setValue:self.keywords forKey:@"keywords"];
+    }
+
+    if(self.smartFormatting) {
+        [inputParameters setValue:@"true" forKey:@"smart_formatting"];
+    }
+    
+    if(self.timestamps) {
+        [inputParameters setValue:@"true" forKey:@"timestamps"];
+    }
+    
+    if(self.profanityFilter == NO) {
+        [inputParameters setValue:@"false" forKey:@"profanity_filter"];
+    }
+
+    if(self.wordConfidence) {
+        [inputParameters setValue:@"false" forKey:@"word_confidence"];
     }
 
     if([NSJSONSerialization isValidJSONObject:inputParameters]){
