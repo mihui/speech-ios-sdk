@@ -201,7 +201,7 @@ static inline unsigned int fast_rand(void) {
     opusHeader.input_sample_rate=rate;
     opusHeader.gain=inopt.gain;
 
-    NSLog(@"Current frame size ---> %d", currentFrameSize);
+//    NSLog(@"Current frame size ---> %d", currentFrameSize);
 
     // sample rates are 8000, 12000, 16000, 24000, 48000
     // number of channels 1 or 2 mono stereo
