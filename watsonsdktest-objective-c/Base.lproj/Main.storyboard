@@ -59,7 +59,7 @@
                                             <fragment content="IBM Speech to Text">
                                                 <attributes>
                                                     <color key="NSColor" red="0.19607843137254902" green="0.36078431372549019" blue="0.50196078431372548" alpha="1" colorSpace="calibratedRGB"/>
-                                                    <font key="NSFont" size="28" name="HelveticaNeue-Bold"/>
+                                                    <font key="NSFont" size="24" name="HelveticaNeue-Bold"/>
                                                     <font key="NSOriginalFont" size="38" name="Helvetica"/>
                                                     <paragraphStyle key="NSParagraphStyle" alignment="left" lineBreakMode="wordWrapping" baseWritingDirection="natural"/>
                                                 </attributes>
@@ -101,67 +101,29 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Uys-DN-pJf" userLabel="View - Result">
                                 <rect key="frame" x="9" y="257" width="582" height="227"/>
                                 <subviews>
-                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="20" baselineAdjustment="alignBaselines" minimumFontSize="7" adjustsLetterSpacingToFitWidth="YES" preferredMaxLayoutWidth="302" translatesAutoresizingMaskIntoConstraints="NO" id="ARV-YE-gLe">
+                                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" text="Results here..." textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="Wk7-7P-zkz">
                                         <rect key="frame" x="1" y="1" width="580" height="225"/>
-                                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" constant="432" id="wVW-ub-fLi"/>
-                                        </constraints>
-                                        <attributedString key="attributedText">
-                                            <fragment content="Results will show here">
-                                                <attributes>
-                                                    <color key="NSColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                                    <font key="NSFont" size="14" name="HelveticaNeue"/>
-                                                    <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="truncatingTail" baseWritingDirection="natural"/>
-                                                </attributes>
-                                            </fragment>
-                                        </attributedString>
-                                        <nil key="highlightedColor"/>
-                                        <color key="shadowColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                                        <variation key="default">
-                                            <mask key="constraints">
-                                                <exclude reference="wVW-ub-fLi"/>
-                                            </mask>
-                                        </variation>
-                                        <variation key="heightClass=regular-widthClass=compact">
-                                            <mask key="constraints">
-                                                <exclude reference="wVW-ub-fLi"/>
-                                            </mask>
-                                        </variation>
-                                    </label>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                        <textInputTraits key="textInputTraits" autocapitalizationType="sentences" autocorrectionType="no" spellCheckingType="no"/>
+                                    </textView>
                                 </subviews>
                                 <color key="backgroundColor" red="0.7803921568627451" green="0.7803921568627451" blue="0.7803921568627451" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
-                                    <constraint firstAttribute="trailing" secondItem="ARV-YE-gLe" secondAttribute="trailing" constant="1" id="B64-hL-zqO"/>
-                                    <constraint firstItem="ARV-YE-gLe" firstAttribute="leading" secondItem="Uys-DN-pJf" secondAttribute="leading" constant="1" id="CA7-aW-9mz"/>
-                                    <constraint firstItem="ARV-YE-gLe" firstAttribute="centerX" secondItem="Uys-DN-pJf" secondAttribute="centerX" id="DMi-qd-6Du"/>
-                                    <constraint firstAttribute="bottom" secondItem="ARV-YE-gLe" secondAttribute="bottom" constant="1" id="Eb4-sj-P5c"/>
-                                    <constraint firstItem="ARV-YE-gLe" firstAttribute="leading" secondItem="Uys-DN-pJf" secondAttribute="leading" constant="1" id="LbA-al-LW9"/>
+                                    <constraint firstAttribute="trailing" secondItem="Wk7-7P-zkz" secondAttribute="trailing" constant="1" id="0Qj-2l-Eq5"/>
+                                    <constraint firstItem="Wk7-7P-zkz" firstAttribute="top" secondItem="Uys-DN-pJf" secondAttribute="top" constant="1" id="PWq-ji-IVp"/>
                                     <constraint firstAttribute="height" constant="200" id="RPu-nx-sme"/>
-                                    <constraint firstItem="ARV-YE-gLe" firstAttribute="top" secondItem="Uys-DN-pJf" secondAttribute="top" constant="1" id="eOw-nO-75b"/>
-                                    <constraint firstItem="ARV-YE-gLe" firstAttribute="top" secondItem="Uys-DN-pJf" secondAttribute="top" constant="1" id="egV-Ax-JNW"/>
-                                    <constraint firstItem="ARV-YE-gLe" firstAttribute="centerY" secondItem="Uys-DN-pJf" secondAttribute="centerY" id="xiE-V8-vI6"/>
+                                    <constraint firstItem="Wk7-7P-zkz" firstAttribute="leading" secondItem="Uys-DN-pJf" secondAttribute="leading" constant="1" id="qAR-B7-njk"/>
+                                    <constraint firstAttribute="bottom" secondItem="Wk7-7P-zkz" secondAttribute="bottom" constant="1" id="r9T-aS-nff"/>
                                 </constraints>
                                 <variation key="default">
                                     <mask key="constraints">
                                         <exclude reference="RPu-nx-sme"/>
-                                        <exclude reference="CA7-aW-9mz"/>
-                                        <exclude reference="DMi-qd-6Du"/>
-                                        <exclude reference="egV-Ax-JNW"/>
-                                        <exclude reference="xiE-V8-vI6"/>
                                     </mask>
                                 </variation>
                                 <variation key="heightClass=regular-widthClass=compact">
                                     <mask key="constraints">
                                         <exclude reference="RPu-nx-sme"/>
-                                        <exclude reference="B64-hL-zqO"/>
-                                        <include reference="CA7-aW-9mz"/>
-                                        <include reference="DMi-qd-6Du"/>
-                                        <exclude reference="Eb4-sj-P5c"/>
-                                        <exclude reference="LbA-al-LW9"/>
-                                        <exclude reference="eOw-nO-75b"/>
-                                        <include reference="egV-Ax-JNW"/>
-                                        <include reference="xiE-V8-vI6"/>
                                     </mask>
                                 </variation>
                             </view>
@@ -295,7 +257,7 @@
                     </view>
                     <connections>
                         <outlet property="modelSelectorButton" destination="zO0-Pz-FAW" id="VWK-Wn-KUT"/>
-                        <outlet property="result" destination="ARV-YE-gLe" id="CbH-XU-CjR"/>
+                        <outlet property="result" destination="Wk7-7P-zkz" id="dYZ-5y-Khq"/>
                         <outlet property="soundbar" destination="p0u-Gv-7so" id="kzd-KJ-9p6"/>
                     </connections>
                 </viewController>
@@ -411,7 +373,7 @@
                                             <fragment content="IBM Text to Speech">
                                                 <attributes>
                                                     <color key="NSColor" red="0.19607843137254902" green="0.36078431372549019" blue="0.50196078431372548" alpha="1" colorSpace="calibratedRGB"/>
-                                                    <font key="NSFont" size="28" name="HelveticaNeue-Bold"/>
+                                                    <font key="NSFont" size="24" name="HelveticaNeue-Bold"/>
                                                     <paragraphStyle key="NSParagraphStyle" alignment="left" lineBreakMode="wordWrapping" baseWritingDirection="natural"/>
                                                 </attributes>
                                             </fragment>
@@ -483,7 +445,7 @@
                                         <rect key="frame" x="1" y="1" width="580" height="237"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <string key="text">Conscious of its spiritual and moral heritage, the Union is founded on the indivisible, universal values of human dignity, freedom, equality and solidarity; it is based on the principles of democracy and the rule of law. It places the individual at the heart of its activities, by establishing the citizenship of the Union and by creating an area of freedom, security and justice.</string>
-                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                        <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="14"/>
                                         <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                     </textView>
                                 </subviews>
@@ -585,7 +547,7 @@
                                             <fragment content="IBM Text to Speech">
                                                 <attributes>
                                                     <color key="NSColor" red="0.19607843137254902" green="0.36078431372549019" blue="0.50196078431372548" alpha="1" colorSpace="calibratedRGB"/>
-                                                    <font key="NSFont" size="28" name="HelveticaNeue-Bold"/>
+                                                    <font key="NSFont" size="24" name="HelveticaNeue-Bold"/>
                                                     <paragraphStyle key="NSParagraphStyle" alignment="left" lineBreakMode="wordWrapping" baseWritingDirection="natural"/>
                                                 </attributes>
                                             </fragment>
@@ -862,7 +824,7 @@
                                             <fragment content="IBM Text to Speech">
                                                 <attributes>
                                                     <color key="NSColor" red="0.19607843137254902" green="0.36078431372549019" blue="0.50196078431372548" alpha="1" colorSpace="calibratedRGB"/>
-                                                    <font key="NSFont" size="28" name="HelveticaNeue-Bold"/>
+                                                    <font key="NSFont" size="24" name="HelveticaNeue-Bold"/>
                                                     <paragraphStyle key="NSParagraphStyle" alignment="left" lineBreakMode="wordWrapping" baseWritingDirection="natural"/>
                                                 </attributes>
                                             </fragment>
@@ -943,25 +905,26 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <button opaque="NO" contentMode="scaleToFill" restorationIdentifier="originalTranslation" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="XN8-UZ-hYj">
-                                                    <rect key="frame" x="547" y="7" width="45" height="30"/>
+                                                    <rect key="frame" x="542" y="7" width="50" height="30"/>
                                                     <color key="backgroundColor" red="0.1960784314" green="0.36078431370000003" blue="0.50196078430000002" alpha="1" colorSpace="calibratedRGB"/>
                                                     <constraints>
-                                                        <constraint firstAttribute="width" constant="45" id="AHt-C6-PAf"/>
-                                                    </constraints>
-                                                    <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                                    <state key="normal" title="Old">
-                                                        <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                                    </state>
-                                                </button>
-                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qib-t0-cqM">
-                                                    <rect key="frame" x="469" y="7" width="70" height="30"/>
-                                                    <color key="backgroundColor" red="0.1960784314" green="0.36078431370000003" blue="0.50196078430000002" alpha="1" colorSpace="calibratedRGB"/>
-                                                    <constraints>
-                                                        <constraint firstAttribute="width" constant="70" id="o15-E0-jlG"/>
+                                                        <constraint firstAttribute="width" constant="50" id="AHt-C6-PAf"/>
                                                     </constraints>
                                                     <fontDescription key="fontDescription" name="HelveticaNeue-Bold" family="Helvetica Neue" pointSize="15"/>
                                                     <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     <state key="normal" title="New">
+                                                        <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                    </state>
+                                                </button>
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qib-t0-cqM">
+                                                    <rect key="frame" x="494" y="7" width="40" height="30"/>
+                                                    <color key="backgroundColor" red="0.1960784314" green="0.36078431370000003" blue="0.50196078430000002" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="40" id="o15-E0-jlG"/>
+                                                    </constraints>
+                                                    <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="15"/>
+                                                    <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                    <state key="normal" title="Old">
                                                         <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     </state>
                                                 </button>
@@ -988,8 +951,8 @@
                                         </tableViewCellContentView>
                                         <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                         <connections>
-                                            <outlet property="currentTranslation" destination="qib-t0-cqM" id="NCZ-Oa-RBU"/>
-                                            <outlet property="oldTranslation" destination="XN8-UZ-hYj" id="ZPG-Ea-LsX"/>
+                                            <outlet property="currentTranslation" destination="XN8-UZ-hYj" id="lp2-k8-hzw"/>
+                                            <outlet property="oldTranslation" destination="qib-t0-cqM" id="XA0-nd-qhb"/>
                                             <outlet property="translation" destination="PpY-XU-ore" id="UaQ-gV-zOw"/>
                                             <outlet property="word" destination="A9g-NP-co9" id="aUq-jX-8Lk"/>
                                         </connections>
@@ -1000,7 +963,7 @@
                                 <rect key="frame" x="0.0" y="184" width="600" height="86"/>
                                 <subviews>
                                     <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" usesAttributedText="YES" borderStyle="roundedRect" placeholder="Word" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Ouy-yx-kk6">
-                                        <rect key="frame" x="8" y="8" width="105.5" height="30"/>
+                                        <rect key="frame" x="8" y="8" width="456" height="30"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="30" id="E8L-vV-WHA"/>
                                         </constraints>
@@ -1008,7 +971,7 @@
                                         <textInputTraits key="textInputTraits" returnKeyType="next"/>
                                     </textField>
                                     <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" usesAttributedText="YES" borderStyle="roundedRect" placeholder="Translation" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="fJG-0z-YTF">
-                                        <rect key="frame" x="8" y="48" width="105.5" height="30"/>
+                                        <rect key="frame" x="8" y="48" width="456" height="30"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="30" id="SEt-L2-lw7"/>
                                         </constraints>
@@ -1016,9 +979,10 @@
                                         <textInputTraits key="textInputTraits" returnKeyType="done"/>
                                     </textField>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ZDt-Eu-YVH">
-                                        <rect key="frame" x="121.5" y="8" width="470.5" height="70"/>
+                                        <rect key="frame" x="472" y="8" width="120" height="70"/>
                                         <color key="backgroundColor" red="0.1960784314" green="0.36078431370000003" blue="0.50196078430000002" alpha="1" colorSpace="calibratedRGB"/>
                                         <constraints>
+                                            <constraint firstAttribute="width" constant="120" id="89e-qb-eBw"/>
                                             <constraint firstAttribute="height" constant="70" id="Emn-pF-jw3"/>
                                             <constraint firstAttribute="width" constant="120" id="Oo0-dC-v3O"/>
                                         </constraints>
@@ -1052,6 +1016,7 @@
                                     <constraint firstItem="fJG-0z-YTF" firstAttribute="top" secondItem="Ouy-yx-kk6" secondAttribute="bottom" constant="10" id="lxD-Y6-D64"/>
                                     <constraint firstItem="ZDt-Eu-YVH" firstAttribute="leading" secondItem="fJG-0z-YTF" secondAttribute="trailing" constant="8" id="m2h-n2-YvB"/>
                                     <constraint firstItem="fJG-0z-YTF" firstAttribute="width" secondItem="Ouy-yx-kk6" secondAttribute="width" id="mGp-Cp-mZt"/>
+                                    <constraint firstAttribute="trailing" secondItem="ZDt-Eu-YVH" secondAttribute="trailing" constant="8" id="puL-nn-g6A"/>
                                     <constraint firstItem="fJG-0z-YTF" firstAttribute="height" secondItem="Ouy-yx-kk6" secondAttribute="height" id="q7v-ti-KHX"/>
                                     <constraint firstItem="Ouy-yx-kk6" firstAttribute="top" secondItem="gBN-Mp-obk" secondAttribute="top" constant="8" id="tKe-dB-G7q"/>
                                     <constraint firstAttribute="height" constant="86" id="v7r-fB-7tn"/>

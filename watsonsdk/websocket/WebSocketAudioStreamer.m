@@ -50,7 +50,7 @@
     self.isReadyForClosure = NO;
     self.hasDataBeenSent = NO;
    
-    NSLog(@"websocket connection using %@",[[self.sConfig getWebSocketRecognizeURL] absoluteString]);
+    NSLog(@"Websocket connection using %@",[[self.sConfig getWebSocketRecognizeURL] absoluteString]);
 
     NSMutableURLRequest *req = [NSMutableURLRequest requestWithURL:[self.sConfig getWebSocketRecognizeURL]];
     
