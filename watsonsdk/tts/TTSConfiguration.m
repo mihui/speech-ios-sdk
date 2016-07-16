@@ -105,8 +105,9 @@
  *
  *  @return NSURL*
  */
-- (NSURL*)getPronunciationURL: (NSString*) text voice:(NSString*) theVoice format: (NSString*)theFormat {
-    NSDictionary *query = @{ @"text": text, @"voice": theVoice, @"format": theFormat };
+- (NSURL*)getPronunciationURL: (NSString*) text parameters:(NSDictionary*) theParameters {
+    NSMutableDictionary *query = [NSMutableDictionary dictionaryWithDictionary:theParameters];
+    [query setObject:text forKey:@"text"];
     return [self getRequestURL:WATSONSDK_SERVICE_PATH_PRONUNCIATION params:query];
 }
 

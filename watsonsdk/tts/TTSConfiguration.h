@@ -42,7 +42,8 @@
 
 - (NSURL*)getVoicesServiceURL;
 - (NSURL*)getPronunciationURL: (NSString*) text;
-- (NSURL*)getPronunciationURL: (NSString*) text voice:(NSString*) theVoice format: (NSString*)theFormat __OSX_AVAILABLE_BUT_DEPRECATED(NULL,NULL,__IPHONE_6_0,__IPHONE_6_0);
+- (NSURL*)getPronunciationURL: (NSString*) text parameters:(NSDictionary*) parameters;
+
 - (NSURL*)getSynthesizeURL:(NSString*) text;
 - (NSURL*)getSynthesizeURL:(NSString*) text customizationId:(NSString*) customizationId;
 
