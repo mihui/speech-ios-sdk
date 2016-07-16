@@ -20,9 +20,7 @@
 // URLS
 #define WATSONSDK_DEFAULT_STT_API_ENDPOINT @"https://stream.watsonplatform.net/speech-to-text/api/"
 #define WATSONSDK_SERVICE_PATH_MODELS @"/v1/models"
-#define WATSONSDK_SERVICE_PATH_v1 @"/v1"
-#define WATSONSDK_SERVICE_PATH_RECOGNIZE @"/recognize"
-#define WEBSOCKETS_SCHEME @"wss://"
+#define WATSONSDK_SERVICE_PATH_RECOGNIZE @"/v1/recognize"
 
 // codecs
 #define WATSONSDK_AUDIO_CODEC_TYPE_PCM @"audio/l16;rate=16000"

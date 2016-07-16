@@ -21,6 +21,11 @@
 @synthesize audioSampleRate = _audioSampleRate;
 @synthesize audioFrameSize = _audioFrameSize;
 
+/**
+ *  Initialize parameters with default values according to Speech Service documentation
+ *
+ *  @return id
+ */
 - (id)init {
     self = [super init];
 
@@ -50,48 +55,44 @@
 
 #pragma mark convenience methods for obtaining service URLs
 
-- (NSURL*)getModelsServiceURL {
-    NSString *uriStr = [NSString stringWithFormat:@"%@://%@%@%@", self.apiEndpoint.scheme, self.apiEndpoint.host, self.apiEndpoint.path, WATSONSDK_SERVICE_PATH_MODELS];
-    NSURL * url = [NSURL URLWithString:uriStr];
-    return url;
-}
-
 /**
  *  Service URL of loading model
  *
- *  @param modelName Model name
+ *  @return NSURL*
+ */
+- (NSURL*)getModelsServiceURL {
+    return [self getRequestURL:WATSONSDK_SERVICE_PATH_MODELS params:nil];
+}
+
+/**
+ *  Service URL of loading model with model name
+ *
+ *  @param modelName NSString*
  *
  *  @return NSURL
  */
 - (NSURL*)getModelServiceURL:(NSString*) modelName {
-    NSString *uriStr = [NSString stringWithFormat:@"%@://%@%@%@/%@",self.apiEndpoint.scheme,self.apiEndpoint.host,self.apiEndpoint.path,WATSONSDK_SERVICE_PATH_MODELS,modelName];
-    NSURL * url = [NSURL URLWithString:uriStr];
-    return url;
+    return [self getRequestURL:[NSString stringWithFormat:@"%@/%@", WATSONSDK_SERVICE_PATH_MODELS, modelName] params:nil];
 }
 
 /**
  *  WebSockets URL of Speech Recognition
  *
- *  @return NSURL
+ *  @return NSURL*
  */
 - (NSURL*)getWebSocketRecognizeURL {
-    NSMutableString *uriStr = [[NSMutableString alloc] init];
-
-    [uriStr appendFormat:@"%@%@%@%@%@", WEBSOCKETS_SCHEME, self.apiEndpoint.host, self.apiEndpoint.path, WATSONSDK_SERVICE_PATH_v1, WATSONSDK_SERVICE_PATH_RECOGNIZE];
-
-    if(![self.modelName isEqualToString:WATSONSDK_DEFAULT_STT_MODEL]) {
-        [uriStr appendFormat:@"?model=%@", self.modelName];
+    if([self.modelName isEqualToString:WATSONSDK_DEFAULT_STT_MODEL]) {
+        return [self getRequestURL:WATSONSDK_SERVICE_PATH_RECOGNIZE params:nil isWebSocket:YES];
     }
-    NSURL * url = [NSURL URLWithString:uriStr];
-    return url;
+    return [self getRequestURL:WATSONSDK_SERVICE_PATH_RECOGNIZE params: @{ @"model": self.modelName } isWebSocket:YES];
 }
 
 /**
  *  Organize JSON string for start message of WebSockets
  *
- *  @return JSON string
+ *  @return NSString*
  */
-- (NSString *)getStartMessage {
+- (NSString*)getStartMessage {
     NSString *jsonString = @"";
 
     NSMutableDictionary *inputParameters = [[NSMutableDictionary alloc] init];
@@ -142,6 +143,11 @@
     return jsonString;
 }
 
+/**
+ *  Write stop message to WebSocket
+ *
+ *  @return NSData*
+ */
 - (NSData *)getStopMessage {
     NSData *data = nil;
     data = [NSMutableData dataWithLength:0];

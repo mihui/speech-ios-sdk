@@ -38,13 +38,15 @@
 @property NSString* voiceName;
 @property NSString* audioCodec;
 
-
 - (id)init;
+
 - (NSURL*)getVoicesServiceURL;
 - (NSURL*)getPronunciationURL: (NSString*) text;
-- (NSURL*)getPronunciationURL: (NSString*) text voice:(NSString*) theVoice format: (NSString*)theFormat;
+- (NSURL*)getPronunciationURL: (NSString*) text voice:(NSString*) theVoice format: (NSString*)theFormat __OSX_AVAILABLE_BUT_DEPRECATED(NULL,NULL,__IPHONE_6_0,__IPHONE_6_0);
 - (NSURL*)getSynthesizeURL:(NSString*) text;
 - (NSURL*)getSynthesizeURL:(NSString*) text customizationId:(NSString*) customizationId;
+
 - (NSURL*)getCustomizationURL;
 - (NSURL*)getCustomizationURL:(NSString*) customizationId;
+
 @end

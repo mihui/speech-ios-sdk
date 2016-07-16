@@ -68,11 +68,62 @@
 /**
  *  setApiUrl - override setter so we can update the NSURL endpoint
  *
- *  @param apiURL
+ *  @param apiURL NSString*
  */
-- (void)setApiURL:(NSString *)apiURLStr {
+- (void)setApiURL:(NSString*)apiURLStr {
     _apiURL = apiURLStr;
     [self setApiEndpoint:[NSURL URLWithString:apiURLStr]];
+}
+
+/**
+ *  common method for building URL
+ *
+ *  @param servicePath   NSString*
+ *  @param parameters    NSDictionary*
+ *
+ *  @return NSURL*
+ */
+- (NSURL*)getRequestURL:(NSString*) servicePath params:(NSDictionary*)parameters {
+    return [self getRequestURL:servicePath params:parameters isWebSocket:NO];
+}
+
+/**
+ *  common method for building URL
+ *
+ *  @param servicePath      NSString*
+ *  @param parameters       NSDictionary*
+ *  @param isUsingWebSocket BOOL
+ *
+ *  @return NSURL*
+ */
+- (NSURL*)getRequestURL:(NSString*) servicePath params:(NSDictionary*)parameters isWebSocket:(BOOL) isUsingWebSocket {
+    NSString *serviceParameters = [self buildQueryString: parameters];
+    NSString *urlString = [NSString stringWithFormat:@"%@://%@%@%@%@", isUsingWebSocket ? WEBSOCKETS_SCHEME : self.apiEndpoint.scheme, self.apiEndpoint.host, self.apiEndpoint.path, servicePath, serviceParameters];
+    
+    NSURL *url = [NSURL URLWithString:urlString];
+    NSLog(@"URL: %@", url);
+    return url;
+}
+
+/**
+ *  Build query string
+ *
+ *  @param parameters NSDictionary*
+ *
+ *  @return NSString*
+ */
+- (NSString*)buildQueryString:(NSDictionary*)parameters {
+    if(parameters == nil || [parameters count] == 0) {
+        NSLog(@"query string is empty");
+        return @"";
+    }
+    int paramCount = 0;
+    NSMutableString *paramString = [NSMutableString stringWithString:@""];
+    for (NSString *key in parameters) {
+        [paramString appendFormat:@"%@%@=%@", paramCount++ == 0 ? @"?" : @"&", key, [[parameters objectForKey:key] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+    }
+    NSLog(@"query string--->%@", paramString);
+    return paramString;
 }
 
 @end

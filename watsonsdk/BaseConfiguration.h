@@ -24,6 +24,8 @@
 #define HTTP_METHOD_PUT @"PUT"
 #define HTTP_METHOD_DELETE @"DELETE"
 
+#define WEBSOCKETS_SCHEME @"wss"
+
 typedef void (^DataHandlerWithError) (NSData* data, NSError* error);
 typedef void (^JSONHandlerWithError) (NSDictionary* dict, NSError* error);
 
@@ -49,4 +51,7 @@ typedef void (^PowerLevelHandler)(float powerLevel);
 - (NSMutableDictionary*) createRequestHeaders;
 
 - (void)setApiURL:(NSString *)apiURLStr;
+
+- (NSURL*)getRequestURL:(NSString*) servicePath params:(NSDictionary*)parameters;
+- (NSURL*)getRequestURL:(NSString*) servicePath params:(NSDictionary*)parameters isWebSocket:(BOOL) isUsingWebSocket;
 @end

@@ -20,65 +20,94 @@
 
 - (id)init {
     self = [super init];
-    
+
     // set default values
     [self setApiEndpoint:[NSURL URLWithString:WATSONSDK_DEFAULT_TTS_API_ENDPOINT]];
     [self setVoiceName:WATSONSDK_DEFAULT_TTS_VOICE];
     [self setAudioCodec:WATSONSDK_TTS_AUDIO_CODEC_TYPE_OPUS];
-    
+
     return self;
 }
 
 #pragma mark convenience methods for obtaining service URLs
 
 - (NSURL*) getVoicesServiceURL {
-    
-    NSString *uriStr = [NSString stringWithFormat:@"%@://%@%@%@",self.apiEndpoint.scheme,self.apiEndpoint.host,self.apiEndpoint.path,WATSONSDK_SERVICE_PATH_VOICES];
-    NSURL * url = [NSURL URLWithString:uriStr];
-    return url;
+    return [self getRequestURL:WATSONSDK_SERVICE_PATH_VOICES params:nil];
 }
 
+/**
+ *  Get synthesize URL
+ *
+ *  @param text            NSString*
+ *
+ *  @return NSURL*
+ */
 - (NSURL*)getSynthesizeURL:(NSString*) text {
-    NSString *uriStr = [NSString stringWithFormat:@"%@://%@%@%@?voice=%@&accept=%@&text=%@",self.apiEndpoint.scheme,self.apiEndpoint.host,self.apiEndpoint.path,WATSONSDK_SERVICE_PATH_SYNTHESIZE,self.voiceName,self.audioCodec,[text stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
-    NSURL * url = [NSURL URLWithString:uriStr];
-    return url;
+    NSDictionary *query = @{ @"voice": self.voiceName, @"accept": self.audioCodec, @"text": text };
+    return [self getRequestURL:WATSONSDK_SERVICE_PATH_SYNTHESIZE params:query];
 }
+
+/**
+ *  Get synthesize URL of customize id
+ *
+ *  @param text            NSString*
+ *  @param customizationId NSString*
+ *
+ *  @return NSURL*
+ */
 - (NSURL*)getSynthesizeURL:(NSString*) text customizationId:(NSString*) customizationId {
     if(customizationId == nil) {
         return [self getSynthesizeURL:text];
     }
-    NSString *uriStr = [NSString stringWithFormat:@"%@://%@%@%@?voice=%@&accept=%@&text=%@&customization_id=%@",self.apiEndpoint.scheme,self.apiEndpoint.host,self.apiEndpoint.path,WATSONSDK_SERVICE_PATH_SYNTHESIZE,self.voiceName,self.audioCodec,[text stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding], customizationId];
-    NSURL * url = [NSURL URLWithString:uriStr];
-    return url;
+    NSDictionary *query = @{ @"voice": self.voiceName, @"accept": self.audioCodec, @"text": text, @"customization_id": customizationId };
+    return [self getRequestURL:WATSONSDK_SERVICE_PATH_SYNTHESIZE params:query];
 }
 
+/**
+ *  Get customization URL
+ *
+ *  @return NSURL*
+ */
 - (NSURL*)getCustomizationURL {
-    NSString *uriStr = [NSString stringWithFormat:@"%@://%@%@%@", self.apiEndpoint.scheme, self.apiEndpoint.host, self.apiEndpoint.path, WATSONSDK_SERVICE_PATH_CUSTOMIZATIONS];
-    NSURL *url = [NSURL URLWithString:uriStr];
-    NSLog(@"URL: %@", url);
-    return url;
+    return [self getRequestURL:WATSONSDK_SERVICE_PATH_CUSTOMIZATIONS params:nil];
 }
 
+/**
+ *  Get customization URL by specifying customization id
+ *
+ *  @param customizationId NSString*
+ *
+ *  @return NSURL*
+ */
 - (NSURL*)getCustomizationURL:(NSString*) customizationId {
-    NSString *uriStr = [NSString stringWithFormat:@"%@://%@%@%@/%@", self.apiEndpoint.scheme, self.apiEndpoint.host, self.apiEndpoint.path, WATSONSDK_SERVICE_PATH_CUSTOMIZATIONS, customizationId];
-    NSURL *url = [NSURL URLWithString:uriStr];
-    NSLog(@"URL: %@", url);
-    return url;
+    return [self getRequestURL:[NSString stringWithFormat:@"%@/%@", WATSONSDK_SERVICE_PATH_CUSTOMIZATIONS, customizationId] params:nil];
 }
 
-- (NSURL*)getPronunciationURL: (NSString*) text{
-    NSString *uriStr = [NSString stringWithFormat:@"%@://%@%@%@?text=%@", self.apiEndpoint.scheme, self.apiEndpoint.host, self.apiEndpoint.path, WATSONSDK_SERVICE_PATH_PRONUNCIATION, [text stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
-    NSURL *url = [NSURL URLWithString:uriStr];
-    NSLog(@"URL: %@", url);
-    return url;
+/**
+ *  Get pronunciation URL
+ *
+ *  @param text NSString*
+ *
+ *  @return NSString*
+ */
+- (NSURL*)getPronunciationURL: (NSString*) text {
+    NSDictionary *query = @{ @"text": text };
+    return [self getRequestURL:WATSONSDK_SERVICE_PATH_PRONUNCIATION params:query];
 }
 
+/**
+ *  Get pronunciation URL
+ *
+ *  @param text      NSString*
+ *  @param theVoice  NSString*
+ *  @param theFormat NSString*
+ *  @deprecated
+ *
+ *  @return NSURL*
+ */
 - (NSURL*)getPronunciationURL: (NSString*) text voice:(NSString*) theVoice format: (NSString*)theFormat {
-    NSString *uriStr = [NSString stringWithFormat:@"%@://%@%@%@?text=%@&voice=%@&format=%@", self.apiEndpoint.scheme, self.apiEndpoint.host, self.apiEndpoint.path, WATSONSDK_SERVICE_PATH_PRONUNCIATION, [text stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding], theVoice, theFormat];
-    NSURL *url = [NSURL URLWithString:uriStr];
-    NSLog(@"URL: %@", url);
-    return url;
+    NSDictionary *query = @{ @"text": text, @"voice": theVoice, @"format": theFormat };
+    return [self getRequestURL:WATSONSDK_SERVICE_PATH_PRONUNCIATION params:query];
 }
 
-//
 @end
