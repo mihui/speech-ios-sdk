@@ -143,7 +143,7 @@
     return [SpeechUtility raiseErrorWithCode:WATSON_WEBSOCKETS_ERROR_CODE
                                         message:errorMessage
                                          reason:@"Unknown"
-                                     suggestion:@"None"];
+                                     suggestion:@""];
 }
 
 /**
