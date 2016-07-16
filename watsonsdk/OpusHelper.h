@@ -15,7 +15,6 @@
  **/
 
 #import <Foundation/Foundation.h>
-#import <AVFoundation/AVFoundation.h>
 
 
 @interface OpusHelper : NSObject{
@@ -27,7 +26,7 @@
 - (BOOL) createEncoder: (int) rate frameSize:(int) frameSize;
 - (NSData *) getOggOpusHeader:(int) sampleRate;
 
-- (NSData*) encode:(NSData*) pcmData frameSize:(int) frameSize rate:(long) sampleRate isFooter: (BOOL) isFooter;
+- (NSData*) encode:(NSData*) pcmData frameSize:(int) frameSize rate:(long) sampleRate isEOS: (BOOL) isEOS;
 
 - (NSData*) opusToPCM:(NSData*) oggOpus sampleRate:(long) sampleRate;
 @end

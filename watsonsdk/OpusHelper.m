@@ -351,7 +351,7 @@ static inline unsigned int fast_rand(void) {
  *
  *  @return NSMutableData
  */
-- (NSData*) encode:(NSData*) pcmData frameSize:(int) frameSize rate:(long) sampleRate isFooter: (BOOL) isFooter {
+- (NSData*) encode:(NSData*) pcmData frameSize:(int) frameSize rate:(long) sampleRate isEOS: (BOOL) isEOS {
 //    float *data  = (float*) [pcmData bytes];
     opus_int16 *data  = (opus_int16*) [pcmData bytes];
     unsigned char *outBuffer  = malloc(pcmData.length * sizeof(unsigned char));
@@ -373,7 +373,7 @@ static inline unsigned int fast_rand(void) {
     packet.packet = outBuffer;
     packet.bytes = encodedByteCount;
     packet.b_o_s = 0;
-    packet.e_o_s = 0;
+    packet.e_o_s = isEOS ? 1 : 0;
     granulePos += encGranulePos;
     packet.granulepos = granulePos;
     packet.packetno = packetCount++;
