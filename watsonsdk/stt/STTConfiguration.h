@@ -23,12 +23,16 @@
 #define WATSONSDK_SERVICE_PATH_RECOGNIZE @"/v1/recognize"
 
 // codecs
-#define WATSONSDK_AUDIO_CODEC_TYPE_PCM @"audio/l16;rate=16000"
+#define WATSONSDK_AUDIO_CODEC_TYPE_PCM @"audio/l16"
+
 //#define WATSONSDK_AUDIO_CODEC_TYPE_WAV @"audio/wav"
 //#define WATSONSDK_AUDIO_CODEC_TYPE_FLAC @"audio/flac"
+//#define WATSONSDK_AUDIO_CODEC_TYPE_BASIC @"audio/basic"
+
 #define WATSONSDK_AUDIO_CODEC_TYPE_OPUS @"audio/ogg;codecs=opus"
 #define WATSONSDK_AUDIO_FRAME_SIZE 160
 #define WATSONSDK_AUDIO_SAMPLE_RATE 16000.0
+#define WATSONSDK_INACTIVITY_TIMEOUT 30
 
 // models
 #define WATSONSDK_DEFAULT_STT_MODEL @"en-US_BroadbandModel"
@@ -54,13 +58,15 @@
 @property BOOL profanityFilter;
 @property BOOL smartFormatting;
 
-@property float audioSampleRate;
+@property int audioSampleRate;
 @property int audioFrameSize;
 
 - (id)init;
+
 - (NSURL*)getModelsServiceURL;
 - (NSURL*)getModelServiceURL:(NSString*) modelName;
 - (NSURL*)getWebSocketRecognizeURL;
+
 - (NSString*)getStartMessage;
 - (NSData*)getStopMessage;
 

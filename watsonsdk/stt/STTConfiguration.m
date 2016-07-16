@@ -38,7 +38,7 @@
 
     [self setInterimResults: NO];
     [self setContinuous: NO];
-    [self setInactivityTimeout:[NSNumber numberWithInt:30]];
+    [self setInactivityTimeout:[NSNumber numberWithInt:WATSONSDK_INACTIVITY_TIMEOUT]];
 
     [self setKeywordsThreshold:[NSNumber numberWithDouble:-1]];
     [self setMaxAlternatives:[NSNumber numberWithInt:1]];
@@ -97,23 +97,32 @@
 
     NSMutableDictionary *inputParameters = [[NSMutableDictionary alloc] init];
     [inputParameters setValue:@"start" forKey:@"action"];
-    [inputParameters setValue:self.audioCodec forKey:@"content-type"];
-    [inputParameters setValue:[NSNumber numberWithBool:self.interimResults] forKey:@"interim_results"];
-    [inputParameters setValue:[NSNumber numberWithBool:self.continuous] forKey:@"continuous"];
-    [inputParameters setValue:self.inactivityTimeout forKey:@"inactivity_timeout"];
+    [inputParameters setValue:[NSString stringWithFormat:@"%@;rate=%d", self.audioCodec, self.audioSampleRate] forKey:@"content-type"];
+    
+    if(self.interimResults) {
+        [inputParameters setValue:@"true" forKey:@"interim_results"];
+    }
+
+    if([self.inactivityTimeout intValue] != WATSONSDK_INACTIVITY_TIMEOUT) {
+        [inputParameters setValue:self.inactivityTimeout forKey:@"inactivity_timeout"];
+    }
+
+    if(self.continuous) {
+        [inputParameters setValue:@"true" forKey:@"continuous"];
+    }
 
     if([self.maxAlternatives intValue] > 1) {
         [inputParameters setValue:self.maxAlternatives forKey:@"max_alternatives"];
     }
-    
+
     if([self.keywordsThreshold doubleValue] >= 0 && [self.keywordsThreshold doubleValue] <= 1) {
         [inputParameters setValue:self.keywordsThreshold forKey:@"keywords_threshold"];
     }
-    
+
     if([self.wordAlternativesThreshold doubleValue] >= 0 && [self.wordAlternativesThreshold doubleValue] <= 1) {
         [inputParameters setValue:self.wordAlternativesThreshold forKey:@"word_alternatives_threshold"];
     }
-    
+
     if(self.keywords && [self.keywords count] > 0) {
         [inputParameters setValue:self.keywords forKey:@"keywords"];
     }
@@ -121,7 +130,7 @@
     if(self.smartFormatting) {
         [inputParameters setValue:@"true" forKey:@"smart_formatting"];
     }
-    
+
     if(self.timestamps) {
         [inputParameters setValue:@"true" forKey:@"timestamps"];
     }
