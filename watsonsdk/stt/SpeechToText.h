@@ -15,8 +15,8 @@
  **/
 
 #import <Foundation/Foundation.h>
-#import <AudioToolbox/AudioQueue.h>
-#import <AudioToolbox/AudioFile.h>
+#import <AVFoundation/AVFoundation.h>
+
 #import "STTConfiguration.h"
 
 @interface SpeechToTextResult : NSObject
@@ -30,6 +30,8 @@
 
 @interface SpeechToText : NSObject <NSURLSessionDelegate>
 
+// For capturing data has been sent out
+@property (nonatomic, copy) DataHandler audioDataCallback;
 @property (nonatomic,retain) STTConfiguration *config;
 
 +(id)initWithConfig:(STTConfiguration *)config;
@@ -42,14 +44,14 @@
  *  @param dataHandler      DataHandler
  *  @param powerHandler     PowerLevelHandler
  */
-//- (void) recognize:(JSONHandlerWithError) recognizeHandler dataHandler: (DataHandler) dataHandler powerHandler: PowerLevelHandler powerHandler;
+- (void) recognize:(JSONHandlerWithError) recognizeHandler dataHandler: (DataHandler) dataHandler powerHandler: (PowerLevelHandler) powerHandler;
 /**
  *  stream audio from the device microphone to the STT service
  *
  *  @param recognizeHandler JSONHandlerWithError
  *  @param dataHandler      DataHandler
  */
-//- (void) recognize:(JSONHandlerWithError) recognizeHandler dataHandler: (DataHandler) dataHandler;
+- (void) recognize:(JSONHandlerWithError) recognizeHandler dataHandler: (DataHandler) dataHandler;
 /**
  *  stream audio from the device microphone to the STT service
  *

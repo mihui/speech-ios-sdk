@@ -15,6 +15,7 @@
  **/
 
 #import "WebSocketAudioStreamer.h"
+#import "OpusHelper.h"
 
 @interface WebSocketAudioStreamer () <SRWebSocketDelegate>
 
@@ -32,9 +33,12 @@
 @property BOOL isReadyForClosure;
 @property BOOL hasDataBeenSent;
 
+@property OpusHelper* opusHelper;
+
 @end
 
 @implementation WebSocketAudioStreamer
+
 /**
  *  connect to an itrans server using websockets
  *
@@ -68,6 +72,10 @@
     self.closureCallback = closureCallback;
     [self.webSocket open];
     self.audioBuffer = [NSMutableArray arrayWithCapacity:0];
+
+    // setup opus helper
+    self.opusHelper = [[OpusHelper alloc] init];
+    [self.opusHelper createEncoder: config.audioSampleRate frameSize: config.audioFrameSize];
 }
 
 /**
@@ -121,6 +129,12 @@
 }
 dispatch_once_t predicate_wait;
 dispatch_once_t predicate_connect;
+
+- (void)writeHeader {
+    if([[self.sConfig audioCodec] isEqualToString:WATSONSDK_AUDIO_CODEC_TYPE_OPUS]) {
+        [self writeData:[[self opusHelper] getOggOpusHeader:[self.sConfig audioSampleRate]]];
+    }
+}
 
 /**
  *  Send out data, buffer as needed
@@ -195,8 +209,35 @@ dispatch_once_t predicate_connect;
         [self.audioBuffer addObject:data];
     }
 
-    if(self.audioDataCallback != nil && marker == WATSONSDK_STREAM_MARKER_DATA)
+    if(self.audioDataCallback != nil && marker == WATSONSDK_STREAM_MARKER_DATA && self.isReadyForClosure == NO)
         self.audioDataCallback(data);
+}
+
+- (void) writeData:(char*) data size: (int) size {
+    if (size > 0) {
+        if([[self.sConfig audioCodec] isEqualToString:WATSONSDK_AUDIO_CODEC_TYPE_OPUS]) {
+            NSUInteger chunkSize = [self.sConfig audioFrameSize] * 2;
+            NSUInteger offset = 0;
+            
+            do {
+                NSUInteger thisChunkSize = size - offset > chunkSize ? chunkSize : size - offset;
+                NSData* chunk = [NSData dataWithBytesNoCopy:data + offset
+                                                     length:thisChunkSize
+                                               freeWhenDone:NO];
+                // opus encode block
+                NSData *compressed = [self.opusHelper encode:chunk frameSize: [self.sConfig audioFrameSize] rate:[self.sConfig audioSampleRate] isEOS:self.isReadyForClosure];  // TODO: EOS calculation
+
+                if(compressed != nil && [compressed length] > 0) {
+                    [self writeData:compressed];
+                }
+
+                offset += thisChunkSize;
+            } while (offset < size);
+        }
+        else {
+            [self writeData:[NSData dataWithBytes:data length:size]];
+        }
+    }
 }
 
 #pragma mark - SRWebSocketDelegate
@@ -253,7 +294,7 @@ dispatch_once_t predicate_connect;
             
             if([state isEqualToString:@"listening"]) {
                 
-                if(self.isReadyForAudio && (self.isReadyForClosure || self.sConfig.continuous == NO)) {
+                if(self.isReadyForAudio && (self.isReadyForClosure || [self.sConfig continuous] == NO)) {
                     // if we receive a listening state after having sent audio it means we can now close the connection
                     [self disconnect: @"Watson completed transcribing or closure data has been written"];
                 }

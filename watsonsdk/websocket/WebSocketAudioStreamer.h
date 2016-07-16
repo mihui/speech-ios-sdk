@@ -27,8 +27,11 @@
 - (void)connect:(STTConfiguration*)config headers:(NSDictionary*)headers completionCallback:(ClosureHandler)closureCallback;
 - (void)reconnect;
 - (void)disconnect:(NSString*) reason;
+
+- (void)writeHeader;
 - (void)writeData:(NSData*) data;
 - (void)writeData:(NSData*) data marker:(int)marker;
+- (void)writeData:(char*) data size: (int) size;
 - (void)setRecognizeHandler:(JSONHandlerWithError)handler;
 - (void)setAudioDataHandler:(DataHandler)handler;
 - (void)sendEndOfStreamMarker;

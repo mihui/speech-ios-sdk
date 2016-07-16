@@ -34,14 +34,10 @@ typedef struct
 
 @property NSString* pathPCM;
 @property NSTimer *PeakPowerTimer;
-@property OpusHelper* opus;
 @property RecordingState recordState;
 @property WebSocketAudioStreamer* audioStreamer;
 @property (nonatomic, copy) JSONHandlerWithError recognizeCallback;
 @property (nonatomic, copy) PowerLevelHandler powerLevelCallback;
-
-// For capturing data has been sent out
-@property (nonatomic, copy) DataHandler audioDataCallback;
 
 @end
 
@@ -51,16 +47,13 @@ typedef struct
 @synthesize powerLevelCallback;
 @synthesize audioDataCallback;
 
-
 // static for use by c code
 static BOOL isNewRecordingAllowed;
-static BOOL isCompressedOpus;
 static int audioFrameSize;
 
 BOOL isPermissionGranted = NO;
 
 id audioStreamerRef;
-id opusRef;
 
 #pragma mark public methods
 
@@ -86,15 +79,8 @@ id opusRef;
 - (id)initWithConfig:(STTConfiguration *)config {
     self.config = config;
     // set audio encoding flags so they are accessible in c audio callbacks
-    isCompressedOpus = [config.audioCodec isEqualToString:WATSONSDK_AUDIO_CODEC_TYPE_OPUS] ? YES : NO;
     audioFrameSize = config.audioFrameSize;
-
     isNewRecordingAllowed = YES;
-
-    // setup opus helper
-    self.opus = [[OpusHelper alloc] init];
-    [self.opus createEncoder: config.audioSampleRate frameSize:audioFrameSize];
-    opusRef = self->_opus;
 
     return self;
 }
@@ -292,8 +278,7 @@ id opusRef;
                                          kCFRunLoopCommonModes,
                                          0,
                                          &_recordState.queue);
-    
-    
+
     if(status == 0) {
         
         for(int i = 0; i < NUM_BUFFERS; i++) {
@@ -405,10 +390,8 @@ id opusRef;
         } refreshCache:NO];
     }
 
-    // Adding Ogg Header
-    if(isCompressedOpus) {
-        [self.audioStreamer writeData:[[self opus] getOggOpusHeader:_config.audioSampleRate] marker:WATSONSDK_STREAM_MARKER_DATA];
-    }
+    // Writting header
+    [self.audioStreamer writeHeader];
 
     // set a pointer to the wsuploader class so it is accessible in the c callback
     audioStreamerRef = self.audioStreamer;
@@ -429,29 +412,6 @@ id opusRef;
     format->mFormatFlags = kLinearPCMFormatFlagIsSignedInteger | kLinearPCMFormatFlagIsPacked;
 }
 
-void sendAudioOpusEncoded(char *data, int size, int sampleRate, bool isFooter) {
-    if (size > 0) {
-        NSUInteger chunkSize = audioFrameSize * 2;
-        NSUInteger offset = 0;
-
-        do {
-            NSUInteger thisChunkSize = size - offset > chunkSize ? chunkSize : size - offset;
-            NSData* chunk = [NSData dataWithBytesNoCopy:data + offset
-                                                 length:thisChunkSize
-                                           freeWhenDone:NO];
-
-            // opus encode block
-            NSData *compressed = [opusRef encode:chunk frameSize:audioFrameSize rate:sampleRate isFooter:isFooter];
-
-            if(compressed != nil && [compressed length] > 0){
-                [audioStreamerRef writeData:compressed];
-            }
-
-            offset += thisChunkSize;
-        } while (offset < size);
-    }
-}
-
 #pragma mark audio callbacks
 
 void AudioInputStreamingCallback(
@@ -465,16 +425,12 @@ void AudioInputStreamingCallback(
     OSStatus status=0;
     RecordingState* recordState = (RecordingState*)inUserData;
 
-    if(isCompressedOpus)
-        sendAudioOpusEncoded(inBuffer->mAudioData, inBuffer->mAudioDataByteSize, recordState->dataFormat.mSampleRate, false);
-    else {
-        NSData *data = [NSData dataWithBytes:inBuffer->mAudioData length:inBuffer->mAudioDataByteSize];
-        [audioStreamerRef writeData:data];
-    }
+    [audioStreamerRef writeData:inBuffer->mAudioData size:inBuffer->mAudioDataByteSize];
 
     if(status == 0) {
         recordState->currentPacket += inNumberPacketDescriptions;
     }
+
     AudioQueueEnqueueBuffer(recordState->queue, inBuffer, 0, NULL);
 }
 
