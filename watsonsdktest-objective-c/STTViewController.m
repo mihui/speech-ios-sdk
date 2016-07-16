@@ -105,14 +105,25 @@
  *  @param sender id
  */
 -(IBAction) pressStartRecord:(id) sender {
+    NSMutableString *finalTranscript = [[NSMutableString alloc] initWithCapacity:0];
+    NSMutableString *tempTranscript = [[NSMutableString alloc] initWithCapacity:0];
     // start recognize
     [stt recognize:^(NSDictionary* res, NSError* err){
         // make sure the connection and recording process are finished
         if(err == nil) {
             SpeechToTextResult *sttResult = [stt getResult:res];
 
-            if(sttResult.transcript)
-                result.text = sttResult.transcript;
+            if(sttResult.transcript) {
+                if(sttResult.isFinal) {
+                    [finalTranscript appendFormat:@"%@\n", sttResult.transcript];
+                    [tempTranscript setString:@""];
+                }
+                else {
+                    [tempTranscript setString:sttResult.transcript];
+                }
+
+                result.text = [NSString stringWithFormat:@"%@%@", finalTranscript, tempTranscript];
+            }
         }
         else {
             NSLog(@"Received error from the SDK %@",[err description]);

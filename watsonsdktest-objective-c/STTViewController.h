@@ -20,7 +20,7 @@
 @interface STTViewController : UIViewController<UITextFieldDelegate,UIPickerViewDataSource, UIPickerViewDelegate>
 
 @property SpeechToText *stt;
-@property IBOutlet UILabel *result;
+@property IBOutlet UITextView *result;
 @property IBOutlet UIView *soundbar;
 -(IBAction) pressStartRecord:(id) sender;
 
