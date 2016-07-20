@@ -160,4 +160,6 @@
             header:(NSDictionary*) extraHeader;
 
 + (BOOL)isOS6;
+
++ (NSMutableData *)addWavHeader:(NSData *)wavNoheader rate:(long) sampleRate;
 @end
