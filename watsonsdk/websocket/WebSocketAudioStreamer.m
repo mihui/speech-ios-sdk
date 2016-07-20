@@ -209,8 +209,8 @@ dispatch_once_t predicate_connect;
         [self.audioBuffer addObject:data];
     }
 
-    if(self.audioDataCallback != nil && marker == WATSONSDK_STREAM_MARKER_DATA && self.isReadyForClosure == NO)
-        self.audioDataCallback(data);
+//    if(self.audioDataCallback != nil && marker == WATSONSDK_STREAM_MARKER_DATA && self.isReadyForClosure == NO)
+//        self.audioDataCallback(data);
 }
 
 - (void) writeData:(char*) data size: (int) size {
@@ -238,6 +238,8 @@ dispatch_once_t predicate_connect;
             [self writeData:[NSData dataWithBytes:data length:size]];
         }
     }
+    if(self.audioDataCallback != nil && self.isReadyForClosure == NO)
+        self.audioDataCallback([NSData dataWithBytes:data length:size]);
 }
 
 #pragma mark - SRWebSocketDelegate

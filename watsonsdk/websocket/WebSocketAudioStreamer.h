@@ -29,8 +29,6 @@
 - (void)disconnect:(NSString*) reason;
 
 - (void)writeHeader;
-- (void)writeData:(NSData*) data;
-- (void)writeData:(NSData*) data marker:(int)marker;
 - (void)writeData:(char*) data size: (int) size;
 - (void)setRecognizeHandler:(JSONHandlerWithError)handler;
 - (void)setAudioDataHandler:(DataHandler)handler;
