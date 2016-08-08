@@ -153,7 +153,7 @@ id audioStreamerRef;
             }
             else {
                 // Permission denied
-                NSError *recordError = [SpeechUtility raiseErrorWithMessage:@"Permission denied"];
+                NSError *recordError = [SpeechUtility raiseErrorWithCode:WATSON_PERMISSION_ERROR_CODE message:@"Permission denied"];
                 self.recognizeCallback(nil, recordError);
             }
         }];
@@ -228,12 +228,12 @@ id audioStreamerRef;
             NSDictionary *result =[resultArray objectAtIndex:0];
 
             NSArray *alternatives = [result objectForKey:@"alternatives"];
-
-            if([result objectForKey:@"complete"] != nil)
-                sttResult.isCompleted = [[result objectForKey:@"complete"] boolValue];
-
+            
             if([result objectForKey:@"final"] != nil)
                 sttResult.isFinal = [[result objectForKey:@"final"] boolValue];
+            
+            if([result objectForKey:@"complete"] != nil)
+                sttResult.isCompleted = [[result objectForKey:@"complete"] boolValue];
 
             if([alternatives objectAtIndex:0] != nil) {
                 NSDictionary *alternative = [alternatives objectAtIndex:0];

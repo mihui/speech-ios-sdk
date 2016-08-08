@@ -132,15 +132,15 @@
     }
 
     if(self.timestamps) {
-        [inputParameters setValue:@"true" forKey:@"timestamps"];
+        [inputParameters setValue:[NSNumber numberWithBool:YES] forKey:@"timestamps"];
     }
-    
+
     if(self.profanityFilter == NO) {
         [inputParameters setValue:@"false" forKey:@"profanity_filter"];
     }
 
     if(self.wordConfidence) {
-        [inputParameters setValue:@"false" forKey:@"word_confidence"];
+        [inputParameters setValue:[NSNumber numberWithBool:YES] forKey:@"word_confidence"];
     }
 
     if([NSJSONSerialization isValidJSONObject:inputParameters]){
