@@ -41,11 +41,12 @@
 /**
  *  raise error with message only
  *
+ *  @param code         error code
  *  @param errorMessage error message
  *
  *  @return NSError
  */
-+ (NSError*)raiseErrorWithMessage:(NSString*) errorMessage;
++ (NSError*)raiseErrorWithCode: (NSInteger)code message: (NSString*) errorMessage;
 
 /**
  *  raise error with code and messages

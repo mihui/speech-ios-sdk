@@ -260,7 +260,8 @@ dispatch_once_t predicate_connect;
     self.isReadyForAudio = NO;
     self.isReadyForClosure = NO;
     self.webSocket = nil;
-    self.recognizeCallback(nil, error);
+    NSError *socketError = [SpeechUtility raiseErrorWithCode:WATSON_WEBSOCKETS_ERROR_CODE message:[error localizedDescription]];
+    self.recognizeCallback(nil, socketError);
 
 //    if ([self.reconnectAttempts intValue] < 3) {
 //        self.reconnectAttempts = [NSNumber numberWithInt:[self.reconnectAttempts intValue] +1] ;
@@ -284,7 +285,8 @@ dispatch_once_t predicate_connect;
     if(error) {
         /* JSON was malformed, act appropriately here */
         NSLog(@"JSON from service malformed, received %@", json);
-        self.recognizeCallback(nil, error);
+        NSError *dataError = [SpeechUtility raiseErrorWithCode:WATSON_DATAFORMAT_ERROR_CODE message: [error localizedDescription]];
+        self.recognizeCallback(nil, dataError);
     }
 
     if([object isKindOfClass:[NSDictionary class]])
@@ -316,8 +318,9 @@ dispatch_once_t predicate_connect;
         }
 
         if([results objectForKey:@"error"] != nil) {
+            NSLog(@"results of error--->%@", results);
             NSString *errorMessage = [results objectForKey:@"error"];
-            NSError *error = [SpeechUtility raiseErrorWithMessage:errorMessage];
+            NSError *error = [SpeechUtility raiseErrorWithCode:WATSON_SPEECHAPIS_ERROR_CODE message:errorMessage];
             self.recognizeCallback(nil, error);
             [self disconnect: errorMessage];
         }
@@ -343,7 +346,7 @@ dispatch_once_t predicate_connect;
     NSString *errorMessage = [SpeechUtility findUnexpectedErrorWithCode: code];
 
     if(errorMessage != nil && code != SRStatusCodeNormal) {
-        NSError *error = [SpeechUtility raiseErrorWithCode:code message:errorMessage reason:reason suggestion:@"Try reconnecting"];
+        NSError *error = [SpeechUtility raiseErrorWithCode:WATSON_WEBSOCKETS_ERROR_CODE message:errorMessage reason:reason suggestion:@"Try reconnecting"];
         [self webSocket:webSocket didFailWithError:error];
         return;
     }

@@ -129,21 +129,22 @@
                                NSLocalizedRecoverySuggestionErrorKey: suggestionMessage
                                };
 
-    return [NSError errorWithDomain:WATSON_WEBSOCKETS_ERROR_DOMAIN code:code userInfo:userInfo];
+    return [NSError errorWithDomain:WATSON_SDK_ERROR_DOMAIN code:code userInfo:userInfo];
 }
 
 /**
  *  Produce customized error with message
  *
- *  @param errorMessage error message
+ *  @param code         NSInteger
+ *  @param errorMessage NSString
  *
- *  @return customized error
+ *  @return NSError*
  */
-+ (NSError*)raiseErrorWithMessage:(NSString*) errorMessage{
-    return [SpeechUtility raiseErrorWithCode:WATSON_WEBSOCKETS_ERROR_CODE
-                                        message:errorMessage
-                                         reason:@"Unknown"
-                                     suggestion:@""];
++ (NSError*)raiseErrorWithCode: (NSInteger)code message: (NSString*) errorMessage {
+    return [SpeechUtility raiseErrorWithCode:code
+                                     message:errorMessage
+                                      reason:@""
+                                  suggestion:@""];
 }
 
 /**
