@@ -37,7 +37,7 @@
     [self setAudioFrameSize:WATSONSDK_AUDIO_FRAME_SIZE_PCM];
 
     [self setInterimResults: NO];
-    [self setContinuous: NO];
+    [self setContinuous:NO];
     [self setInactivityTimeout:[NSNumber numberWithInt:WATSONSDK_INACTIVITY_TIMEOUT]];
 
     [self setKeywordsThreshold:[NSNumber numberWithDouble:-1]];
@@ -100,7 +100,7 @@
     [inputParameters setValue:[NSString stringWithFormat:@"%@;rate=%d", self.audioCodec, self.audioSampleRate] forKey:@"content-type"];
     
     if(self.interimResults) {
-        [inputParameters setValue:@"true" forKey:@"interim_results"];
+        [inputParameters setValue:[NSNumber numberWithBool:YES] forKey:@"interim_results"];
     }
 
     if([self.inactivityTimeout intValue] != WATSONSDK_INACTIVITY_TIMEOUT) {
@@ -108,7 +108,7 @@
     }
 
     if(self.continuous) {
-        [inputParameters setValue:@"true" forKey:@"continuous"];
+        [inputParameters setValue:[NSNumber numberWithBool:YES] forKey:@"continuous"];
     }
 
     if([self.maxAlternatives intValue] > 1) {
@@ -128,7 +128,7 @@
     }
 
     if(self.smartFormatting) {
-        [inputParameters setValue:@"true" forKey:@"smart_formatting"];
+        [inputParameters setValue:[NSNumber numberWithBool:YES] forKey:@"smart_formatting"];
     }
 
     if(self.timestamps) {
@@ -136,7 +136,7 @@
     }
 
     if(self.profanityFilter == NO) {
-        [inputParameters setValue:@"false" forKey:@"profanity_filter"];
+        [inputParameters setValue:[NSNumber numberWithBool:NO] forKey:@"profanity_filter"];
     }
 
     if(self.wordConfidence) {
