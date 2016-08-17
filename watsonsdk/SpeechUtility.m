@@ -178,7 +178,7 @@
         if([theResponse statusCode] == 200 || [theResponse statusCode] == 304) {
             handler(responseData, nil);
         }
-        else{
+        else {
             responseObject = [NSJSONSerialization JSONObjectWithData:responseData options:NSJSONReadingMutableContainers error:&dataError];
 
             if(dataError) {

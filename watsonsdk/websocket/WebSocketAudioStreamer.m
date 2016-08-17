@@ -260,7 +260,15 @@ dispatch_once_t predicate_connect;
     self.isReadyForAudio = NO;
     self.isReadyForClosure = NO;
     self.webSocket = nil;
-    NSError *socketError = [SpeechUtility raiseErrorWithCode:WATSON_WEBSOCKETS_ERROR_CODE message:[error localizedDescription]];
+
+    int statusCode = WATSON_WEBSOCKETS_ERROR_CODE;
+
+    // set status code returned from WebSocket
+    if([[error userInfo] objectForKey:SRHTTPResponseErrorKey] != nil) {
+        statusCode = [[[error userInfo] objectForKey:SRHTTPResponseErrorKey] intValue];
+    }
+
+    NSError *socketError = [SpeechUtility raiseErrorWithCode:statusCode message:[error localizedDescription]];
     self.recognizeCallback(nil, socketError);
 
 //    if ([self.reconnectAttempts intValue] < 3) {
@@ -343,7 +351,7 @@ dispatch_once_t predicate_connect;
         return;
     }
 
-    NSString *errorMessage = [SpeechUtility findUnexpectedErrorWithCode: code];
+    NSString *errorMessage = [SpeechUtility findUnexpectedErrorWithCode:code];
 
     if(errorMessage != nil && code != SRStatusCodeNormal) {
         NSError *error = [SpeechUtility raiseErrorWithCode:WATSON_WEBSOCKETS_ERROR_CODE message:errorMessage reason:reason suggestion:@"Try reconnecting"];
