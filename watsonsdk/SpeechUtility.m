@@ -96,7 +96,7 @@
         case 1015:
             return @"The connection was closed due to a failure to perform a TLS handshake";
         default:
-            return nil;
+            return @"";
     }
 }
 
@@ -109,6 +109,7 @@
  */
 + (NSError *)raiseErrorWithCode:(NSInteger)code{
     NSString* errorMessage = [SpeechUtility findUnexpectedErrorWithCode:code];
+
     return [SpeechUtility raiseErrorWithCode:code message:errorMessage reason:errorMessage suggestion:@""];
 }
 
