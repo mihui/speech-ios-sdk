@@ -29,6 +29,8 @@
 - (id)init {
     self = [super init];
 
+    [self setConnectionTimeout: [NSNumber numberWithInt:WATSONSDK_CONNECTION_TIMEOUT]];
+
     // set default values according to the service
     [self setApiEndpoint:[NSURL URLWithString:WATSONSDK_DEFAULT_STT_API_ENDPOINT]];
     [self setModelName:WATSONSDK_DEFAULT_STT_MODEL];
@@ -149,6 +151,7 @@
         if(error == nil)
             jsonString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
     }
+
     return jsonString;
 }
 
