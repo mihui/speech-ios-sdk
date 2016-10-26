@@ -38,6 +38,7 @@
 #import "SRSIMDHelpers.h"
 #import "NSURLRequest+SRWebSocketPrivate.h"
 #import "NSRunLoop+SRWebSocketPrivate.h"
+#import "SRConstants.h"
 
 #if !__has_feature(objc_arc)
 #error SocketRocket must be compiled with ARC enabled
@@ -48,29 +49,6 @@ __attribute__((used)) static void importCategories()
     import_NSURLRequest_SRWebSocket();
     import_NSRunLoop_SRWebSocket();
 }
-
-/**
- Default buffer size that is used for reading/writing to streams.
- */
-static size_t SRDefaultBufferSize(void) {
-    static size_t size;
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        size = getpagesize();
-    });
-    return size;
-}
-
-typedef NS_ENUM(NSInteger, SROpCode)
-{
-    SROpCodeTextFrame = 0x1,
-    SROpCodeBinaryFrame = 0x2,
-    // 3-7 reserved.
-    SROpCodeConnectionClose = 0x8,
-    SROpCodePing = 0x9,
-    SROpCodePong = 0xA,
-    // B-F reserved.
-};
 
 typedef struct {
     BOOL fin;
@@ -348,8 +326,6 @@ NSString *const SRHTTPResponseErrorKey = @"HTTPResponseStatusCode";
 
 - (void)_connectionDoneWithError:(NSError *)error readStream:(NSInputStream *)readStream writeStream:(NSOutputStream *)writeStream
 {
-    _proxyConnect = nil; // Job's done! This is not longer required.
-
     if (error != nil) {
         [self _failWithError:error];
     } else {
@@ -372,6 +348,11 @@ NSString *const SRHTTPResponseErrorKey = @"HTTPResponseStatusCode";
             });
         }
     }
+    // Schedule to run on a work queue, to make sure we don't run this inline and deallocate `self` inside `SRProxyConnect`.
+    // TODO: (nlutsenko) Find a better structure for this, maybe Bolts Tasks?
+    dispatch_async(_workQueue, ^{
+        _proxyConnect = nil;
+    });
 }
 
 - (BOOL)_checkHandshake:(CFHTTPMessageRef)httpMessage;
@@ -479,41 +460,7 @@ NSString *const SRHTTPResponseErrorKey = @"HTTPResponseStatusCode";
         [_securityPolicy updateSecurityOptionsInStream:_outputStream];
     }
 
-    _inputStream.delegate = self;
-    _outputStream.delegate = self;
-
-    [self setupNetworkServiceType:_urlRequest.networkServiceType];
-}
-
-- (void)setupNetworkServiceType:(NSURLRequestNetworkServiceType)requestNetworkServiceType
-{
-    NSString *networkServiceType;
-    switch (requestNetworkServiceType) {
-        case NSURLNetworkServiceTypeDefault:
-            break;
-        case NSURLNetworkServiceTypeVoIP: {
-            networkServiceType = NSStreamNetworkServiceTypeVoIP;
-#if TARGET_OS_IPHONE && __IPHONE_9_0
-            if (floor(NSFoundationVersionNumber) > NSFoundationVersionNumber_iOS_8_3) {
-                static dispatch_once_t predicate;
-                dispatch_once(&predicate, ^{
-                    NSLog(@"SocketRocket: %@ - this service type is deprecated in favor of using PushKit for VoIP control", networkServiceType);
-                });
-            }
-#endif
-            break;
-        }
-        case NSURLNetworkServiceTypeVideo:
-            networkServiceType = NSStreamNetworkServiceTypeVideo;
-            break;
-        case NSURLNetworkServiceTypeBackground:
-            networkServiceType = NSStreamNetworkServiceTypeBackground;
-            break;
-        case NSURLNetworkServiceTypeVoice:
-            networkServiceType = NSStreamNetworkServiceTypeVoice;
-            break;
-    }
-
+    NSString *networkServiceType = SRStreamNetworkServiceTypeFromURLRequest(_urlRequest);
     if (networkServiceType != nil) {
         [_inputStream setProperty:networkServiceType forKey:NSStreamNetworkServiceType];
         [_outputStream setProperty:networkServiceType forKey:NSStreamNetworkServiceType];
@@ -711,12 +658,15 @@ NSString *const SRHTTPResponseErrorKey = @"HTTPResponseStatusCode";
     return YES;
 }
 
-- (void)handlePing:(NSData *)pingData;
+- (void)_handlePingWithData:(nullable NSData *)data
 {
     // Need to pingpong this off _callbackQueue first to make sure messages happen in order
-    [self.delegateController performDelegateQueueBlock:^{
+    [self.delegateController performDelegateBlock:^(id<SRWebSocketDelegate> _Nullable delegate, SRDelegateAvailableMethods availableMethods) {
+        if (availableMethods.didReceivePing) {
+            [delegate webSocket:self didReceivePingWithData:data];
+        }
         dispatch_async(_workQueue, ^{
-            [self _sendFrameWithOpcode:SROpCodePong data:pingData];
+            [self _sendFrameWithOpcode:SROpCodePong data:data];
         });
     }];
 }
@@ -877,7 +827,7 @@ static inline BOOL closeCodeIsValid(int closeCode) {
             [self handleCloseWithData:frameData];
             break;
         case SROpCodePing:
-            [self handlePing:frameData];
+            [self _handlePingWithData:frameData];
             break;
         case SROpCodePong:
             [self handlePong:frameData];
@@ -1558,7 +1508,6 @@ static const size_t SRFrameHeaderOverhead = 32;
         }
 
         case NSStreamEventNone:
-        default:
             SRDebugLog(@"(default)  %@", aStream);
             break;
     }
@@ -1624,28 +1573,28 @@ static inline int32_t validate_dispatch_data_partial_string(NSData *data) {
     if (codepoint == -1) {
         // Check to see if the last byte is valid or whether it was just continuing
         if (!U8_IS_LEAD(str[lastOffset]) || U8_COUNT_TRAIL_BYTES(str[lastOffset]) + lastOffset < (int32_t)size) {
-            
+
             size = -1;
         } else {
             uint8_t leadByte = str[lastOffset];
             U8_MASK_LEAD_BYTE(leadByte, U8_COUNT_TRAIL_BYTES(leadByte));
-            
+
             for (int i = lastOffset + 1; i < offset; i++) {
                 if (U8_IS_SINGLE(str[i]) || U8_IS_LEAD(str[i]) || !U8_IS_TRAIL(str[i])) {
                     size = -1;
                 }
             }
-            
+
             if (size != -1) {
                 size = lastOffset;
             }
         }
     }
-    
+
     if (size != -1 && ![[NSString alloc] initWithBytesNoCopy:(char *)[data bytes] length:size encoding:NSUTF8StringEncoding freeWhenDone:NO]) {
         size = -1;
     }
-    
+
     return size;
 }
 
@@ -1654,14 +1603,14 @@ static inline int32_t validate_dispatch_data_partial_string(NSData *data) {
 // This is a hack, and probably not optimal
 static inline int32_t validate_dispatch_data_partial_string(NSData *data) {
     static const int maxCodepointSize = 3;
-    
+
     for (int i = 0; i < maxCodepointSize; i++) {
         NSString *str = [[NSString alloc] initWithBytesNoCopy:(char *)data.bytes length:data.length - i encoding:NSUTF8StringEncoding freeWhenDone:NO];
         if (str) {
             return (int32_t)data.length - i;
         }
     }
-    
+
     return -1;
 }
 

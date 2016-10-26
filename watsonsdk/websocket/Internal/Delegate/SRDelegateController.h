@@ -9,6 +9,7 @@
 
 #import <Foundation/Foundation.h>
 
+// #import <SocketRocket/SRWebSocket.h>
 #import "SRWebSocket.h"
 
 NS_ASSUME_NONNULL_BEGIN
@@ -20,6 +21,7 @@ struct SRDelegateAvailableMethods {
     BOOL didOpen : 1;
     BOOL didFailWithError : 1;
     BOOL didCloseWithCode : 1;
+    BOOL didReceivePing : 1;
     BOOL didReceivePong : 1;
     BOOL shouldConvertTextFrameToString : 1;
 };

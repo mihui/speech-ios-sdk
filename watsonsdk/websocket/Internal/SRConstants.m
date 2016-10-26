@@ -7,8 +7,13 @@
 // of patent rights can be found in the PATENTS file in the same directory.
 //
 
-// #import <SocketRocket/NSURLRequest+SRWebSocket.h>
-#import "NSURLRequest+SRWebSocket.h"
+#import "SRConstants.h"
 
-// Empty function that force links the object file for the category.
-extern void import_NSURLRequest_SRWebSocket(void);
+size_t SRDefaultBufferSize(void) {
+    static size_t size;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        size = getpagesize();
+    });
+    return size;
+}

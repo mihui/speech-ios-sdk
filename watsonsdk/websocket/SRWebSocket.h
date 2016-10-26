@@ -21,7 +21,7 @@ typedef NS_ENUM(NSInteger, SRReadyState) {
 };
 
 typedef NS_ENUM(NSInteger, SRStatusCode) {
-    // 0–999: Reserved and not used.
+    // 0-999: Reserved and not used.
     SRStatusCodeNormal = 1000,
     SRStatusCodeGoingAway = 1001,
     SRStatusCodeProtocolError = 1002,
@@ -38,10 +38,10 @@ typedef NS_ENUM(NSInteger, SRStatusCode) {
     SRStatusCodeTryAgainLater = 1013,
     // 1014: Reserved for future use by the WebSocket standard.
     SRStatusCodeTLSHandshake = 1015,
-    // 1016–1999: Reserved for future use by the WebSocket standard.
-    // 2000–2999: Reserved for use by WebSocket extensions.
-    // 3000–3999: Available for use by libraries and frameworks. May not be used by applications. Available for registration at the IANA via first-come, first-serve.
-    // 4000–4999: Available for use by applications.
+    // 1016-1999: Reserved for future use by the WebSocket standard.
+    // 2000-2999: Reserved for use by WebSocket extensions.
+    // 3000-3999: Available for use by libraries and frameworks. May not be used by applications. Available for registration at the IANA via first-come, first-serve.
+    // 4000-4999: Available for use by applications.
 };
 
 @class SRWebSocket;
@@ -220,7 +220,7 @@ extern NSString *const SRHTTPResponseErrorKey;
  @param runLoop The run loop on which to schedule the receiver.
  @param mode     The mode for the run loop.
  */
-- (void)scheduleInRunLoop:(NSRunLoop *)runLoop forMode:(NSString *)mode;// NS_SWIFT_NAME(schedule(in:forMode:));
+- (void)scheduleInRunLoop:(NSRunLoop *)runLoop forMode:(NSString *)mode NS_SWIFT_NAME(schedule(in:forMode:));
 
 /**
  Removes the receiver from a given run loop running in a given mode.
@@ -228,7 +228,7 @@ extern NSString *const SRHTTPResponseErrorKey;
  @param runLoop The run loop on which the receiver was scheduled.
  @param mode    The mode for the run loop.
  */
-- (void)unscheduleFromRunLoop:(NSRunLoop *)runLoop forMode:(NSString *)mode;// NS_SWIFT_NAME(unschedule(from:forMode:));
+- (void)unscheduleFromRunLoop:(NSRunLoop *)runLoop forMode:(NSString *)mode NS_SWIFT_NAME(unschedule(from:forMode:));
 
 ///--------------------------------------
 #pragma mark - Open / Close
@@ -276,7 +276,7 @@ extern NSString *const SRHTTPResponseErrorKey;
 
  @return `YES` if the string was scheduled to send, otherwise - `NO`.
  */
-- (BOOL)sendString:(NSString *)string error:(NSError **)error;// NS_SWIFT_NAME(send(string:));
+- (BOOL)sendString:(NSString *)string error:(NSError **)error NS_SWIFT_NAME(send(string:));
 
 /**
  Send binary data to the server.
@@ -288,7 +288,7 @@ extern NSString *const SRHTTPResponseErrorKey;
 
  @return `YES` if the string was scheduled to send, otherwise - `NO`.
  */
-- (BOOL)sendData:(nullable NSData *)data error:(NSError **)error;// NS_SWIFT_NAME(send(data:));
+- (BOOL)sendData:(nullable NSData *)data error:(NSError **)error NS_SWIFT_NAME(send(data:));
 
 /**
  Send binary data to the server, without making a defensive copy of it first.
@@ -300,7 +300,7 @@ extern NSString *const SRHTTPResponseErrorKey;
 
  @return `YES` if the string was scheduled to send, otherwise - `NO`.
  */
-- (BOOL)sendDataNoCopy:(nullable NSData *)data error:(NSError **)error;// NS_SWIFT_NAME(send(dataNoCopy:));
+- (BOOL)sendDataNoCopy:(nullable NSData *)data error:(NSError **)error NS_SWIFT_NAME(send(dataNoCopy:));
 
 /**
  Send Ping message to the server with optional data.
@@ -312,7 +312,7 @@ extern NSString *const SRHTTPResponseErrorKey;
 
  @return `YES` if the string was scheduled to send, otherwise - `NO`.
  */
-- (BOOL)sendPing:(nullable NSData *)data error:(NSError **)error;// NS_SWIFT_NAME(sendPing(_:));
+- (BOOL)sendPing:(nullable NSData *)data error:(NSError **)error NS_SWIFT_NAME(sendPing(_:));
 
 @end
 
@@ -383,6 +383,14 @@ extern NSString *const SRHTTPResponseErrorKey;
 - (void)webSocket:(SRWebSocket *)webSocket didCloseWithCode:(NSInteger)code reason:(nullable NSString *)reason wasClean:(BOOL)wasClean;
 
 /**
+ Called on receive of a ping message from the server.
+
+ @param webSocket An instance of `SRWebSocket` that received a ping frame.
+ @param data      Payload that was received or `nil` if there was no payload.
+ */
+- (void)webSocket:(SRWebSocket *)webSocket didReceivePingWithData:(nullable NSData *)data;
+
+/**
  Called when a pong data was received in response to ping.
 
  @param webSocket An instance of `SRWebSocket` that received a pong frame.
@@ -398,7 +406,7 @@ extern NSString *const SRHTTPResponseErrorKey;
 
  @return `YES` if text frame should be converted to UTF-8 String, otherwise - `NO`. Default: `YES`.
  */
-- (BOOL)webSocketShouldConvertTextFrameToString:(SRWebSocket *)webSocket;// NS_SWIFT_NAME(webSocketShouldConvertTextFrameToString(_:));
+- (BOOL)webSocketShouldConvertTextFrameToString:(SRWebSocket *)webSocket NS_SWIFT_NAME(webSocketShouldConvertTextFrameToString(_:));
 
 @end
 

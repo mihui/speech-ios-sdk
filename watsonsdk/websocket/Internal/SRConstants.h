@@ -9,15 +9,18 @@
 
 #import <Foundation/Foundation.h>
 
-// #import <SocketRocket/SRSecurityPolicy.h>
-#import "SRSecurityPolicy.h"
+typedef NS_ENUM(NSInteger, SROpCode)
+{
+    SROpCodeTextFrame = 0x1,
+    SROpCodeBinaryFrame = 0x2,
+    // 3-7 reserved.
+    SROpCodeConnectionClose = 0x8,
+    SROpCodePing = 0x9,
+    SROpCodePong = 0xA,
+    // B-F reserved.
+};
 
-NS_ASSUME_NONNULL_BEGIN
-
-@interface SRPinningSecurityPolicy : SRSecurityPolicy
-
-- (instancetype)initWithCertificates:(NSArray *)pinnedCertificates;
-
-@end
-
-NS_ASSUME_NONNULL_END
+/**
+ Default buffer size that is used for reading/writing to streams.
+ */
+extern size_t SRDefaultBufferSize(void);
