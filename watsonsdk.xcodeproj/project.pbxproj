@@ -58,6 +58,8 @@
 		9B3669671CF354B800806BEE /* STTConfiguration.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B3669631CF354B800806BEE /* STTConfiguration.m */; };
 		9B375ABB1CEB0C2500A6F9D4 /* SwiftTTSViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B375ABA1CEB0C2500A6F9D4 /* SwiftTTSViewController.swift */; };
 		9B375ABD1CEB194400A6F9D4 /* libicucore.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 9BA060401CE6D9320018CA5B /* libicucore.tbd */; };
+		9B3C54A31D76B7D600EA45B8 /* SRConstants.h in Headers */ = {isa = PBXBuildFile; fileRef = 9B3C54A11D76B7D600EA45B8 /* SRConstants.h */; };
+		9B3C54A41D76B7D600EA45B8 /* SRConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B3C54A21D76B7D600EA45B8 /* SRConstants.m */; };
 		9B47E7451CEF5B4A003E0860 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9B47E7431CEF5B4A003E0860 /* LaunchScreen.storyboard */; };
 		9B47E7481CEF5B77003E0860 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9B47E7461CEF5B77003E0860 /* LaunchScreen.storyboard */; };
 		9B47E7581CF21645003E0860 /* SpeechUtility.h in Headers */ = {isa = PBXBuildFile; fileRef = 9B47E7561CF21645003E0860 /* SpeechUtility.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -214,6 +216,8 @@
 		9B3669631CF354B800806BEE /* STTConfiguration.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STTConfiguration.m; sourceTree = "<group>"; };
 		9B375ABA1CEB0C2500A6F9D4 /* SwiftTTSViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwiftTTSViewController.swift; sourceTree = "<group>"; };
 		9B375ABC1CEB184200A6F9D4 /* SwiftSpeechHeader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SwiftSpeechHeader.h; sourceTree = "<group>"; };
+		9B3C54A11D76B7D600EA45B8 /* SRConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SRConstants.h; path = Internal/SRConstants.h; sourceTree = "<group>"; };
+		9B3C54A21D76B7D600EA45B8 /* SRConstants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SRConstants.m; path = Internal/SRConstants.m; sourceTree = "<group>"; };
 		9B47E7441CEF5B4A003E0860 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		9B47E7471CEF5B77003E0860 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		9B47E7561CF21645003E0860 /* SpeechUtility.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SpeechUtility.h; sourceTree = "<group>"; };
@@ -532,6 +536,8 @@
 				9BCAD8311CE6BF1200BE3B5F /* SocketRocket.h */,
 				9BCAD8321CE6BF1200BE3B5F /* SRWebSocket.h */,
 				9BCAD8331CE6BF1200BE3B5F /* SRWebSocket.m */,
+				9B3C54A11D76B7D600EA45B8 /* SRConstants.h */,
+				9B3C54A21D76B7D600EA45B8 /* SRConstants.m */,
 				9B36693D1CF21A5400806BEE /* WebSocketAudioStreamer.h */,
 				9B36693E1CF21A5400806BEE /* WebSocketAudioStreamer.m */,
 			);
@@ -719,6 +725,7 @@
 				9B7195581D30DD560046245A /* SRRandom.h in Headers */,
 				9B07C5151D0B0B25005F41AE /* speex_resampler.h in Headers */,
 				9B7195471D30DD560046245A /* NSURLRequest+SRWebSocketPrivate.h in Headers */,
+				9B3C54A31D76B7D600EA45B8 /* SRConstants.h in Headers */,
 				9B7195441D30DD560046245A /* SRIOConsumerPool.h in Headers */,
 				9B07C50C1D0B0B25005F41AE /* opus.h in Headers */,
 				9B07C50F1D0B0B25005F41AE /* opus_header.h in Headers */,
@@ -829,6 +836,17 @@
 				TargetAttributes = {
 					9BF43ECE1CEAC81900EC0185 = {
 						CreatedOnToolsVersion = 7.2;
+						DevelopmentTeam = Q7W47GFKL3;
+					};
+					C11A645A1754D0E600385896 = {
+						LastSwiftMigration = 0800;
+					};
+					C11A64931754D98700385896 = {
+						LastSwiftMigration = 0800;
+					};
+					C165429A191A0D8500905DCC = {
+						DevelopmentTeam = Q7W47GFKL3;
+						LastSwiftMigration = 0800;
 					};
 				};
 			};
@@ -901,7 +919,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "set -e\n\nmkdir -p \"${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.framework/Versions/A/Headers\"\n\n# Link the \"Current\" version to \"A\"\n/bin/ln -sfh A \"${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.framework/Versions/Current\"\n/bin/ln -sfh Versions/Current/Headers \"${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.framework/Headers\"\n/bin/ln -sfh \"Versions/Current/${PRODUCT_NAME}\" \"${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.framework/${PRODUCT_NAME}\"\n\n# The -a ensures that the headers maintain the source modification date so that we don't constantly\n# cause propagating rebuilds of files that import these headers.\n/bin/cp -a \"${TARGET_BUILD_DIR}/${PUBLIC_HEADERS_FOLDER_PATH}/\" \"${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.framework/Versions/A/Headers\"\necho \"${TARGET_BUILD_DIR}/${PUBLIC_HEADERS_FOLDER_PATH}/\" \"${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.framework/\" > ~/watsonsdklocation.txt\n\n# create a zip of the framework and add it to the project root\ncd ${BUILT_PRODUCTS_DIR}\nzip -r ${SRCROOT}/${PRODUCT_NAME}.framework.zip ${PRODUCT_NAME}.framework\nunzip -o ${SRCROOT}/${PRODUCT_NAME}.framework.zip -d /Users/mihui/Documents/Work/Projects/Mobile/WatsonSpeechPlugin/frameworks/\n\nunzip -o ${SRCROOT}/${PRODUCT_NAME}.framework.zip -d /Users/mihui/Documents/Work/Projects/Mobile/Dialog-Mobile/plugins/cordova-plugin-watson-speech/frameworks\nunzip -o ${SRCROOT}/${PRODUCT_NAME}.framework.zip -d /Users/mihui/Documents/Work/Projects/Mobile/Dialog-Mobile/platforms/ios/GOMWW/Plugins/cordova-plugin-watson-speech\n# [Rob] we need to copy the other headers keeping their folder structure\n#echo 'SRCROOT:'${SRCROOT}\n#cd ${SRCROOT}/watsonsdk\n\n# I have to move up a directory due to my layout.\n# echo 'Copying Headers into Framework..'\n#for H in `find ./ -name \"*.h\"`;  do\n#echo ${H}\n#ditto ${H} ${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.framework/Versions/A/Headers/${H}\n#done\n";
+			shellScript = "set -e\n\nmkdir -p \"${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.framework/Versions/A/Headers\"\n\n# Link the \"Current\" version to \"A\"\n/bin/ln -sfh A \"${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.framework/Versions/Current\"\n/bin/ln -sfh Versions/Current/Headers \"${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.framework/Headers\"\n/bin/ln -sfh \"Versions/Current/${PRODUCT_NAME}\" \"${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.framework/${PRODUCT_NAME}\"\n\n# The -a ensures that the headers maintain the source modification date so that we don't constantly\n# cause propagating rebuilds of files that import these headers.\n/bin/cp -a \"${TARGET_BUILD_DIR}/${PUBLIC_HEADERS_FOLDER_PATH}/\" \"${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.framework/Versions/A/Headers\"\necho \"${TARGET_BUILD_DIR}/${PUBLIC_HEADERS_FOLDER_PATH}/\" \"${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.framework/\" > ~/watsonsdklocation.txt\n\n# create a zip of the framework and add it to the project root\ncd ${BUILT_PRODUCTS_DIR}\nzip -r ${SRCROOT}/${PRODUCT_NAME}.framework.zip ${PRODUCT_NAME}.framework\n\n# [Rob] we need to copy the other headers keeping their folder structure\n#echo 'SRCROOT:'${SRCROOT}\n#cd ${SRCROOT}/watsonsdk\n\n# I have to move up a directory due to my layout.\n# echo 'Copying Headers into Framework..'\n#for H in `find ./ -name \"*.h\"`;  do\n#echo ${H}\n#ditto ${H} ${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.framework/Versions/A/Headers/${H}\n#done\n";
 		};
 		C11A648F1754D6DA00385896 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -954,6 +972,7 @@
 				9BE583901D0FEDE20021DC88 /* lpc.c in Sources */,
 				9B3669561CF3546C00806BEE /* TTSCustomVoice.m in Sources */,
 				9B71954B1D30DD560046245A /* SRRunLoopThread.m in Sources */,
+				9B3C54A41D76B7D600EA45B8 /* SRConstants.m in Sources */,
 				9B7195511D30DD560046245A /* SRHash.m in Sources */,
 				9B36695C1CF3549400806BEE /* TextToSpeech.m in Sources */,
 				9B7195491D30DD560046245A /* SRProxyConnect.m in Sources */,
@@ -1070,6 +1089,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = Q7W47GFKL3;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -1082,7 +1102,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 8.4;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MTL_ENABLE_DEBUG_INFO = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = com.ibm.cio.watsonsdk.swift;
+				PRODUCT_BUNDLE_IDENTIFIER = com.ibm.cio.be.watsonsdk.swift;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "watsonsdktest-swift/SwiftSpeechHeader.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -1101,6 +1121,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = Q7W47GFKL3;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -1113,7 +1134,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 8.4;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MTL_ENABLE_DEBUG_INFO = NO;
-				PRODUCT_BUNDLE_IDENTIFIER = com.ibm.cio.watsonsdk.swift;
+				PRODUCT_BUNDLE_IDENTIFIER = com.ibm.cio.be.watsonsdk.swift;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "watsonsdktest-swift/SwiftSpeechHeader.h";
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -1207,6 +1228,7 @@
 				OTHER_LDFLAGS = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 3.0;
 				VALID_ARCHS = "arm64 armv7 armv7s i386 x86_64";
 			};
 			name = Debug;
@@ -1234,6 +1256,7 @@
 				OTHER_LDFLAGS = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 3.0;
 				VALID_ARCHS = "arm64 armv7 armv7s i386 x86_64";
 			};
 			name = Release;
@@ -1274,8 +1297,10 @@
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Bundles";
 				MACOSX_DEPLOYMENT_TARGET = 10.7;
 				ONLY_ACTIVE_ARCH = NO;
+				PRODUCT_BUNDLE_IDENTIFIER = com.ibm.cio.be.watsonsdk;
 				PRODUCT_NAME = watsonsdk;
 				SDKROOT = iphoneos;
+				SWIFT_VERSION = 3.0;
 				WRAPPER_EXTENSION = bundle;
 			};
 			name = Debug;
@@ -1294,8 +1319,10 @@
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Bundles";
 				MACOSX_DEPLOYMENT_TARGET = 10.7;
 				ONLY_ACTIVE_ARCH = NO;
+				PRODUCT_BUNDLE_IDENTIFIER = com.ibm.cio.be.watsonsdk;
 				PRODUCT_NAME = watsonsdk;
 				SDKROOT = iphoneos;
+				SWIFT_VERSION = 3.0;
 				WRAPPER_EXTENSION = bundle;
 			};
 			name = Release;
@@ -1310,7 +1337,9 @@
 				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEVELOPMENT_TEAM = Q7W47GFKL3;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(DEVELOPER_FRAMEWORKS_DIR)",
@@ -1329,8 +1358,10 @@
 				INFOPLIST_FILE = "watsonsdktest-objective-c/watsonsdktest-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				ONLY_ACTIVE_ARCH = NO;
-				PRODUCT_BUNDLE_IDENTIFIER = com.ibm.cio.watsonsdk.objectivec;
+				PRODUCT_BUNDLE_IDENTIFIER = com.ibm.cio.be.watsonsdk.objectivec;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
+				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				WRAPPER_EXTENSION = app;
 			};
@@ -1346,8 +1377,10 @@
 				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = YES;
+				DEVELOPMENT_TEAM = Q7W47GFKL3;
 				ENABLE_NS_ASSERTIONS = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1363,8 +1396,10 @@
 				INFOPLIST_FILE = "watsonsdktest-objective-c/watsonsdktest-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				ONLY_ACTIVE_ARCH = NO;
-				PRODUCT_BUNDLE_IDENTIFIER = com.ibm.cio.watsonsdk.objectivec;
+				PRODUCT_BUNDLE_IDENTIFIER = com.ibm.cio.be.watsonsdk.objectivec;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
+				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				WRAPPER_EXTENSION = app;
 			};
