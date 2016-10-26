@@ -57,7 +57,7 @@
     NSLog(@"Websocket connection using %@",[[self.sConfig getWebSocketRecognizeURL] absoluteString]);
 
     NSMutableURLRequest *req = [NSMutableURLRequest requestWithURL:[self.sConfig getWebSocketRecognizeURL]];
-    
+
     // set headers
     for(id headerName in headers) {
         [req setValue:[headers objectForKey:headerName] forHTTPHeaderField:headerName];
@@ -67,8 +67,12 @@
         [req setValue:@"true" forHTTPHeaderField:@"X-Watson-Learning-Opt-Out"];
     }
 
+    [req setTimeoutInterval: [config.connectionTimeout doubleValue]];
+    [req setNetworkServiceType:NSURLNetworkServiceTypeVoice];
+
     self.webSocket = [[SRWebSocket alloc] initWithURLRequest:req];
     self.webSocket.delegate = self;
+    
     self.closureCallback = closureCallback;
     [self.webSocket open];
     self.audioBuffer = [NSMutableArray arrayWithCapacity:0];
@@ -243,9 +247,7 @@ dispatch_once_t predicate_connect;
 }
 
 #pragma mark - SRWebSocketDelegate
-
-- (void)webSocketDidOpen:(SRWebSocket *)webSocket;
-{
+- (void)webSocketDidOpen:(SRWebSocket *)webSocket {
     NSLog(@"Websocket Connected");
     self.isConnected = YES;
     self.hasDataBeenSent = NO;
@@ -267,8 +269,14 @@ dispatch_once_t predicate_connect;
     if([[error userInfo] objectForKey:SRHTTPResponseErrorKey] != nil) {
         statusCode = [[[error userInfo] objectForKey:SRHTTPResponseErrorKey] intValue];
     }
+    
+    NSString* errorMessage = [error localizedDescription];
+    
+    if(errorMessage == nil) {
+        errorMessage = @"";
+    }
 
-    NSError *socketError = [SpeechUtility raiseErrorWithCode:statusCode message:[error localizedDescription]];
+    NSError *socketError = [SpeechUtility raiseErrorWithCode:statusCode message:errorMessage];
     self.recognizeCallback(nil, socketError);
 
 //    if ([self.reconnectAttempts intValue] < 3) {
@@ -282,21 +290,24 @@ dispatch_once_t predicate_connect;
 //    }
 }
 
-- (void)webSocket:(SRWebSocket *)webSocket didReceiveMessage:(id)json;
-{
-    NSData *data = [json dataUsingEncoding:NSUTF8StringEncoding];
+- (void)webSocket:(SRWebSocket *)webSocket didReceiveMessageWithString:(NSString *)string {
+    NSData *data = [string dataUsingEncoding:NSUTF8StringEncoding];
     // this should be JSON parse it but check for errors
-
+    
     NSError *error = nil;
     id object = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:&error];
-
+    
     if(error) {
         /* JSON was malformed, act appropriately here */
-        NSLog(@"JSON from service malformed, received %@", json);
-        NSError *dataError = [SpeechUtility raiseErrorWithCode:WATSON_DATAFORMAT_ERROR_CODE message: [error localizedDescription]];
+        NSLog(@"JSON from service malformed, received %@", string);
+        NSString *errorMessage = [error localizedDescription];
+        if(errorMessage == nil) {
+            errorMessage = @"";
+        }
+        NSError *dataError = [SpeechUtility raiseErrorWithCode:WATSON_DATAFORMAT_ERROR_CODE message: errorMessage];
         self.recognizeCallback(nil, dataError);
     }
-
+    
     if([object isKindOfClass:[NSDictionary class]])
     {
         NSDictionary *results = object;
@@ -313,21 +324,24 @@ dispatch_once_t predicate_connect;
                 else {
                     self.isReadyForAudio = YES;
                 }
-
+                
                 NSLog(@"Watson is listening, isReadyForAudio=%u, isReadyForClosure=%u", self.isReadyForAudio, self.isReadyForClosure);
             }
         }
-
+        
         if([results objectForKey:@"results"] != nil) {
             NSArray *resultsArr = [results objectForKey:@"results"];
             if([resultsArr count] > 0) {
                 self.recognizeCallback(results, nil);
             }
         }
-
+        
         if([results objectForKey:@"error"] != nil) {
             NSLog(@"results of error--->%@", results);
             NSString *errorMessage = [results objectForKey:@"error"];
+            if(errorMessage == nil) {
+                errorMessage = @"";
+            }
             NSError *error = [SpeechUtility raiseErrorWithCode:WATSON_SPEECHAPIS_ERROR_CODE message:errorMessage];
             self.recognizeCallback(nil, error);
             [self disconnect: errorMessage];
@@ -340,8 +354,13 @@ dispatch_once_t predicate_connect;
     }
 }
 
+
 - (void)webSocket:(SRWebSocket *)webSocket didCloseWithCode:(NSInteger)code reason:(NSString *)reason wasClean:(BOOL)wasClean;
 {
+    if(reason == nil) {
+        reason = @"";
+    }
+
     NSLog(@"WebSocket closed with reason[%d]: %@", [[NSNumber numberWithInteger:code] intValue], reason);
     // sometimes the socket can close immediately before data has been sent
     if(self.hasDataBeenSent == NO){
