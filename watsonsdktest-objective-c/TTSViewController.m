@@ -41,7 +41,7 @@
     [confTTS setBasicAuthUsername:credentials[@"TTSUsername"]];
     [confTTS setBasicAuthPassword:credentials[@"TTSPassword"]];
     [confTTS setAudioCodec:WATSONSDK_TTS_AUDIO_CODEC_TYPE_OPUS];
-    
+
 //    [confTTS setTokenGenerator:^(void (^tokenHandler)(NSString *token)){
 //        NSURL *url = [[NSURL alloc] initWithString:@"https://my-token-factory/token"];
 //        NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
@@ -58,7 +58,7 @@
 //        tokenHandler([[NSString alloc] initWithData:oResponseData encoding:NSUTF8StringEncoding]);
 //    } ];
 //
-    
+
     __weak typeof(self) weakSelf = self;
 
     self.tts = [TextToSpeech initWithConfig:confTTS];
@@ -93,15 +93,16 @@
         } withData:data];
 
     } theText:self.ttsField.text];
-    
-    [self.tts queryPronunciation:^(NSDictionary* dict, NSError* error) {
-        if(error){
-            NSLog(@"Error requesting data: %@", [error description]);
-        }
-        else{
-            NSLog(@"Pronunciation: [%@]", [dict objectForKey:@"pronunciation"]);
-        }
-    } text: self.ttsField.text];
+
+    // query pronunciation
+//    [self.tts queryPronunciation:^(NSDictionary* dict, NSError* error) {
+//        if(error){
+//            NSLog(@"Error requesting data: %@", [error description]);
+//        }
+//        else{
+//            NSLog(@"Pronunciation: [%@]", [dict objectForKey:@"pronunciation"]);
+//        }
+//    } text: self.ttsField.text];
 }
 
 - (void) voiceHandler:(NSDictionary *) dict {
