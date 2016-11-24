@@ -458,5 +458,31 @@
     return newWavData;
 }
 
++ (void)setProximityMonitor:(BOOL)enable {
+    [[UIDevice currentDevice] setProximityMonitoringEnabled:enable];
+    if(enable) {
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(sensorStateChange:)
+                                                     name:@"UIDeviceProximityStateDidChangeNotification"
+                                                   object:nil];
+    }
+    else {
+        [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                        name:@"UIDeviceProximityStateDidChangeNotification"
+                                                      object:nil];
+    }
+}
+
++ (void)sensorStateChange:(NSNotificationCenter *)notification {
+    if ([[UIDevice currentDevice] proximityState] == YES) {
+        NSLog(@"Device is close to user");
+        [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayAndRecord error:nil];
+    }
+    else {
+        NSLog(@"Device is not close to user");
+        [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayback error:nil];
+    }
+}
+
 
 @end

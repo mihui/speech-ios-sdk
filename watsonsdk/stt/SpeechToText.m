@@ -422,7 +422,7 @@ void AudioInputStreamingCallback(
                                  UInt32 inNumberPacketDescriptions,
                                  const AudioStreamPacketDescription *inPacketDescs)
 {
-    OSStatus status=0;
+    OSStatus status = 0;
     RecordingState* recordState = (RecordingState*)inUserData;
 
     [audioStreamerRef writeData:inBuffer->mAudioData size:inBuffer->mAudioDataByteSize];
