@@ -251,6 +251,11 @@
                         // https://developer.ibm.com/answers/questions/284164/500-forwarding-error-and-inconsistant-error-json-s/
                         description = reason = [responseObject valueForKey:@"message"];
                     }
+                    if(description == nil || reason == nil) {
+                        NSLog(@"wrong scheme error");
+                        reason = [responseObject valueForKey:@"error"];
+                        description = [responseObject valueForKey:@"description"];
+                    }
                     requestError = [SpeechUtility raiseErrorWithCode:[[responseObject valueForKey:@"code"] integerValue] message:description reason:reason suggestion:@""];
                     handler(nil, requestError);
                 }
