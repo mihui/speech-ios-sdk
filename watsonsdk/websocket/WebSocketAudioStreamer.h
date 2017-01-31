@@ -32,7 +32,7 @@
 - (void)writeData:(char*) data size: (int) size;
 - (void)setRecognizeHandler:(JSONHandlerWithError)handler;
 - (void)setAudioDataHandler:(DataHandler)handler;
-- (void)sendEndOfStreamMarker;
+- (void)writeEndMarker;
 
 @end
 

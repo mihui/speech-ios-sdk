@@ -168,7 +168,7 @@ id audioStreamerRef;
  *  @return YES if the data has been sent directly; NO if the data is bufferred because the connection is not established
  */
 -(void) endTransmission {
-    [[self audioStreamer] sendEndOfStreamMarker];
+    [[self audioStreamer] writeEndMarker];
 }
 
 /**

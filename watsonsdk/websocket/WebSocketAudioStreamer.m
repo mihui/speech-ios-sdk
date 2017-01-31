@@ -107,7 +107,7 @@
  *
  *  @return YES if the data has been sent directly; NO if the data is bufferred because the connection is not established
  */
-- (void)sendEndOfStreamMarker {
+- (void)writeEndMarker {
 //    if(self.sConfig.continuous == NO){
 //        return;
 //    }

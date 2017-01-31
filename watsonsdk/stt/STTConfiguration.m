@@ -34,11 +34,11 @@
     // set default values according to the service
     [self setApiEndpoint:[NSURL URLWithString:WATSONSDK_DEFAULT_STT_API_ENDPOINT]];
     [self setModelName:WATSONSDK_DEFAULT_STT_MODEL];
-    [self setAudioCodec:WATSONSDK_AUDIO_CODEC_TYPE_PCM];
-    [self setAudioSampleRate:WATSONSDK_AUDIO_SAMPLE_RATE_PCM];
-    [self setAudioFrameSize:WATSONSDK_AUDIO_FRAME_SIZE_PCM];
+    [self setAudioCodec:WATSONSDK_AUDIO_CODEC_TYPE_OPUS];
+    [self setAudioSampleRate:WATSONSDK_AUDIO_SAMPLE_RATE_OPUS];
+    [self setAudioFrameSize:WATSONSDK_AUDIO_FRAME_SIZE_OPUS];
 
-    [self setInterimResults: NO];
+    [self setInterimResults:NO];
     [self setContinuous:NO];
     [self setInactivityTimeout:[NSNumber numberWithInt:WATSONSDK_INACTIVITY_TIMEOUT]];
 
@@ -151,6 +151,8 @@
         if(error == nil)
             jsonString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
     }
+
+    NSLog(@"Start->%@", jsonString);
 
     return jsonString;
 }
