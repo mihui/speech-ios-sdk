@@ -69,6 +69,7 @@
         else
             weakSelf.ttsField.text = [err description];
     }];
+//    [SpeechUtility setProximityMonitor:YES];
 }
 
 - (IBAction)pressSelectVoice:(id)sender {
