@@ -1,14 +1,4 @@
-# DEPRECATED
-
-The **Watson Speech iOS SDK** has been deprecated in favor of the new [Watson Developer Cloud iOS SDK](https://github.com/watson-developer-cloud/ios-sdk) which currently supports most of the Watson services.
-
-
-----------
-
-# THIS MODULE IS DEPRECATED
-
-## Watson Speech iOS SDK
-
+## Watson Speech iOS (Objective-C) SDK
 
 An SDK for iOS mobile applications enabling use of the Bluemix Watson Speech To Text and Text To Speech APIs from [Watson Developer Cloud][wdc]
 
@@ -49,7 +39,7 @@ Installation
 
 **Using the framework**
 
-1. Download the [watsonsdk.framework.zip](https://github.com/watson-developer-cloud/speech-ios-sdk/raw/master/watsonsdk.framework.zip) and unzip it somewhere convenient
+1. Download the [watsonsdk.framework.zip](https://github.com/mihui/speech-ios-sdk/raw/master/watsonsdk.framework.zip) and unzip it somewhere convenient
 2. Once unzipped drag the watsonsdk.framework folder into your xcode project view under the Frameworks folder.
 
 Some additional iOS standard frameworks must be added.
@@ -74,9 +64,7 @@ Include headers
 
 ```objective-c
 	#import <watsonsdk/SpeechToText.h>
-	#import <watsonsdk/STTConfiguration.h>
 	#import <watsonsdk/TextToSpeech.h>
-	#import <watsonsdk/TTSConfiguration.h>
 ```
 
 **in Swift**
@@ -97,7 +85,7 @@ To run the sample application, change the compile target to 'watsonsdktest-objec
 
 Note that this is sample code and no security review has been performed on the code.
 
-The Swift sample was tested in Xcode 7.2.
+The Swift sample was tested in `Xcode 8.2.1`.
 
 #Speech To Text 
 ===============
@@ -124,8 +112,8 @@ Basic Authentication, using the credentials provided by the Bluemix Service inst
 
 **in Objective-C**
 ```objective-c
-    [conf setBasicAuthUsername:@"<userid>"];
-    [conf setBasicAuthPassword:@"<password>"];
+	[conf setBasicAuthUsername:@"<userid>"];
+	[conf setBasicAuthPassword:@"<password>"];
 ```
 
 **in Swift**
@@ -139,7 +127,7 @@ Token authentication, if a token authentication provider is running at https://m
 ```objective-c
 
 	[conf setTokenGenerator:^(void (^tokenHandler)(NSString *token)){
-        NSURL *url = [[NSURL alloc] initWithString:@"https://my-token-factory/token"];
+        NSURL *url = [[NSURL alloc] initWithString:@"https://<token-factory-url>"];
         NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
         [request setHTTPMethod:@"GET"];
         [request setURL:url];
@@ -148,7 +136,7 @@ Token authentication, if a token authentication provider is running at https://m
         NSHTTPURLResponse *responseCode = nil;
         NSData *oResponseData = [NSURLConnection sendSynchronousRequest:request returningResponse:&responseCode error:&error];
         if ([responseCode statusCode] != 200) {
-            NSLog(@"Error getting %@, HTTP status code %i", url, [responseCode statusCode]);
+            NSLog(@"Error getting %@, HTTP status code %li", url, (long)[responseCode statusCode]);
             return;
         }
         tokenHandler([[NSString alloc] initWithData:oResponseData encoding:NSUTF8StringEncoding]);
@@ -174,7 +162,6 @@ Create a SpeechToText instance
 ```swift
 	var stt:SpeechToText?
 	
-	
 	...
 	
 	self.stt = SpeechToText(config: conf)
@@ -190,16 +177,15 @@ Get a list of models supported by the service
         if(err == nil)
             ... read values from NSDictionary ...
 
-    }];
+	}];
 ```
 
 **in Swift**
 ```swift
-stt?.listModels({
-    (jsonDict, err) in
+stt?.listModels({ (jsonDict: [AnyHashable: Any]?, error: Error?) in
     
     if err == nil {
-    	print(jsonDict)
+    	print(jsonDict!)
     }
 })
 ```
@@ -215,17 +201,17 @@ Available speech recognition models can be obtained using the listModel function
         
         if(err == nil)
             ... read values from NSDictionary ...
-    
-    } withName:@"WatsonSpeechModel"];
+	    
+    	} withName:@"WatsonSpeechModel"];
 ```
 
 **in Swift**
 ```swift
-    stt?.listModel({ (jsonDict, error) in
-        if err == nil {
-            print(jsonDict)
-        }
-    }, withName: "WatsonSpeechModel")
+	stt?.listModel({ (jsonDict: [AnyHashable : Any]?, error: Error?) in
+        	if err == nil {
+	            print(jsonDict!)
+        	}
+	}, withName: "WatsonSpeechModel")
 ```
 
 
@@ -233,28 +219,50 @@ Use a named model
 -----------------
 The speech recognition model can be changed in the configuration. 
 
+**in Objective-C**
 ```objective-c
 	[conf setModelName:@"ja-JP_BroadbandModel"];
+```
+
+**in Swift**
+```swift
+	confSTT.modelName = "ja-JP_BroadbandModel"
 ```
 
 Enabling audio compression
 --------------------------
 By default audio sent to the server is uncompressed PCM encoded data, compressed audio using the Opus codec can be enabled.
 
+**in Objective-C**
 ```objective-c
 	[conf setAudioCodec:WATSONSDK_AUDIO_CODEC_TYPE_OPUS];
 ```
 
+**in Swift**
+```swift
+	confSTT.audioCodec = WATSONSDK_AUDIO_CODEC_TYPE_OPUS
+```
 
 Start audio transcription
 -------------------------
+
+**in Objective-C**
 ```objective-c
 	[stt recognize:^(NSDictionary* res, NSError* err){
         
         if(err == nil) {
             SpeechToTextResult *sttResult = [stt getResult:res];
-            if(sttResult.transcript)
-                result.text = sttResult.transcript;
+            
+	    if([sttResult transcript]) {
+                if([sttResult isFinal]) {
+                    // final transcript
+		    NSLog(@"%@", [sttResult transcript]);
+                }
+                else {
+                    // partial transcript
+		    NSLog(@"%@", [sttResult transcript]);
+                }
+            }
         }
         else {
             [stt stopRecordingAudio];
@@ -264,18 +272,52 @@ Start audio transcription
 
 ```
 
+**in Swift**
+```swift
+	self.sttInstance?.recognize({ (result: [AnyHashable : Any]?, error: Error?) in
+            if error == nil {
+                let sttResult = self.sttInstance?.getResult(result)
+                guard let transcript = sttResult?.transcript else {
+                    return;
+                }
+                if (sttResult?.isFinal)! {
+                    // final transcript
+                    print(sttResult?.transcript ?? "")
+                }
+                else {
+                    // partial transcript
+                    print(sttResult?.transcript ?? "")
+                }
+                self.result.text = transcript
+            }
+            else {
+                self.sttInstance?.stopRecordingAudio()
+                self.sttInstance?.endConnection()
+            }
+        })
+```
+
 End audio transcription
 -----------------------
 
 The app must explicity indicate to the SDK when transmission should be ended if the continous option is YES.
 
+**in Objective-C**
 ```objective-c
-    [conf setContinuous:YES];
-    
-    
-    ...
+	[conf setContinuous:YES];
+
+	...
     
 	[stt endTransmission];
+```
+
+**in Swift**
+```swift
+	conf.continuous = true
+
+	...
+
+	stt?.endTransmission()
 ```
 
 Obtain a confidence score
@@ -283,32 +325,41 @@ Obtain a confidence score
 A confidence score is available for any final transcripts (whole sentences).
 This can be obtained from SpeechToTextResult instance.
 
+**in Objective-C**
 ```objective-c
 
     SpeechToTextResult *sttResult = [stt getResult:res];
 
-    sttResult.confidenceScore
+    NSLog(@"Confidence score: %@", [sttResult confidenceScore])
 
 ```
 
+**in Swift**
+```swift
+	let sttResult = self.sttInstance?.getResult(result)
+	print("Confidence score: \(sttResult?.confidenceScore)")
+```
 
 Receive speech power levels during the recognize
 ------------------------------------------------
 
+**in Objective-C**
 ```objective-c
-    [stt recognize:^(NSDictionary *, NSError *) {
-        // ......
-    } powerHandler:^(float power) {
-        
-        // user the power level to make a simple UIView graphic indicator 
-        CGRect frm = self.soundbar.frame;
-        frm.size.width = 3*(70 + power);
-        self.soundbar.frame = frm;
-        self.soundbar.center = CGPointMake(self.view.frame.size.width / 2,  self.soundbar.center.y); 
-    }];
+	[stt recognize:^(NSDictionary *, NSError *) {
+		...
+	} powerHandler:^(float power) {
+		NSLog(@"Power level: %f", power);
+	}];
 ```
 
-
+**in Swift**
+```swift
+	self.sttInstance?.recognize({ (result: [AnyHashable : Any]?, error: Error?) in
+		...
+	}, powerHandler: { (power: Float) in
+		print("Power level: \(power)")
+	})
+```
 
 Text To Speech 
 ==============
@@ -319,17 +370,18 @@ Create a Configuration
 
 By default the Configuration will use the IBM Bluemix service API endpoint, custom endpoints can be set using `setApiURL` in most cases this is not required.
 
+**in Objective-C**
 ```objective-c
 	TTSConfiguration *conf = [[TTSConfiguration alloc] init];
-    [conf setBasicAuthUsername:@"<userid>"];
-    [conf setBasicAuthPassword:@"<password>"];
+	[conf setBasicAuthUsername:@"<userid>"];
+	[conf setBasicAuthPassword:@"<password>"];
 ```
 
 **in Swift**
 ```swift
-    let conf: TTSConfiguration = TTSConfiguration()
-    conf.basicAuthUsername = "<userid>"
-    conf.basicAuthPassword = "<password>"
+	let conf: TTSConfiguration = TTSConfiguration()
+	conf.basicAuthUsername = "<userid>"
+	conf.basicAuthPassword = "<password>"
 ```
 
 Set the voice
@@ -338,7 +390,7 @@ You can change the voice model used for TTS by setting it in the configuration.
 
 **in Objective-C**
 ```objective-c
-    [conf setVoiceName:@"en-US_MichaelVoice"];
+	[conf setVoiceName:@"en-US_MichaelVoice"];
 ```
 
 **in Swift**
@@ -365,6 +417,8 @@ If you use tokens (from your own server) to get access to the service, provide a
 
 Create a TextToSpeech instance 
 ------------------------------
+
+**in Objective-C**
 ```objective-c
 	self.tts = [TextToSpeech initWithConfig:conf];
 ```
@@ -394,11 +448,9 @@ Get a list of voices supported by the service
 
 **in Swift**
 ```swift
-	tts?.listVoices({
-            (jsonDict, err) in
-            
-            if err == nil {
-                print(jsonDict)
+	tts?.listVoices({ (jsonDict:[AnyHashable: Any]?, error:Error?) in
+            if error == nil {
+                print(jsonDict!)
             }
         })
 ```
@@ -434,14 +486,14 @@ Generate and play audio
 
 	tts?.synthesize({ (data: NSData!, reqError: NSError!) -> Void in
         if reqError == nil{
-			tts?.playAudio({ (error: NSError!) -> Void in
-				if error == nil{
-					... do something after the audio has played ...
-				}
-				else{
-					... data error handling ...
-				}
-			}, withData: data)
+		tts?.playAudio({ (error: NSError!) -> Void in
+			if error == nil{
+				... do something after the audio has played ...
+			}
+			else{
+				... data error handling ...
+			}
+		}, withData: data)
         }
         else
         	... request error handling ...
