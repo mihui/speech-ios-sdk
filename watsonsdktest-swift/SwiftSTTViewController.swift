@@ -27,14 +27,14 @@ class SwiftSTTViewController: UIViewController, UITextFieldDelegate, UIPickerVie
     @IBOutlet var result: UILabel!
     var pickerView: UIPickerView!
     let pickerViewHeight:CGFloat = 250.0
-    let pickerViewAnimationDuration: NSTimeInterval = 0.5
-    let pickerViewAnimationDelay: NSTimeInterval = 0.1
+    let pickerViewAnimationDuration: TimeInterval = 0.5
+    let pickerViewAnimationDelay: TimeInterval = 0.1
     let pickerViewPositionOffset: CGFloat = 33.0
 
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
-        let credentialFilePath = NSBundle.mainBundle().pathForResource("Credentials", ofType: "plist")
+        let credentialFilePath = Bundle.main.path(forResource: "Credentials", ofType: "plist")
         let credentials = NSDictionary(contentsOfFile: credentialFilePath!)
 
         let confSTT: STTConfiguration = STTConfiguration()
@@ -44,20 +44,20 @@ class SwiftSTTViewController: UIViewController, UITextFieldDelegate, UIPickerVie
         confSTT.modelName = WATSONSDK_DEFAULT_STT_MODEL
 
         self.sttInstance = SpeechToText(config: confSTT)
-        self.sttInstance?.listModels({ (jsonDict, error) -> Void in
-            if error == nil{
-                self.modelHandler(jsonDict)
+        self.sttInstance?.listModels({ (jsonDict: [AnyHashable: Any]?, error: Error?) in
+            if error == nil {
+                self.modelHandler(jsonDict!)
             }
             else{
-                self.result.text = error.description
+                self.result.text = error?.localizedDescription
             }
         })
     }
 
     // start recording
-    @IBAction func onStartRecording(sender: AnyObject) {
-        self.sttInstance?.recognize({ (result:[NSObject : AnyObject]!, error: NSError!) -> Void in
-            if(error == nil){
+    @IBAction func onStartRecording(_ sender: AnyObject) {
+        self.sttInstance?.recognize({ (result:[AnyHashable: Any]?, error: Error?) in
+            if(error == nil) {
                 let sttResult = self.sttInstance?.getResult(result)
                 guard let transcript = sttResult?.transcript else {
                     return;
@@ -66,7 +66,7 @@ class SwiftSTTViewController: UIViewController, UITextFieldDelegate, UIPickerVie
                 
             }
             else{
-                print("Error from the SDK: %@", error.localizedDescription)
+                print("Error from the SDK: %@", error?.localizedDescription ?? "")
                 self.sttInstance?.endRecognize()
             }
             }) { (power: Float) -> Void in
@@ -80,11 +80,11 @@ class SwiftSTTViewController: UIViewController, UITextFieldDelegate, UIPickerVie
                 
                 frame.size.width = w
                 self.soundbar.frame = frame
-                self.soundbar.center = CGPointMake(self.view.frame.size.width / 2, self.soundbar.center.y);
+                self.soundbar.center = CGPoint(x: self.view.frame.size.width / 2, y: self.soundbar.center.y);
         }
     }
     
-    @IBAction func onSelectingModel(sender: AnyObject) {
+    @IBAction func onSelectingModel(_ sender: AnyObject) {
         self.hidePickerView(false, withAnimation: true)
     }
     
@@ -92,27 +92,27 @@ class SwiftSTTViewController: UIViewController, UITextFieldDelegate, UIPickerVie
         self.hidePickerView(true, withAnimation: true)
     }
 
-    func onSelectedModel(row: Int){
+    func onSelectedModel(_ row: Int){
         guard let models = self.sttLanguageModels else{
             return
         }
-        let model = models.objectAtIndex(row) as! NSDictionary
-        let modelName:String = model.objectForKey("name") as! String
-        let modelDesc:String = model.objectForKey("description") as! String
-        self.modelSelectorButton.setTitle(modelDesc, forState: .Normal)
+        let model = models.object(at: row) as! NSDictionary
+        let modelName:String = model.object(forKey: "name") as! String
+        let modelDesc:String = model.object(forKey: "description") as! String
+        self.modelSelectorButton.setTitle(modelDesc, for: UIControlState())
         self.sttInstance?.config.modelName = modelName
     }
     
-    func modelHandler(dict: NSDictionary){
-        self.sttLanguageModels = dict.objectForKey("models") as? NSArray
-        self.getUIPickerViewInstance().backgroundColor = UIColor.whiteColor()
+    func modelHandler(_ dict: [AnyHashable: Any]){
+        self.sttLanguageModels = dict["models"] as? NSArray
+        self.getUIPickerViewInstance().backgroundColor = UIColor.white
         self.hidePickerView(true, withAnimation: false)
 
         self.view.addSubview(self.getUIPickerViewInstance())
         var row = 0
         if let list = self.sttLanguageModels{
-            for var i = 0; i < list.count; i += 1{
-                if list.objectAtIndex(i).objectForKey("name") as? String == self.sttInstance?.config.modelName{
+            for i in 0 ..< list.count{
+                if (list.object(at: i) as AnyObject).object(forKey: "name") as? String == self.sttInstance?.config.modelName{
                     row = i
                 }
             }
@@ -126,67 +126,67 @@ class SwiftSTTViewController: UIViewController, UITextFieldDelegate, UIPickerVie
 
     func getUIPickerViewInstance() -> UIPickerView{
         guard let _ = self.pickerView else{
-            let pickerViewframe = CGRectMake(0, UIScreen.mainScreen().bounds.height - self.pickerViewHeight + self.pickerViewPositionOffset, UIScreen.mainScreen().bounds.width, self.pickerViewHeight)
+            let pickerViewframe = CGRect(x: 0, y: UIScreen.main.bounds.height - self.pickerViewHeight + self.pickerViewPositionOffset, width: UIScreen.main.bounds.width, height: self.pickerViewHeight)
             self.pickerView = UIPickerView(frame: pickerViewframe)
             self.pickerView.dataSource = self
             self.pickerView.delegate = self
-            self.pickerView.opaque = true
+            self.pickerView.isOpaque = true
             self.pickerView.showsSelectionIndicator = true
-            self.pickerView.userInteractionEnabled = true
+            self.pickerView.isUserInteractionEnabled = true
             return self.pickerView
         }
         return self.pickerView
     }
 
-    func hidePickerView(hide: Bool, withAnimation: Bool){
+    func hidePickerView(_ hide: Bool, withAnimation: Bool){
         if withAnimation{
-            UIView.animateWithDuration(self.pickerViewAnimationDuration, delay: self.pickerViewAnimationDelay, options: .CurveEaseInOut, animations: { () -> Void in
+            UIView.animate(withDuration: self.pickerViewAnimationDuration, delay: self.pickerViewAnimationDelay, options: UIViewAnimationOptions(), animations: { () -> Void in
                 var frame = self.getUIPickerViewInstance().frame
                 if hide{
-                    frame.origin.y = UIScreen.mainScreen().bounds.height
+                    frame.origin.y = UIScreen.main.bounds.height
                 }
                 else{
-                    self.getUIPickerViewInstance().hidden = hide
-                    frame.origin.y = UIScreen.mainScreen().bounds.height - self.pickerViewHeight + self.pickerViewPositionOffset
+                    self.getUIPickerViewInstance().isHidden = hide
+                    frame.origin.y = UIScreen.main.bounds.height - self.pickerViewHeight + self.pickerViewPositionOffset
                 }
                 self.getUIPickerViewInstance().frame =  frame
                 }) { (Bool) -> Void in
-                    self.getUIPickerViewInstance().hidden = hide
+                    self.getUIPickerViewInstance().isHidden = hide
             }
         }
         else{
-            self.getUIPickerViewInstance().hidden = hide
+            self.getUIPickerViewInstance().isHidden = hide
         }
     }
     
     // UIPickerView delegate methods
-    func numberOfComponentsInPickerView(pickerView: UIPickerView) -> Int{
+    func numberOfComponents(in pickerView: UIPickerView) -> Int{
         return 1
     }
-    func pickerView(pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int{
+    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int{
         guard let models = self.sttLanguageModels else {
             return 0
         }
         return models.count
     }
-    func pickerView(pickerView: UIPickerView, rowHeightForComponent component: Int) -> CGFloat {
+    func pickerView(_ pickerView: UIPickerView, rowHeightForComponent component: Int) -> CGFloat {
         return 50
     }
-    func pickerView(pickerView: UIPickerView, widthForComponent component: Int) -> CGFloat {
+    func pickerView(_ pickerView: UIPickerView, widthForComponent component: Int) -> CGFloat {
         return self.pickerViewHeight
     }
-    func pickerView(pickerView: UIPickerView, viewForRow row: Int, forComponent component: Int, reusingView view: UIView?) -> UIView {
+    func pickerView(_ pickerView: UIPickerView, viewForRow row: Int, forComponent component: Int, reusing view: UIView?) -> UIView {
         var tView: UILabel? = view as? UILabel
         if tView == nil {
             tView = UILabel()
             tView?.font = UIFont(name: "Helvetica", size: 12)
             tView?.numberOfLines = 1
         }
-        let model = self.sttLanguageModels?.objectAtIndex(row) as? NSDictionary
-        tView?.text = model?.objectForKey("description") as? String
+        let model = self.sttLanguageModels?.object(at: row) as? NSDictionary
+        tView?.text = model?.object(forKey: "description") as? String
         return tView!
     }
-    func pickerView(pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         self.onSelectedModel(row)
         self.hidePickerView(true, withAnimation: true)
     }

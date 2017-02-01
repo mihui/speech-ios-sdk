@@ -837,6 +837,7 @@
 					9BF43ECE1CEAC81900EC0185 = {
 						CreatedOnToolsVersion = 7.2;
 						DevelopmentTeam = Q7W47GFKL3;
+						LastSwiftMigration = 0820;
 					};
 					C11A645A1754D0E600385896 = {
 						LastSwiftMigration = 0800;
@@ -1106,6 +1107,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "watsonsdktest-swift/SwiftSpeechHeader.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -1137,6 +1139,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.ibm.cio.be.watsonsdk.swift;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "watsonsdktest-swift/SwiftSpeechHeader.h";
+				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
