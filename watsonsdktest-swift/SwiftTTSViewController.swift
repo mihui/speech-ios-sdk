@@ -16,7 +16,7 @@
 
 import UIKit
 
-class SwiftTTSViewController: UIViewController, UITextFieldDelegate, UIPickerViewDataSource, UIPickerViewDelegate, UIGestureRecognizerDelegate {
+class SwiftTTSViewController: UIViewController, UITextFieldDelegate, UIPickerViewDataSource, UIPickerViewDelegate, UIGestureRecognizerDelegate, URLSessionTaskDelegate {
 
     var ttsVoices: NSArray?
     var ttsInstance: TextToSpeech?
@@ -43,6 +43,8 @@ class SwiftTTSViewController: UIViewController, UITextFieldDelegate, UIPickerVie
         confTTS.basicAuthPassword = credentials?["TTSPassword"] as! String
         confTTS.audioCodec = WATSONSDK_TTS_AUDIO_CODEC_TYPE_OPUS
         confTTS.voiceName = WATSONSDK_DEFAULT_TTS_VOICE
+        
+//        confTTS.tokenGenerator = self.tokenGenerator()
 
         self.ttsInstance = TextToSpeech(config: confTTS)
         self.ttsInstance?.listVoices({ (jsonDict:[AnyHashable: Any]?, error:Error?) in
@@ -123,6 +125,31 @@ class SwiftTTSViewController: UIViewController, UITextFieldDelegate, UIPickerVie
         }
         self.getUIPickerViewInstance().selectRow(row, inComponent: 0, animated: false)
         self.onSelectedModel(row)
+    }
+
+    // Example of token generator
+    func tokenGenerator() -> ((((String?) -> Void)?)) -> Void {
+        let url = URL(string: "https://<token-factory-url>")
+        return ({ ( _ tokenHandler: (((_ token:String?) -> Void)?) ) -> () in
+            SpeechUtility .performGet({ (data:Data?, response:URLResponse?, error:Error?) in
+                if error != nil {
+                    print("Error occurred while requesting token: \(error?.localizedDescription ?? "")")
+                    return
+                }
+                guard let httpResponse: HTTPURLResponse = response as? HTTPURLResponse else {
+                    print("Invalid response")
+                    return
+                }
+                if httpResponse.statusCode != 200 {
+                    print("Error response: \(httpResponse.statusCode)")
+                    return
+                }
+                
+                let token:String = String(data: data!, encoding: String.Encoding.utf8)!
+                
+                tokenHandler!(token)
+            }, for: url, delegate: self, disableCache: true, header: nil)
+        })
     }
 
     // get picker view initialized

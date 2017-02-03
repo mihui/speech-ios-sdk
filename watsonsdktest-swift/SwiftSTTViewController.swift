@@ -16,7 +16,9 @@
 
 import UIKit
 
-class SwiftSTTViewController: UIViewController, UITextFieldDelegate, UIPickerViewDataSource, UIPickerViewDelegate {
+typealias TokenHandler = ((((String?) -> Void)?)) -> Void
+
+class SwiftSTTViewController: UIViewController, UITextFieldDelegate, UIPickerViewDataSource, UIPickerViewDelegate, URLSessionTaskDelegate {
 
     var sttLanguageModels: NSArray?
     var sttInstance: SpeechToText?
@@ -43,7 +45,10 @@ class SwiftSTTViewController: UIViewController, UITextFieldDelegate, UIPickerVie
         confSTT.audioCodec = WATSONSDK_AUDIO_CODEC_TYPE_OPUS
         confSTT.modelName = WATSONSDK_DEFAULT_STT_MODEL
 
+//        confSTT.tokenGenerator = self.tokenGenerator()
+
         self.sttInstance = SpeechToText(config: confSTT)
+
         self.sttInstance?.listModels({ (jsonDict: [AnyHashable: Any]?, error: Error?) in
             if error == nil {
                 self.modelHandler(jsonDict!)
@@ -59,6 +64,7 @@ class SwiftSTTViewController: UIViewController, UITextFieldDelegate, UIPickerVie
         self.sttInstance?.recognize({ (result:[AnyHashable: Any]?, error: Error?) in
             if(error == nil) {
                 let sttResult = self.sttInstance?.getResult(result)
+
                 guard let transcript = sttResult?.transcript else {
                     return;
                 }
@@ -67,17 +73,17 @@ class SwiftSTTViewController: UIViewController, UITextFieldDelegate, UIPickerVie
             }
             else{
                 print("Error from the SDK: %@", error?.localizedDescription ?? "")
-                self.sttInstance?.endRecognize()
+                self.sttInstance?.stopRecordingAudio()
+                self.sttInstance?.endConnection()
             }
-            }) { (power: Float) -> Void in
-
+        }) { (power: Float) -> Void in
                 var frame = self.soundbar.frame
                 var w = CGFloat.init(3*(70 + power))
                 
                 if w > self.pickerViewContainer.frame.width {
                     w = self.pickerViewContainer.frame.width
                 }
-                
+
                 frame.size.width = w
                 self.soundbar.frame = frame
                 self.soundbar.center = CGPoint(x: self.view.frame.size.width / 2, y: self.soundbar.center.y);
@@ -122,6 +128,31 @@ class SwiftSTTViewController: UIViewController, UITextFieldDelegate, UIPickerVie
         }
         self.getUIPickerViewInstance().selectRow(row, inComponent: 0, animated: false)
         self.onSelectedModel(row)
+    }
+
+    // Example of token generator
+    func tokenGenerator() -> ((((String?) -> Void)?)) -> Void {
+        let url = URL(string: "https://<token-factory-url>")
+        return ({ ( _ tokenHandler: (((_ token:String?) -> Void)?) ) -> () in
+            SpeechUtility .performGet({ (data:Data?, response:URLResponse?, error:Error?) in
+                if error != nil {
+                    print("Error occurred while requesting token: \(error?.localizedDescription ?? "")")
+                    return
+                }
+                guard let httpResponse: HTTPURLResponse = response as? HTTPURLResponse else {
+                    print("Invalid response")
+                    return
+                }
+                if httpResponse.statusCode != 200 {
+                    print("Error response: \(httpResponse.statusCode)")
+                    return
+                }
+                
+                let token:String = String(data: data!, encoding: String.Encoding.utf8)!
+                
+                tokenHandler!(token)
+            }, for: url, delegate: self, disableCache: true, header: nil)
+        })
     }
 
     func getUIPickerViewInstance() -> UIPickerView{
