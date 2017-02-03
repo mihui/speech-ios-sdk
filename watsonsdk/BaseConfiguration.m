@@ -21,6 +21,7 @@
 @synthesize basicAuthUsername = _basicAuthUsername;
 @synthesize basicAuthPassword = _basicAuthPassword;
 @synthesize token = _token;
+@synthesize tokenGenerator = _tokenGenerator;
 
 - (id) init {
     self = [super init];
@@ -38,6 +39,7 @@
         if (!_token || refreshCachedToken) {
             self.tokenGenerator(^(NSString *token) {
                 _token = token;
+                NSLog(@"Requested Token: %@", _token);
                 completionHandler(self);
             });
         } else {
