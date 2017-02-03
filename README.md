@@ -124,9 +124,9 @@ Basic Authentication, using the credentials provided by the Bluemix Service inst
 
 Token authentication, if a token authentication provider is running at https://my-token-factory/token 
 
+**in Objective-C**
 ```objective-c
-
-	[conf setTokenGenerator:^(void (^tokenHandler)(NSString *token)){
+    [conf setTokenGenerator:^(void (^tokenHandler)(NSString *token)){
         NSURL *url = [[NSURL alloc] initWithString:@"https://<token-factory-url>"];
         NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
         [request setHTTPMethod:@"GET"];
@@ -141,8 +141,39 @@ Token authentication, if a token authentication provider is running at https://m
         }
         tokenHandler([[NSString alloc] initWithData:oResponseData encoding:NSUTF8StringEncoding]);
     } ];
-
 ```
+
+**in Swift**
+```swift
+    ...
+    confSTT.tokenGenerator = self.tokenGenerator()
+    ...
+
+    func tokenGenerator() -> ((((String?) -> Void)?)) -> Void {
+        let url = URL(string: "https://<token-factory-url>")
+        return ({ ( _ tokenHandler: (((_ token:String?) -> Void)?) ) -> () in
+            SpeechUtility .performGet({ (data:Data?, response:URLResponse?, error:Error?) in
+                if error != nil {
+                    print("Error occurred while requesting token: \(error?.localizedDescription ?? "")")
+                    return
+                }
+                guard let httpResponse: HTTPURLResponse = response as? HTTPURLResponse else {
+                    print("Invalid response")
+                    return
+                }
+                if httpResponse.statusCode != 200 {
+                    print("Error response: \(httpResponse.statusCode)")
+                    return
+                }
+                
+                let token:String = String(data: data!, encoding: String.Encoding.utf8)!
+                
+                tokenHandler!(token)
+            }, for: url, delegate: self, disableCache: true, header: nil)
+        })
+    }
+```
+
 
 
 Create a SpeechToText instance
@@ -195,7 +226,7 @@ Get details of a particular model
 
 Available speech recognition models can be obtained using the listModel function.
 
-
+**in Objective-C**
 ```objective-c
 	[stt listModel:^(NSDictionary* jsonDict, NSError* err){
         
@@ -331,7 +362,6 @@ This can be obtained from SpeechToTextResult instance.
     SpeechToTextResult *sttResult = [stt getResult:res];
 
     NSLog(@"Confidence score: %@", [sttResult confidenceScore])
-
 ```
 
 **in Swift**
