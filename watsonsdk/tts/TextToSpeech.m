@@ -289,29 +289,22 @@ typedef void (^PlayAudioCallbackBlockType)(NSError*);
  */
 - (void) performDataGet:(DataHandlerWithError)handler forURL:(NSURL*)url disableCache:(BOOL) withoutCache header:(NSDictionary*) extraHeader {
     [self.config requestToken:^(BaseConfiguration *config) {
-        if([SpeechUtility isOS6]) {
-            [SpeechUtility performGet:^(NSURLResponse *response, NSData *data, NSError *connectionError) {
-                [SpeechUtility processData:handler config:config response:response data:data error:connectionError];
-            } forURL:url disableCache:withoutCache configuration:config header:extraHeader];
+        // Create and set authentication headers
+        NSURLSessionConfiguration *defaultConfigObject = [NSURLSessionConfiguration defaultSessionConfiguration];
+        
+        if(withoutCache)
+            [defaultConfigObject setURLCache:nil];
+        NSMutableDictionary* headers = [config createRequestHeaders];
+        if(config.xWatsonLearningOptOut) {
+            [headers setObject:@"true" forKey:@"X-Watson-Learning-Opt-Out"];
         }
-        else {
-            // Create and set authentication headers
-            NSURLSessionConfiguration *defaultConfigObject = [NSURLSessionConfiguration defaultSessionConfiguration];
-
-            if(withoutCache)
-                [defaultConfigObject setURLCache:nil];
-            NSMutableDictionary* headers = [config createRequestHeaders];
-            if(config.xWatsonLearningOptOut) {
-                [headers setObject:@"true" forKey:@"X-Watson-Learning-Opt-Out"];
-            }
-            [defaultConfigObject setHTTPAdditionalHeaders:headers];
-            NSURLSession *defaultSession = [NSURLSession sessionWithConfiguration: defaultConfigObject delegate: self delegateQueue: [NSOperationQueue mainQueue]];
-            NSURLSessionDataTask * dataTask = [defaultSession dataTaskWithURL:url completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
-                [SpeechUtility processData:handler config:config response:response data:data error:error];
-            }];
-            
-            [dataTask resume];
-        }
+        [defaultConfigObject setHTTPAdditionalHeaders:headers];
+        NSURLSession *defaultSession = [NSURLSession sessionWithConfiguration: defaultConfigObject delegate: self delegateQueue: [NSOperationQueue mainQueue]];
+        NSURLSessionDataTask * dataTask = [defaultSession dataTaskWithURL:url completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+            [SpeechUtility processData:handler config:config response:response data:data error:error];
+        }];
+        
+        [dataTask resume];
     } refreshCache:NO];
 }
 
@@ -338,7 +331,7 @@ typedef void (^PlayAudioCallbackBlockType)(NSError*);
 
         NSURLSession *defaultSession = [NSURLSession sessionWithConfiguration: defaultConfigObject delegate: self delegateQueue: [NSOperationQueue mainQueue]];
         NSURLSessionDataTask * dataTask = [defaultSession dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
-            [SpeechUtility processJSON:customizationHandler config:config response:response data:data error:error];
+            [SpeechUtility processJSON:customizationHandler response:response data:data error:error];
         }];
 
         [dataTask resume];

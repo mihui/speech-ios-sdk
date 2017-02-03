@@ -138,7 +138,7 @@ id audioStreamerRef;
     self.audioDataCallback = dataHandler;
     self.powerLevelCallback = powerHandler;
 
-    if(isPermissionGranted || [SpeechUtility isOS6]) {
+    if(isPermissionGranted) {
         [self startRecognizing];
         return;
     }
