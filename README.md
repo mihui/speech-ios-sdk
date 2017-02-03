@@ -587,4 +587,4 @@ Generate and play customized audio
 
 ## Copyright and license
 
-Copyright 2016 IBM Corporation under [the Apache 2.0 license](LICENSE).
+Copyright 2017 IBM Corporation under [the Apache 2.0 license](LICENSE).
