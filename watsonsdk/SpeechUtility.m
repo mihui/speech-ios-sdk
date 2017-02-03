@@ -359,7 +359,7 @@
             [SpeechUtility processJSON:handler response:response data:data error:error];
         } forURL:url delegate:sessionDelegate disableCache:withoutCache header:httpHeaders];
 
-    } refreshCache:NO];
+    } refreshCache:withoutCache];
 }
 
 
@@ -396,7 +396,7 @@
 
     if(withoutCache)
         [defaultConfigObject setURLCache:nil];
-    
+
     [defaultConfigObject setHTTPAdditionalHeaders:extraHeader];
     NSURLSession *defaultSession = [NSURLSession sessionWithConfiguration: defaultConfigObject delegate: sessionDelegate delegateQueue: [NSOperationQueue mainQueue]];
     
