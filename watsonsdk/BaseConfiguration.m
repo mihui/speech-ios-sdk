@@ -39,7 +39,6 @@
         if (!_token || refreshCachedToken) {
             self.tokenGenerator(^(NSString *token) {
                 _token = token;
-                NSLog(@"Requested Token: %@", _token);
                 completionHandler(self);
             });
         } else {
