@@ -17,7 +17,7 @@
 #import "TTSViewController.h"
 
 
-@interface TTSViewController () <UIGestureRecognizerDelegate>
+@interface TTSViewController () <UIGestureRecognizerDelegate, NSURLSessionTaskDelegate>
 @property (strong, nonatomic) IBOutlet UIButton *ttsButton;
 
 @property (weak, nonatomic) IBOutlet UITextView *ttsField;
@@ -44,20 +44,17 @@
 
 //    [confTTS setTokenGenerator:^(void (^tokenHandler)(NSString *token)){
 //        NSURL *url = [[NSURL alloc] initWithString:@"https://my-token-factory/token"];
-//        NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
-//        [request setHTTPMethod:@"GET"];
-//        [request setURL:url];
 //        
-//        NSError *error = [[NSError alloc] init];
-//        NSHTTPURLResponse *responseCode = nil;
-//        NSData *oResponseData = [NSURLConnection sendSynchronousRequest:request returningResponse:&responseCode error:&error];
-//        if ([responseCode statusCode] != 200) {
-//            NSLog(@"Error getting %@, HTTP status code %li", url, (long)[responseCode statusCode]);
-//            return;
-//        }
-//        tokenHandler([[NSString alloc] initWithData:oResponseData encoding:NSUTF8StringEncoding]);
-//    } ];
+//        [SpeechUtility performGet:^(NSData *data, NSURLResponse *response, NSError *error) {
+//            NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse*) response;
+//            if ([httpResponse statusCode] != 200) {
+//                NSLog(@"Error getting %@, HTTP status code %li", url, (long)[httpResponse statusCode]);
+//                return;
+//            }
+//            tokenHandler([[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding]);
 //
+//        } forURL:url delegate:self disableCache:NO header:nil];
+//    } ];
 
     __weak typeof(self) weakSelf = self;
 
