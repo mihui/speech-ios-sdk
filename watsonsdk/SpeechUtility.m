@@ -187,7 +187,7 @@
                 handler(nil, dataError);
                 return;
             }
-            NSInteger *code = [[responseObject valueForKey:@"code"] integerValue];
+            NSInteger code = [[responseObject valueForKey:@"code"] integerValue];
             NSString *reason = [responseObject valueForKey:@"error"];
             NSString *description = [responseObject valueForKey:@"code_description"];
             if(reason == nil || description == nil) {

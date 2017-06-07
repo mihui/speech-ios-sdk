@@ -39,7 +39,7 @@
     [self setAudioFrameSize:WATSONSDK_AUDIO_FRAME_SIZE_OPUS];
 
     [self setInterimResults:NO];
-    [self setContinuous:NO];
+    [self setSpeakerLabels:NO];
     [self setInactivityTimeout:[NSNumber numberWithInt:WATSONSDK_INACTIVITY_TIMEOUT]];
 
     [self setKeywordsThreshold:[NSNumber numberWithDouble:-1]];
@@ -109,8 +109,8 @@
         [inputParameters setValue:self.inactivityTimeout forKey:@"inactivity_timeout"];
     }
 
-    if(self.continuous) {
-        [inputParameters setValue:[NSNumber numberWithBool:YES] forKey:@"continuous"];
+    if(self.speakerLabels) {
+        [inputParameters setValue:[NSNumber numberWithBool:YES] forKey:@"speaker_labels"];
     }
 
     if([self.maxAlternatives intValue] > 1) {

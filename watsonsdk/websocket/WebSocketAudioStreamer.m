@@ -186,7 +186,9 @@ dispatch_once_t predicate_connect;
             return;
         }
 
-        [self.webSocket sendData:data error:nil];
+        NSError *error = nil;
+        [self.webSocket sendData:data error:&error];
+
         if([[data marker] intValue] == WATSONSDK_STREAM_MARKER_END) {
             NSLog(@"Ending with data %lu bytes: %@", (unsigned long)[data length], [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding]);
             self.isReadyForClosure = YES;
@@ -291,6 +293,7 @@ dispatch_once_t predicate_connect;
 }
 
 - (void)webSocket:(SRWebSocket *)webSocket didReceiveMessageWithString:(NSString *)string {
+    NSLog(@"---> %@", string);
     NSData *data = [string dataUsingEncoding:NSUTF8StringEncoding];
     // this should be JSON parse it but check for errors
     
@@ -311,13 +314,14 @@ dispatch_once_t predicate_connect;
     if([object isKindOfClass:[NSDictionary class]])
     {
         NSDictionary *results = object;
+        
         // look for state changes
         if([results objectForKey:@"state"] != nil) {
             NSString *state = [results objectForKey:@"state"];
             
             if([state isEqualToString:@"listening"]) {
                 
-                if(self.isReadyForAudio && (self.isReadyForClosure || [self.sConfig continuous] == NO)) {
+                if(self.isReadyForAudio && self.isReadyForClosure) {
                     // if we receive a listening state after having sent audio it means we can now close the connection
                     [self disconnect: @"Watson completed transcribing or closure data has been written"];
                 }

@@ -42,7 +42,7 @@ class SwiftSTTViewController: UIViewController, UITextFieldDelegate, UIPickerVie
         let confSTT: STTConfiguration = STTConfiguration()
         confSTT.basicAuthUsername = credentials!["STTUsername"] as! String
         confSTT.basicAuthPassword = credentials!["STTPassword"] as! String
-        confSTT.audioCodec = WATSONSDK_AUDIO_CODEC_TYPE_OPUS
+
         confSTT.modelName = WATSONSDK_DEFAULT_STT_MODEL
 
 //        confSTT.tokenGenerator = self.tokenGenerator()

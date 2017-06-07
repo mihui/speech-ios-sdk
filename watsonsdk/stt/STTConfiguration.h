@@ -49,7 +49,7 @@
 @property NSString *modelName; // "model" parameter defined from service
 @property NSString *audioCodec; // "Content-Type" parameter defined from service
 @property BOOL interimResults;
-@property BOOL continuous;
+@property BOOL speakerLabels;
 @property NSNumber *inactivityTimeout;
 @property NSNumber *connectionTimeout;
 @property NSNumber *keywordsThreshold;

@@ -49,7 +49,7 @@
 
     [confSTT setModelName:WATSONSDK_DEFAULT_STT_MODEL];
     [confSTT setInterimResults:YES];
-    [confSTT setContinuous:NO];
+    [confSTT setSpeakerLabels:NO];
 
 //    [confSTT setTokenGenerator:^(void (^tokenHandler)(NSString *token)){
 //        NSURL *url = [[NSURL alloc] initWithString:@"https://my-token-factory/token"];
@@ -94,9 +94,7 @@
  *  @param sender id
  */
 -(IBAction) releaseStartRecord:(id)sender {
-    if([self.stt.config continuous]) {
-        [stt endTransmission];
-    }
+    [stt endTransmission];
 }
 
 /**
